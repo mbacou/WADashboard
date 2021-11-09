@@ -1,0 +1,630 @@
+variable,value,source
+blue,#0073b7,adminlte
+lightblue,#3c8dbc,adminlte
+navy,#001f3f,adminlte
+teal,#39cccc,adminlte
+olive,#3d9970,adminlte
+lime,#01ff70,adminlte
+orange,#ff851b,adminlte
+fuchsia,#f012be,adminlte
+purple,#605ca8,adminlte
+maroon,#d81b60,adminlte
+black,#111,adminlte
+gray-x-light,#d2d6de,adminlte
+colors,map-merge((,adminlte
+font-size-root,1rem,adminlte
+sidebar-width,250px,adminlte
+sidebar-padding-x,0.5rem,adminlte
+sidebar-padding-y,0,adminlte
+boxed-layout-max-width,1250px,adminlte
+screen-header-collapse,"map-get($grid-breakpoints, md)",adminlte
+main-bg,#f4f6f9,adminlte
+content-padding-y,0,adminlte
+content-padding-x,$navbar-padding-x,adminlte
+img-size-sm,1.875rem,adminlte
+img-size-md,3.75rem,adminlte
+img-size-lg,6.25rem,adminlte
+img-size-push,.625rem,adminlte
+main-header-bottom-border-width,$border-width,adminlte
+main-header-bottom-border-color,$gray-300,adminlte
+main-header-bottom-border,$main-header-bottom-border-width solid $main-header-bottom-border-color,adminlte
+main-header-link-padding-y,$navbar-padding-y,adminlte
+main-header-link-padding-x,$navbar-padding-x,adminlte
+main-header-brand-padding-y,$navbar-brand-padding-y,adminlte
+main-header-brand-padding-x,$navbar-padding-x,adminlte
+main-header-height,calc(#{$main-header-height-inner} + #{$main-header-bottom-border-width}),adminlte
+nav-link-sm-padding-y,.35rem,adminlte
+main-header-height-sm,calc(#{$main-header-height-sm-inner} + #{$main-header-bottom-border-width}),adminlte
+main-header-dark-form-control-bg,"hsla(100, 100%, 100%, 0.2)",adminlte
+main-header-dark-form-control-focused-bg,"hsla(100, 100%, 100%, 0.6)",adminlte
+main-header-dark-form-control-focused-color,$gray-800,adminlte
+main-header-dark-form-control-border,0,adminlte
+main-header-dark-form-control-focused-border,0,adminlte
+main-header-dark-placeholder-color,"hsla(100, 100%, 100%, 0.6)",adminlte
+main-header-light-form-control-bg,"darken($gray-100, 2%)",adminlte
+main-header-light-form-control-focused-bg,$gray-200,adminlte
+main-header-light-form-control-focused-color,$gray-800,adminlte
+main-header-light-form-control-border,0,adminlte
+main-header-light-form-control-focused-border,0,adminlte
+main-header-light-placeholder-color,"hsla(0, 0%, 0%, 0.6)",adminlte
+main-footer-padding,1rem,adminlte
+main-footer-padding-sm,$main-footer-padding * .812,adminlte
+main-footer-border-top-width,1px,adminlte
+main-footer-border-top-color,$gray-300,adminlte
+main-footer-border-top,$main-footer-border-top-width solid $main-footer-border-top-color,adminlte
+main-footer-height,calc(#{$main-footer-height-inner} + #{$main-footer-border-top-width}),adminlte
+main-footer-height-sm,calc(#{$main-footer-height-sm-inner} + #{$main-footer-border-top-width}),adminlte
+main-footer-bg,$white,adminlte
+sidebar-dark-bg,$dark,adminlte
+sidebar-dark-hover-bg,"hsla(100, 100%, 100%, 0.1)",adminlte
+sidebar-dark-color,#C2C7D0,adminlte
+sidebar-dark-hover-color,$white,adminlte
+sidebar-dark-active-color,$white,adminlte
+sidebar-dark-submenu-bg,transparent,adminlte
+sidebar-dark-submenu-color,#C2C7D0,adminlte
+sidebar-dark-submenu-hover-color,$white,adminlte
+sidebar-dark-submenu-hover-bg,$sidebar-dark-hover-bg,adminlte
+sidebar-dark-submenu-active-color,$sidebar-dark-bg,adminlte
+sidebar-dark-submenu-active-bg,"hsla(100, 100%, 100%, 0.9)",adminlte
+sidebar-dark-header-color,$white,adminlte
+sidebar-light-bg,$white,adminlte
+sidebar-light-hover-bg,"rgba($black, .1)",adminlte
+sidebar-light-color,$gray-800,adminlte
+sidebar-light-hover-color,$gray-900,adminlte
+sidebar-light-active-color,$black,adminlte
+sidebar-light-submenu-bg,transparent,adminlte
+sidebar-light-submenu-color,#777,adminlte
+sidebar-light-submenu-hover-color,#000,adminlte
+sidebar-light-submenu-hover-bg,$sidebar-light-hover-bg,adminlte
+sidebar-light-submenu-active-color,$sidebar-light-hover-color,adminlte
+sidebar-light-submenu-active-bg,$sidebar-light-submenu-hover-bg,adminlte
+sidebar-light-header-color,$gray-800,adminlte
+sidebar-nav-icon-width,$sidebar-mini-width - (($sidebar-padding-x + $nav-link-padding-x) * 2),adminlte
+sidebar-user-image-width,$sidebar-nav-icon-width + ($nav-link-padding-x / 2),adminlte
+control-sidebar-width,$sidebar-width,adminlte
+card-border-color,$gray-100,adminlte
+card-dark-border-color,"lighten($gray-900, 10%)",adminlte
+card-shadow,"0 0 1px rgba(0, 0, 0, .125), 0 1px 3px rgba(0, 0, 0, .2)",adminlte
+card-title-font-size,1.1rem,adminlte
+card-title-font-size-sm,1rem,adminlte
+card-title-font-weight,$font-weight-normal,adminlte
+card-nav-link-padding-sm-y,.4rem,adminlte
+card-nav-link-padding-sm-x,.8rem,adminlte
+card-img-size,$img-size-sm,adminlte
+progress-bar-border-radius,1px,adminlte
+progress-bar-sm-border-radius,1px,adminlte
+progress-bar-xs-border-radius,1px,adminlte
+direct-chat-height,250px,adminlte
+direct-chat-default-msg-bg,$gray-x-light,adminlte
+direct-chat-default-font-color,#444,adminlte
+direct-chat-default-msg-border-color,$gray-x-light,adminlte
+attachment-border-radius,3px,adminlte
+zindex-main-header,$zindex-fixed + 4,adminlte
+zindex-main-sidebar,$zindex-fixed + 8,adminlte
+zindex-main-footer,$zindex-fixed + 2,adminlte
+zindex-control-sidebar,$zindex-fixed + 1,adminlte
+zindex-sidebar-mini-links,010,adminlte
+zindex-toasts,$zindex-main-sidebar + 2,adminlte
+transition-speed,0.3s,adminlte
+transition-fn,ease-in-out,adminlte
+button-default-background-color,$gray-100,adminlte
+button-default-color,#444,adminlte
+button-default-border-color,#ddd,adminlte
+button-padding-y-xs,.125rem,adminlte
+button-padding-x-xs,.25rem,adminlte
+button-line-height-xs,$line-height-sm,adminlte
+button-border-radius-xs,.15rem,adminlte
+ribbon-border-size,3px,adminlte
+ribbon-line-height,100%,adminlte
+ribbon-padding,.375rem 0,adminlte
+ribbon-font-size,.8rem,adminlte
+ribbon-width,90px,adminlte
+ribbon-wrapper-size,70px,adminlte
+ribbon-top,10px,adminlte
+ribbon-right,-2px,adminlte
+ribbon-lg-wrapper-size,120px,adminlte
+ribbon-lg-width,160px,adminlte
+ribbon-lg-top,26px,adminlte
+ribbon-lg-right,0px,adminlte
+ribbon-xl-wrapper-size,180px,adminlte
+ribbon-xl-width,240px,adminlte
+ribbon-xl-top,47px,adminlte
+ribbon-xl-right,4px,adminlte
+white,#ffffff,bootstrap
+gray-100,#f8f9fa,bootstrap
+gray-200,#e9ecef,bootstrap
+gray-300,#dee2e6,bootstrap
+gray-400,#ced4da,bootstrap
+gray-500,#adb5bd,bootstrap
+gray-600,#6c757d,bootstrap
+gray-700,#495057,bootstrap
+gray-800,#343a40,bootstrap
+gray-900,#212529,bootstrap
+black,#000,bootstrap
+blue,#007bff,bootstrap
+indigo,#6610f2,bootstrap
+purple,#6f42c1,bootstrap
+pink,#e83e8c,bootstrap
+red,#dc3545,bootstrap
+orange,#fd7e14,bootstrap
+yellow,#ffc107,bootstrap
+green,#28a745,bootstrap
+teal,#20c997,bootstrap
+cyan,#17a2b8,bootstrap
+primary,$blue,bootstrap
+secondary,$gray-600,bootstrap
+success,$green,bootstrap
+info,$cyan,bootstrap
+warning,$yellow,bootstrap
+danger,$red,bootstrap
+light,$gray-100,bootstrap
+dark,$gray-800,bootstrap
+theme-color-interval,8%,bootstrap
+yiq-contrasted-threshold,150,bootstrap
+yiq-text-dark,#1F2D3D,bootstrap
+yiq-text-light,$white,bootstrap
+enable-caret,true,bootstrap
+enable-rounded,true,bootstrap
+enable-shadows,true,bootstrap
+enable-gradients,false,bootstrap
+enable-transitions,true,bootstrap
+enable-prefers-reduced-motion-media-query,true,bootstrap
+enable-hover-media-query,"false  // Deprecated, no longer affects any compiled CSS",bootstrap
+enable-grid-classes,true,bootstrap
+enable-pointer-cursor-for-buttons,true,bootstrap
+enable-print-styles,true,bootstrap
+enable-responsive-font-sizes,false,bootstrap
+enable-validation-icons,true,bootstrap
+enable-deprecation-messages,true,bootstrap
+spacer,1rem,bootstrap
+body-bg,$white,bootstrap
+body-color,$gray-900,bootstrap
+link-color,"theme-color(""primary"")",bootstrap
+link-decoration,none,bootstrap
+link-hover-color,"darken($link-color, 15%)",bootstrap
+link-hover-decoration,none,bootstrap
+paragraph-margin-bottom,1rem,bootstrap
+grid-columns,12,bootstrap
+grid-gutter-width,15px,bootstrap
+line-height-lg,1.5,bootstrap
+line-height-sm,1.5,bootstrap
+border-width,1px,bootstrap
+border-color,$gray-300,bootstrap
+border-radius,.25rem,bootstrap
+border-radius-lg,.3rem,bootstrap
+border-radius-sm,.2rem,bootstrap
+component-active-color,$white,bootstrap
+component-active-bg,"theme-color(""primary"")",bootstrap
+caret-width,.3em,bootstrap
+transition-base,all .2s ease-in-out,bootstrap
+transition-fade,opacity .15s linear,bootstrap
+transition-collapse,height .35s ease,bootstrap
+font-family-sans-serif,"""Source Sans Pro"", -apple-system, BlinkMacSystemFont, ""Segoe UI"", Roboto, ""Helvetica Neue"", Arial, sans-serif, ""Apple Color Emoji"", ""Segoe UI Emoji"", ""Segoe UI Symbol""",bootstrap
+font-family-monospace,"SFMono-Regular, Menlo, Monaco, Consolas, ""Liberation Mono"", ""Courier New"", monospace",bootstrap
+font-family-base,$font-family-sans-serif,bootstrap
+font-size-base,"1rem  // Assumes the browser default, typically `16px`",bootstrap
+font-weight-light,300,bootstrap
+font-weight-normal,400,bootstrap
+font-weight-bold,700,bootstrap
+font-weight-base,$font-weight-normal,bootstrap
+line-height-base,1.5,bootstrap
+h1-font-size,$font-size-base * 2.5,bootstrap
+h2-font-size,$font-size-base * 2,bootstrap
+h3-font-size,$font-size-base * 1.75,bootstrap
+h4-font-size,$font-size-base * 1.5,bootstrap
+h5-font-size,$font-size-base * 1.25,bootstrap
+h6-font-size,$font-size-base,bootstrap
+headings-font-family,inherit,bootstrap
+headings-font-weight,500,bootstrap
+headings-line-height,1.2,bootstrap
+headings-color,inherit,bootstrap
+display1-size,6rem,bootstrap
+display2-size,5.5rem,bootstrap
+display3-size,4.5rem,bootstrap
+display4-size,3.5rem,bootstrap
+display1-weight,300,bootstrap
+display2-weight,300,bootstrap
+display3-weight,300,bootstrap
+display4-weight,300,bootstrap
+display-line-height,$headings-line-height,bootstrap
+lead-font-weight,300,bootstrap
+small-font-size,80%,bootstrap
+text-muted,$gray-600,bootstrap
+blockquote-small-color,$gray-600,bootstrap
+hr-border-color,"rgba($black, .1)",bootstrap
+hr-border-width,$border-width,bootstrap
+mark-padding,.2em,bootstrap
+dt-font-weight,$font-weight-bold,bootstrap
+kbd-box-shadow,"inset 0 -.1rem 0 rgba($black, .25)",bootstrap
+nested-kbd-font-weight,$font-weight-bold,bootstrap
+list-inline-padding,.5rem,bootstrap
+mark-bg,#fcf8e3,bootstrap
+hr-margin-y,$spacer,bootstrap
+table-cell-padding,.75rem,bootstrap
+table-cell-padding-sm,.3rem,bootstrap
+table-bg,transparent,bootstrap
+table-accent-bg,"rgba($black, .05)",bootstrap
+table-hover-bg,"rgba($black, .075)",bootstrap
+table-active-bg,$table-hover-bg,bootstrap
+table-border-width,$border-width,bootstrap
+table-border-color,$gray-300,bootstrap
+table-head-bg,$gray-200,bootstrap
+table-head-color,$gray-700,bootstrap
+table-dark-bg,$gray-900,bootstrap
+table-dark-accent-bg,"rgba($white, .05)",bootstrap
+table-dark-hover-bg,"rgba($white, .075)",bootstrap
+table-dark-border-color,"lighten($gray-900, 10%)",bootstrap
+table-dark-color,$body-bg,bootstrap
+input-btn-padding-y,.375rem,bootstrap
+input-btn-padding-x,.75rem,bootstrap
+input-btn-line-height,$line-height-base,bootstrap
+input-btn-focus-width,.2rem,bootstrap
+input-btn-focus-color,"rgba($component-active-bg, .25)",bootstrap
+input-btn-focus-box-shadow,0 0 0 $input-btn-focus-width $input-btn-focus-color,bootstrap
+input-btn-padding-y-sm,.25rem,bootstrap
+input-btn-padding-x-sm,.5rem,bootstrap
+input-btn-line-height-sm,$line-height-sm,bootstrap
+input-btn-padding-y-lg,.5rem,bootstrap
+input-btn-padding-x-lg,1rem,bootstrap
+input-btn-line-height-lg,$line-height-lg,bootstrap
+input-btn-border-width,$border-width,bootstrap
+btn-padding-y,$input-btn-padding-y,bootstrap
+btn-padding-x,$input-btn-padding-x,bootstrap
+btn-line-height,$input-btn-line-height,bootstrap
+btn-padding-y-sm,$input-btn-padding-y-sm,bootstrap
+btn-padding-x-sm,$input-btn-padding-x-sm,bootstrap
+btn-line-height-sm,$input-btn-line-height-sm,bootstrap
+btn-padding-y-lg,$input-btn-padding-y-lg,bootstrap
+btn-padding-x-lg,$input-btn-padding-x-lg,bootstrap
+btn-line-height-lg,$input-btn-line-height-lg,bootstrap
+btn-border-width,$input-btn-border-width,bootstrap
+btn-font-weight,$font-weight-normal,bootstrap
+btn-box-shadow,none,bootstrap
+btn-focus-width,0,bootstrap
+btn-focus-box-shadow,none,bootstrap
+btn-disabled-opacity,.65,bootstrap
+btn-active-box-shadow,none,bootstrap
+btn-link-disabled-color,$gray-600,bootstrap
+btn-block-spacing-y,.5rem,bootstrap
+btn-border-radius,$border-radius,bootstrap
+btn-border-radius-lg,$border-radius-lg,bootstrap
+btn-border-radius-sm,$border-radius-sm,bootstrap
+btn-transition,"color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out",bootstrap
+input-padding-y,$input-btn-padding-y,bootstrap
+input-padding-x,$input-btn-padding-x,bootstrap
+input-line-height,$input-btn-line-height,bootstrap
+input-padding-y-sm,$input-btn-padding-y-sm,bootstrap
+input-padding-x-sm,$input-btn-padding-x-sm,bootstrap
+input-line-height-sm,$input-btn-line-height-sm,bootstrap
+input-padding-y-lg,$input-btn-padding-y-lg,bootstrap
+input-padding-x-lg,$input-btn-padding-x-lg,bootstrap
+input-line-height-lg,$input-btn-line-height-lg,bootstrap
+input-bg,$white,bootstrap
+input-disabled-bg,$gray-200,bootstrap
+input-color,$gray-700,bootstrap
+input-border-color,$gray-400,bootstrap
+input-border-width,$input-btn-border-width,bootstrap
+input-box-shadow,"inset 0 0 0 rgba($black, 0)",bootstrap
+input-border-radius,$border-radius,bootstrap
+input-border-radius-lg,$border-radius-lg,bootstrap
+input-border-radius-sm,$border-radius-sm,bootstrap
+input-focus-bg,$input-bg,bootstrap
+input-focus-border-color,"lighten($component-active-bg, 25%)",bootstrap
+input-focus-color,$input-color,bootstrap
+input-focus-width,0,bootstrap
+input-focus-box-shadow,none,bootstrap
+input-placeholder-color,"lighten($gray-600, 15%)",bootstrap
+input-height-border,$input-border-width * 2,bootstrap
+input-height-inner-half,calc(#{$input-line-height * .5em} + #{$input-padding-y}),bootstrap
+input-height-inner-quarter,calc(#{$input-line-height * .25em} + #{$input-padding-y / 2}),bootstrap
+input-height,calc(#{$input-height-inner} + #{$input-height-border}),bootstrap
+input-height-sm,calc(#{$input-height-inner-sm} + #{$input-height-border}),bootstrap
+input-height-lg,calc(#{$input-height-inner-lg} + #{$input-height-border}),bootstrap
+input-transition,"border-color .15s ease-in-out, box-shadow .15s ease-in-out",bootstrap
+form-text-margin-top,.25rem,bootstrap
+form-check-input-gutter,1.25rem,bootstrap
+form-check-input-margin-y,.3rem,bootstrap
+form-check-input-margin-x,.25rem,bootstrap
+form-check-inline-margin-x,.75rem,bootstrap
+form-check-inline-input-margin-x,.3125rem,bootstrap
+form-group-margin-bottom,1rem,bootstrap
+input-group-addon-color,$input-color,bootstrap
+input-group-addon-bg,$gray-200,bootstrap
+input-group-addon-border-color,$input-border-color,bootstrap
+custom-control-gutter,.5rem,bootstrap
+custom-control-spacer-x,1rem,bootstrap
+custom-control-indicator-size,1rem,bootstrap
+custom-control-indicator-bg,$gray-300,bootstrap
+custom-control-indicator-bg-size,50% 50%,bootstrap
+custom-control-indicator-box-shadow,"inset 0 .25rem .25rem rgba($black, .1)",bootstrap
+custom-control-indicator-disabled-bg,$gray-200,bootstrap
+custom-control-label-disabled-color,$gray-600,bootstrap
+custom-control-indicator-checked-color,$component-active-color,bootstrap
+custom-control-indicator-checked-bg,$component-active-bg,bootstrap
+custom-control-indicator-checked-disabled-bg,"rgba(theme-color(""primary""), .5)",bootstrap
+custom-control-indicator-checked-box-shadow,none,bootstrap
+custom-control-indicator-focus-box-shadow,"0 0 0 1px $body-bg, $input-btn-focus-box-shadow",bootstrap
+custom-control-indicator-active-color,$component-active-color,bootstrap
+custom-control-indicator-active-bg,"lighten($component-active-bg, 35%)",bootstrap
+custom-control-indicator-active-box-shadow,none,bootstrap
+custom-checkbox-indicator-border-radius,$border-radius,bootstrap
+custom-checkbox-indicator-icon-checked,"str-replace(url(""data:image/svg+xmlcharset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3E%3Cpath fill='#{$custom-control-indicator-checked-color}' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3E%3C/svg%3E""), ""#"", ""%23"")",bootstrap
+custom-checkbox-indicator-indeterminate-bg,$component-active-bg,bootstrap
+custom-checkbox-indicator-indeterminate-color,$custom-control-indicator-checked-color,bootstrap
+custom-checkbox-indicator-icon-indeterminate,"str-replace(url(""data:image/svg+xmlcharset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 4'%3E%3Cpath stroke='#{$custom-checkbox-indicator-indeterminate-color}' d='M0 2h4'/%3E%3C/svg%3E""), ""#"", ""%23"")",bootstrap
+custom-checkbox-indicator-indeterminate-box-shadow,none,bootstrap
+custom-radio-indicator-border-radius,50%,bootstrap
+custom-radio-indicator-icon-checked,"str-replace(url(""data:image/svg+xmlcharset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3E%3Ccircle r='3' fill='#{$custom-control-indicator-checked-color}'/%3E%3C/svg%3E""), ""#"", ""%23"")",bootstrap
+custom-select-padding-y,.375rem,bootstrap
+custom-select-padding-x,.75rem,bootstrap
+custom-select-height,$input-height,bootstrap
+custom-select-indicator-padding,1rem  // Extra padding to account for the presence of the background-image based indicator,bootstrap
+custom-select-line-height,$input-btn-line-height,bootstrap
+custom-select-color,$input-color,bootstrap
+custom-select-disabled-color,$gray-600,bootstrap
+custom-select-bg,$white,bootstrap
+custom-select-disabled-bg,$gray-200,bootstrap
+custom-select-bg-size,8px 10px  // In pixels because image dimensions,bootstrap
+custom-select-indicator-color,$gray-800,bootstrap
+custom-select-indicator,"str-replace(url(""data:image/svg+xmlcharset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3E%3Cpath fill='#{$custom-select-indicator-color}' d='M2 0L0 2h4zm0 5L0 3h4z'/%3E%3C/svg%3E""), ""#"", ""%23"")",bootstrap
+custom-select-border-width,$input-btn-border-width,bootstrap
+custom-select-border-color,$input-border-color,bootstrap
+custom-select-border-radius,$border-radius,bootstrap
+custom-select-focus-border-color,$input-focus-border-color,bootstrap
+custom-select-focus-box-shadow,none,bootstrap
+custom-select-font-size-sm,75%,bootstrap
+custom-select-height-sm,$input-height-sm,bootstrap
+custom-select-font-size-lg,125%,bootstrap
+custom-select-height-lg,$input-height-lg,bootstrap
+custom-file-height,$input-height,bootstrap
+custom-file-focus-border-color,$input-focus-border-color,bootstrap
+custom-file-focus-box-shadow,$custom-select-focus-box-shadow,bootstrap
+custom-file-padding-y,$input-btn-padding-y,bootstrap
+custom-file-padding-x,$input-btn-padding-x,bootstrap
+custom-file-line-height,$input-btn-line-height,bootstrap
+custom-file-color,$input-color,bootstrap
+custom-file-bg,$input-bg,bootstrap
+custom-file-border-width,$input-btn-border-width,bootstrap
+custom-file-border-color,$input-border-color,bootstrap
+custom-file-border-radius,$input-border-radius,bootstrap
+custom-file-box-shadow,$custom-select-focus-box-shadow,bootstrap
+custom-file-button-color,$custom-file-color,bootstrap
+custom-file-button-bg,$input-group-addon-bg,bootstrap
+custom-range-thumb-focus-box-shadow,"0 0 0 1px $body-bg, $input-btn-focus-box-shadow",bootstrap
+form-feedback-margin-top,$form-text-margin-top,bootstrap
+form-feedback-font-size,$small-font-size,bootstrap
+form-feedback-valid-color,"theme-color(""success"")",bootstrap
+form-feedback-invalid-color,"theme-color(""danger"")",bootstrap
+dropdown-min-width,10rem,bootstrap
+dropdown-padding-y,.5rem,bootstrap
+dropdown-spacer,.125rem,bootstrap
+dropdown-bg,$white,bootstrap
+dropdown-border-color,"rgba($black, .15)",bootstrap
+dropdown-border-radius,$border-radius,bootstrap
+dropdown-border-width,$border-width,bootstrap
+dropdown-divider-bg,$gray-200,bootstrap
+dropdown-box-shadow,"0 .5rem 1rem rgba($black, .175)",bootstrap
+dropdown-link-color,$gray-900,bootstrap
+dropdown-link-hover-color,"darken($gray-900, 5%)",bootstrap
+dropdown-link-hover-bg,$gray-100,bootstrap
+dropdown-link-active-color,$component-active-color,bootstrap
+dropdown-link-active-bg,$component-active-bg,bootstrap
+dropdown-link-disabled-color,$gray-600,bootstrap
+dropdown-item-padding-y,.25rem,bootstrap
+dropdown-item-padding-x,1rem,bootstrap
+dropdown-header-color,$gray-600,bootstrap
+zindex-dropdown,1000,bootstrap
+zindex-sticky,1020,bootstrap
+zindex-fixed,1030,bootstrap
+zindex-modal-backdrop,1040,bootstrap
+zindex-modal,1050,bootstrap
+zindex-popover,1060,bootstrap
+zindex-tooltip,1070,bootstrap
+nav-link-padding-y,.5rem,bootstrap
+nav-link-padding-x,1rem,bootstrap
+nav-link-disabled-color,$gray-600,bootstrap
+nav-tabs-border-color,$gray-300,bootstrap
+nav-tabs-border-width,$border-width,bootstrap
+nav-tabs-border-radius,$border-radius,bootstrap
+nav-tabs-link-hover-border-color,$gray-200 $gray-200 $nav-tabs-border-color,bootstrap
+nav-tabs-link-active-color,$gray-700,bootstrap
+nav-tabs-link-active-bg,$body-bg,bootstrap
+nav-tabs-link-active-border-color,$gray-300 $gray-300 $nav-tabs-link-active-bg,bootstrap
+nav-pills-border-radius,$border-radius,bootstrap
+nav-pills-link-active-color,$component-active-color,bootstrap
+nav-pills-link-active-bg,$component-active-bg,bootstrap
+navbar-nav-link-padding-x,1rem,bootstrap
+navbar-brand-font-size,$font-size-lg,bootstrap
+navbar-brand-height,$navbar-brand-font-size * $line-height-base,bootstrap
+navbar-toggler-padding-y,.25rem,bootstrap
+navbar-toggler-padding-x,.75rem,bootstrap
+navbar-toggler-font-size,$font-size-lg,bootstrap
+navbar-toggler-border-radius,$btn-border-radius,bootstrap
+navbar-dark-color,"rgba($white, .75)",bootstrap
+navbar-dark-hover-color,"rgba($white, 1)",bootstrap
+navbar-dark-active-color,$white,bootstrap
+navbar-dark-disabled-color,"rgba($white, .25)",bootstrap
+navbar-dark-toggler-icon-bg,"str-replace(url(""data:image/svg+xmlcharset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='#{$navbar-dark-color}' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E""), ""#"", ""%23"")",bootstrap
+navbar-dark-toggler-border-color,"rgba($white, .1)",bootstrap
+navbar-light-color,"rgba($black, .5)",bootstrap
+navbar-light-hover-color,"rgba($black, .7)",bootstrap
+navbar-light-active-color,"rgba($black, .9)",bootstrap
+navbar-light-disabled-color,"rgba($black, .3)",bootstrap
+navbar-light-toggler-icon-bg,"str-replace(url(""data:image/svg+xmlcharset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='#{$navbar-light-color}' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E""), ""#"", ""%23"")",bootstrap
+navbar-light-toggler-border-color,"rgba($black, .1)",bootstrap
+pagination-padding-y,.5rem,bootstrap
+pagination-padding-x,.75rem,bootstrap
+pagination-padding-y-sm,.25rem,bootstrap
+pagination-padding-x-sm,.5rem,bootstrap
+pagination-padding-y-lg,.75rem,bootstrap
+pagination-padding-x-lg,1.5rem,bootstrap
+pagination-line-height,1.25,bootstrap
+pagination-color,$link-color,bootstrap
+pagination-bg,$white,bootstrap
+pagination-border-width,$border-width,bootstrap
+pagination-border-color,$gray-300,bootstrap
+pagination-focus-box-shadow,$input-btn-focus-box-shadow,bootstrap
+pagination-hover-color,$link-hover-color,bootstrap
+pagination-hover-bg,$gray-200,bootstrap
+pagination-hover-border-color,$gray-300,bootstrap
+pagination-active-color,$component-active-color,bootstrap
+pagination-active-bg,$component-active-bg,bootstrap
+pagination-active-border-color,$pagination-active-bg,bootstrap
+pagination-disabled-color,$gray-600,bootstrap
+pagination-disabled-bg,$white,bootstrap
+pagination-disabled-border-color,$gray-300,bootstrap
+jumbotron-padding,2rem,bootstrap
+jumbotron-bg,$gray-200,bootstrap
+card-spacer-y,.75rem,bootstrap
+card-spacer-x,1.25rem,bootstrap
+card-border-width,0  //$border-width,bootstrap
+card-border-radius,$border-radius,bootstrap
+card-border-color,"rgba($black, .125)",bootstrap
+card-inner-border-radius,calc(#{$card-border-radius} - #{$card-border-width}),bootstrap
+card-cap-bg,"rgba($black, .03)",bootstrap
+card-bg,$white,bootstrap
+card-img-overlay-padding,1.25rem,bootstrap
+card-deck-margin,$card-group-margin,bootstrap
+card-columns-count,3,bootstrap
+card-columns-gap,1.25rem,bootstrap
+card-columns-margin,$card-spacer-y,bootstrap
+tooltip-font-size,$font-size-sm,bootstrap
+tooltip-max-width,200px,bootstrap
+tooltip-color,$white,bootstrap
+tooltip-bg,$black,bootstrap
+tooltip-border-radius,$border-radius,bootstrap
+tooltip-opacity,.9,bootstrap
+tooltip-padding-y,.25rem,bootstrap
+tooltip-padding-x,.5rem,bootstrap
+tooltip-margin,0,bootstrap
+tooltip-arrow-width,.8rem,bootstrap
+tooltip-arrow-height,.4rem,bootstrap
+tooltip-arrow-color,$tooltip-bg,bootstrap
+form-feedback-tooltip-padding-y,$tooltip-padding-y,bootstrap
+form-feedback-tooltip-padding-x,$tooltip-padding-x,bootstrap
+form-feedback-tooltip-font-size,$tooltip-font-size,bootstrap
+form-feedback-tooltip-line-height,$line-height-base,bootstrap
+form-feedback-tooltip-opacity,$tooltip-opacity,bootstrap
+form-feedback-tooltip-border-radius,$tooltip-border-radius,bootstrap
+popover-font-size,$font-size-sm,bootstrap
+popover-bg,$white,bootstrap
+popover-max-width,276px,bootstrap
+popover-border-width,$border-width,bootstrap
+popover-border-color,"rgba($black, .2)",bootstrap
+popover-border-radius,$border-radius-lg,bootstrap
+popover-box-shadow,"0 .25rem .5rem rgba($black, .2)",bootstrap
+popover-header-bg,"darken($popover-bg, 3%)",bootstrap
+popover-header-color,$headings-color,bootstrap
+popover-header-padding-y,.5rem,bootstrap
+popover-header-padding-x,.75rem,bootstrap
+popover-body-color,$body-color,bootstrap
+popover-body-padding-y,$popover-header-padding-y,bootstrap
+popover-body-padding-x,$popover-header-padding-x,bootstrap
+popover-arrow-width,1rem,bootstrap
+popover-arrow-height,.5rem,bootstrap
+popover-arrow-color,$popover-bg,bootstrap
+popover-arrow-outer-color,"fade-in($popover-border-color, .05)",bootstrap
+badge-font-size,75%,bootstrap
+badge-font-weight,$font-weight-bold,bootstrap
+badge-padding-y,.25em,bootstrap
+badge-padding-x,.4em,bootstrap
+badge-border-radius,$border-radius,bootstrap
+badge-pill-padding-x,.6em,bootstrap
+badge-pill-border-radius,10rem,bootstrap
+modal-inner-padding,1rem,bootstrap
+modal-dialog-margin,.5rem,bootstrap
+modal-dialog-margin-y-sm-up,1.75rem,bootstrap
+modal-title-line-height,$line-height-base,bootstrap
+modal-content-bg,$white,bootstrap
+modal-content-border-color,"rgba($black, .2)",bootstrap
+modal-content-border-width,$border-width,bootstrap
+modal-content-box-shadow-xs,"0 .25rem .5rem rgba($black, .5)",bootstrap
+modal-content-box-shadow-sm-up,"0 .5rem 1rem rgba($black, .5)",bootstrap
+modal-backdrop-bg,$black,bootstrap
+modal-backdrop-opacity,.5,bootstrap
+modal-header-border-color,$gray-200,bootstrap
+modal-footer-border-color,$modal-header-border-color,bootstrap
+modal-header-border-width,$modal-content-border-width,bootstrap
+modal-footer-border-width,$modal-header-border-width,bootstrap
+modal-header-padding,1rem,bootstrap
+modal-lg,800px,bootstrap
+modal-md,500px,bootstrap
+modal-sm,300px,bootstrap
+modal-transition,transform .3s ease-out,bootstrap
+alert-padding-y,.75rem,bootstrap
+alert-padding-x,1.25rem,bootstrap
+alert-margin-bottom,1rem,bootstrap
+alert-border-radius,$border-radius,bootstrap
+alert-link-font-weight,$font-weight-bold,bootstrap
+alert-border-width,$border-width,bootstrap
+alert-bg-level,-10,bootstrap
+alert-border-level,-9,bootstrap
+alert-color-level,6,bootstrap
+progress-height,1rem,bootstrap
+progress-bg,$gray-200,bootstrap
+progress-border-radius,$border-radius,bootstrap
+progress-box-shadow,"inset 0 .1rem .1rem rgba($black, .1)",bootstrap
+progress-bar-color,$white,bootstrap
+progress-bar-bg,"theme-color(""primary"")",bootstrap
+progress-bar-animation-timing,1s linear infinite,bootstrap
+progress-bar-transition,width .6s ease,bootstrap
+list-group-bg,$white,bootstrap
+list-group-border-color,"rgba($black, .125)",bootstrap
+list-group-border-width,$border-width,bootstrap
+list-group-border-radius,$border-radius,bootstrap
+list-group-item-padding-y,.75rem,bootstrap
+list-group-item-padding-x,1.25rem,bootstrap
+list-group-hover-bg,$gray-100,bootstrap
+list-group-active-color,$component-active-color,bootstrap
+list-group-active-bg,$component-active-bg,bootstrap
+list-group-active-border-color,$list-group-active-bg,bootstrap
+list-group-disabled-color,$gray-600,bootstrap
+list-group-disabled-bg,$list-group-bg,bootstrap
+list-group-action-color,$gray-700,bootstrap
+list-group-action-hover-color,$list-group-action-color,bootstrap
+list-group-action-active-color,$body-color,bootstrap
+list-group-action-active-bg,$gray-200,bootstrap
+thumbnail-padding,.25rem,bootstrap
+thumbnail-bg,$body-bg,bootstrap
+thumbnail-border-width,$border-width,bootstrap
+thumbnail-border-color,$gray-300,bootstrap
+thumbnail-border-radius,$border-radius,bootstrap
+thumbnail-box-shadow,"0 1px 2px rgba($black, .075)",bootstrap
+figure-caption-font-size,90%,bootstrap
+figure-caption-color,$gray-600,bootstrap
+breadcrumb-padding-y,.75rem,bootstrap
+breadcrumb-padding-x,1rem,bootstrap
+breadcrumb-item-padding,.5rem,bootstrap
+breadcrumb-margin-bottom,1rem,bootstrap
+breadcrumb-bg,$gray-200,bootstrap
+breadcrumb-divider-color,$gray-600,bootstrap
+breadcrumb-active-color,$gray-600,bootstrap
+breadcrumb-divider,"""/""",bootstrap
+carousel-control-color,$white,bootstrap
+carousel-control-width,15%,bootstrap
+carousel-control-opacity,.5,bootstrap
+carousel-indicator-width,30px,bootstrap
+carousel-indicator-height,3px,bootstrap
+carousel-indicator-spacer,3px,bootstrap
+carousel-indicator-active-bg,$white,bootstrap
+carousel-caption-width,70%,bootstrap
+carousel-caption-color,$white,bootstrap
+carousel-control-icon-width,20px,bootstrap
+carousel-control-prev-icon-bg,"str-replace(url(""data:image/svg+xmlcharset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='#{$carousel-control-color}' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E""), ""#"", ""%23"")",bootstrap
+carousel-control-next-icon-bg,"str-replace(url(""data:image/svg+xmlcharset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='#{$carousel-control-color}' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E""), ""#"", ""%23"")",bootstrap
+carousel-transition,transform .6s ease,bootstrap
+close-font-size,$font-size-base * 1.5,bootstrap
+close-font-weight,$font-weight-bold,bootstrap
+close-color,$black,bootstrap
+close-text-shadow,0 1px 0 $white,bootstrap
+code-font-size,87.5%,bootstrap
+code-color,$pink,bootstrap
+kbd-padding-y,.2rem,bootstrap
+kbd-padding-x,.4rem,bootstrap
+kbd-font-size,$code-font-size,bootstrap
+kbd-color,$white,bootstrap
+kbd-bg,$gray-900,bootstrap
+pre-color,$gray-900,bootstrap
+pre-scrollable-max-height,340px,bootstrap
+print-page-size,a3,bootstrap
+print-body-min-width,"map-get($grid-breakpoints, ""lg"")",bootstrap

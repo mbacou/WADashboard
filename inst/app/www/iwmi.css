@@ -1,0 +1,38 @@
+@font-face {
+  src: url("./font/national-web-regular.woff");
+  font-family: "national-web-regular";
+}
+@font-face {
+  src: url("./font/dm-serif-text.woff2");
+  font-family: "DM Serif Text";
+}
+
+.custom-control {
+  display: none;
+}
+.text-sm .layout-navbar-fixed .wrapper .main-header~.content-wrapper,
+.layout-navbar-fixed .wrapper .main-header.text-sm~.content-wrapper {
+  margin-top: 2.8rem;
+}
+.main-header.text-sm~.control-sidebar {
+  top: 0;
+}
+.content-wrapper>.content {
+  padding: 0 !important;
+}
+label {
+  font-weight: 300;
+}
+label:not(.form-check-label):not(.custom-file-label) {
+  font-weight: 300;
+  margin-bottom: 0;
+}
+.bg-light .nav-link.active {
+  background-color: var(--light) !important;
+}
+.bg-primary .nav-link.active {
+  background-color: var(--primary) !important;
+}
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+  background-color: var(--light);
+}

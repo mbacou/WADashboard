@@ -1,0 +1,46 @@
+Package: WADashboard
+Version: 0.0.1
+Title: IWMI Water Accounting+ Dashboard
+Description: This package includes all dependencies to run WA+ Dashboard 
+  application either locally inside RStudio or containerized.
+Authors@R: c(
+  person("Lisa-Maria", "Rebelo", role="ctb", email="L.REBELO@CGIAR.ORG",
+    comment=c(ORCID="0000-0002-8785-7810")),
+  person("William", "Rex", role="ctb", email="W.Rex@cgiar.org",
+    comment=c(ORCID="0000-0003-4979-5257")),
+	person("Melanie", "Bacou", role=c("aut", "cre"), email="mel@mbacou.com", 
+	  comment=c(ORCID="0000-0003-1810-6818")),
+	person("Naga", "Velpuri", role=c("aut", "cre"), email="N.Velpuri@cgiar.org", 
+	  comment=c(ORCID="0000-0002-6370-1926"))
+	)	
+License: file LICENSE
+LazyData: false
+Depends: R (>= 3.6.3)
+NeedsCompilation: no
+Imports:
+  bslib (>= 0.3.1),
+  data.table,
+  fresh (>= 0.2.0),
+  highcharter (>= 0.8.2),
+  leaflet (>= 2.0.4),
+  leaflet.extras (>= 1.0.0),
+  lubridate,
+  r2d3 (>= 0.2.5),
+  scales,
+  sf (>= 1.0),
+  shiny (>= 1.7.1),
+  shinybusy,
+  shinyBS (>= 0.61),
+  shinyWidgets (>= 0.6.2),
+  stringr,
+  terra (>= 1.4-16)
+Suggests:
+  knitr, usethis
+Encoding: UTF-8
+SystemRequirements: gdal, geos
+URL: https://github.com/mbacou/WADashboard/, https://iwmi.cgiar.org/
+BugReports: https://github.com/mbacou/WADashboard/issues/
+MailingList: mel@mbacou.com
+VignetteBuilder: knitr
+RoxygenNote: 7.1.2
+Roxygen: list(markdown=TRUE)
