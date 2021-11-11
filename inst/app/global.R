@@ -8,7 +8,6 @@
 library(stringr)
 library(scales)
 library(lubridate)
-library(shinybusy)
 library(r2d3)
 library(highcharter)
 library(sf)

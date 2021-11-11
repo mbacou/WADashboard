@@ -5,78 +5,28 @@
 # Author:  BACOU, Melanie <mel@mbacou.comm>
 #####################################################################################
 
-# Navbar ----
-navbar <- dashboardHeader(
-  title = a(class="ml-2 p-1 text-xl text-primary",
-    href="https://wateraccounting.org/",
-    "WATER", strong("Accounting+"),
-    span(class="ml-4 text-warning", "DRAFT")
-  ),
-  skin = "light",
-  status = "light",
-  fixed = TRUE,
-  border = FALSE,
-  compact = TRUE,
-  controlbarIcon = icon("info-circle"),
-
-  rightUi = tags$li(class="dropdown",
-    tags$ul(class="nav sidebar-menu", role="menu",
-      bs4SidebarMenuItem("Overview", tabName="page-1", selected=TRUE),
-      bs4SidebarMenuItem("Scorecard", tabName="page-2"),
-      bs4SidebarMenuItem("My Summary", tabName="page-3")
-    )
-  )
-)
-
 # Footer ----
-footer <- dashboardFooter(
-  fluidRow(class="align-items-end",
-
-    column(9,
-      a(href="https://iwmi.cgiar.org/",
-        img(class="mx-3", height="50px", src="./fig/iwmi_logo_w.svg")),
-      a(href="https://cgiar.org/",
-        img(class="mx-3", height="60px", src="./fig/cgiar_w.png")),
-      a(href="https://fao.org/",
-        img(class="mx-3", height="50px", src="./fig/fao_logo_w.svg")),
-      a(href="https://en.unesco.org/wwap/",
-        img(class="mx-3", height="50px", src="./fig/wwap_w.png"))
+footer <- fluidRow(class="align-items-end",
+  column(9,
+    a(href="https://iwmi.cgiar.org/",
+      img(class="mx-3", height="50px", src="./fig/iwmi_logo_w.svg")),
+    a(href="https://cgiar.org/",
+      img(class="mx-3", height="60px", src="./fig/cgiar_w.png")),
+    a(href="https://fao.org/",
+      img(class="mx-3", height="50px", src="./fig/fao_logo_w.svg")),
+    a(href="https://en.unesco.org/wwap/",
+      img(class="mx-3", height="50px", src="./fig/wwap_w.png"))
+  ),
+  column(3, class="pr-3 text-right",
+    p(a(class="text-white", "Terms of use",
+      href="https://www.iwmi.cgiar.org/about/legal-information/"), br(),
+      HTML("&copy; IWMI"),
+      paste(year(Sys.Date()), "All rights reserved.", sep=". ")
     ),
-
-    column(3, class="pr-3 text-right",
-      p(a(class="text-white", "Terms of use",
-        href="https://www.iwmi.cgiar.org/about/legal-information/"), br(),
-        HTML("&copy; IWMI"),
-        paste(year(Sys.Date()), "All rights reserved.", sep=". ")
-      ),
-      p("Version",
-        as.character(packageVersion("WADashboard")[1]),
-        "(", a(class="text-white",
-          href="https://mbacou.github.io/WADashboard/news", "what's new"), ")"
-      ))
-  )
-)
-
-# Sidebar ----
-sidebar <- dashboardSidebar(
-  disable = TRUE,
-  skin = "dark",
-  status = "primary",
-  elevation = 0,
-  expandOnHover = FALSE
-)
-
-# Controlbar ----
-controlbar = dashboardControlbar(
-  skin = "dark",
-  width = "33%",
-
-  controlbarMenu(type="pills",
-    controlbarItem("About", icon=icon("info-circle"),
-      p("[to be inserted]")
-    ),
-    controlbarItem("Definitions", icon=icon("info-circle"),
-      p("[to be inserted]")
+    p("Version",
+      as.character(packageVersion("WADashboard")[1]),
+      "(", a(class="text-white",
+        href="https://mbacou.github.io/WADashboard/news", "what's new"), ")"
     )
   )
 )
@@ -262,28 +212,29 @@ page_3 <- fluidRow(class="mt-3",
   )
 )
 
-# Main layout ----
-body <- dashboardBody(
-  fresh::use_theme("bs4Dash.css"),
-  tags$head(
-    tags$link(rel="stylesheet", type="text/css", href="iwmi.css"),
-    tags$link(rel="shortcut icon", href="favicon.ico")
-  ),
-  add_busy_bar(color=pal[["yellow"]], height="3px"),
-  setSliderColor(pal[["blue"]], 1:2),
-  div(id="tabs-main",
-    class="sidebarMenuSelectedTabItem shiny-bound-input", `data-value`="page-1"),
-  row_1,
-  tabItems(
-    tabItem("page-1", page_1),
-    tabItem("page-2", page_2),
-    tabItem("page-3", page_3)
-  )
-)
-
 function() {
-  dashboardPage(navbar, sidebar, body, controlbar, footer,
-    title = "IWMI | Water Accounting+",
-    dark = FALSE
+  navbarPage(
+    theme = bslib::bs_theme(version="4"),
+    windowTitle = "IWMI | Water Accounting+",
+    title = a(class="text-primary",
+      href="https://wateraccounting.org/",
+      "WATER", strong("Accounting+"),
+      span(class="ml-4 text-warning", "DRAFT")
+    ),
+    position = "fixed-top",
+    collapsible = TRUE,
+    header = tagList(
+      tags$head(
+        #tags$link(rel="stylesheet", type="text/css", href="iwmi.css"),
+        tags$link(rel="shortcut icon", href="favicon.ico")
+      ),
+      setSliderColor(pal[["blue"]], 1:2),
+      row_1
+    ),
+    footer = footer,
+    selected = "Overview",
+    tabPanel("Overview", page_1),
+    tabPanel("Scorecard", page_2),
+    tabPanel("My Summary", page_3)
   )
 }
