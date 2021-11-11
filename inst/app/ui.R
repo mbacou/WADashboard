@@ -18,9 +18,8 @@ navbar <- dashboardHeader(
   border = FALSE,
   compact = TRUE,
   controlbarIcon = icon("info-circle"),
-
-  rightUi = tags$li(class="dropdown",
-    tags$ul(class="nav sidebar-menu", role="menu",
+  div(class="navbar-collapse collapse",
+    tags$ul(class="nav navbar-nav sidebar-menu",
       bs4SidebarMenuItem("Overview", tabName="page-1", selected=TRUE),
       bs4SidebarMenuItem("Scorecard", tabName="page-2"),
       bs4SidebarMenuItem("My Summary", tabName="page-3")
