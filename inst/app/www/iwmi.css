@@ -47,7 +47,9 @@ label:not(.form-check-label):not(.custom-file-label) {
 .sidebar-menu .nav-link {
   background-color: var(--gray);
   margin: 0 0.25rem;
+  text-align: center;
   text-transform: uppercase;
+  width: 7rem;
 }
 .sidebar-menu .nav-link .active {
   background-color: var(--white);

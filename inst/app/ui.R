@@ -18,7 +18,7 @@ navbar <- dashboardHeader(
   border = FALSE,
   compact = TRUE,
   controlbarIcon = icon("info-circle"),
-  div(class="navbar-collapse collapse",
+  rightUi = tags$li(class="navbar-collapse collapse dropdown",
     tags$ul(class="nav navbar-nav sidebar-menu",
       bs4SidebarMenuItem("Overview", tabName="page-1", selected=TRUE),
       bs4SidebarMenuItem("Scorecard", tabName="page-2"),
@@ -268,7 +268,6 @@ body <- dashboardBody(
     tags$link(rel="stylesheet", type="text/css", href="iwmi.css"),
     tags$link(rel="shortcut icon", href="favicon.ico")
   ),
-  add_busy_bar(color=pal[["yellow"]], height="3px"),
   setSliderColor(pal[["blue"]], 1:2),
   div(id="tabs-main",
     class="sidebarMenuSelectedTabItem shiny-bound-input", `data-value`="page-1"),
