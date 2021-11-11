@@ -7,17 +7,20 @@
 
 function(input, output, session) {
 
+  session$allowReconnect(TRUE)
+
   s = reactiveValues(
     iso3 = init$iso3,
     date = init$date,
     year = year(init$date),
-    var = list()
+    var = list(var="var_incremental_etnat", color="green")
   )
 
   dt = reactive(
     data[iso3==s$iso3]
   )
 
+  # Map
   output$map = renderLeaflet(lmap_init(init$iso3))
 
   # Sheet 1
@@ -58,24 +61,28 @@ function(input, output, session) {
     ) %>% tagList()
   })
 
-  observeEvent(input$bar_clicked, {
-    e = input$bar_clicked
-    updateTextAreaInput(inputId="objSelected",
-      value=paste(s$year, e$var, ": ", comma(as.numeric(e$value), accuracy=0.01)))
-    s$var = e
+  observeEvent(input$txtISO3, {
+    s$iso3 = tolower(input$txtISO3)
+  })
+
+  observeEvent(input$numYear, {
+    s$year = year(input$numYear)
   })
 
   observeEvent(s$iso3, {
     leafletProxy("map") %>% lmap_update(s$iso3)
   })
 
-  observeEvent(input$numYear,
-    s$year <- year(input$numYear)
-  )
-
   output$plot_ts = renderHighchart({
-    req(s$var)
+    req(s$var$var)
     plot_ts(dt()[id==s$var$var], s$var$color)
+  })
+
+  observeEvent(input$bar_clicked, {
+    e = input$bar_clicked
+    updateTextAreaInput(inputId="objSelected",
+      value=paste(s$year, e$var, ": ", comma(as.numeric(e$value), accuracy=0.01)))
+    s$var = e
   })
 
 }

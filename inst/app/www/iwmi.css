@@ -22,17 +22,40 @@
 }
 label {
   font-weight: 300;
+  margin-bottom: .25rem;
 }
 label:not(.form-check-label):not(.custom-file-label) {
   font-weight: 300;
-  margin-bottom: 0;
+}
+.shiny-input-checkboxgroup label~.shiny-options-group,
+.shiny-input-radiogroup label~.shiny-options-group {
+  margin-top: unset;
 }
 .bg-light .nav-link.active {
   background-color: var(--light) !important;
 }
 .bg-primary .nav-link.active {
+  color: var(--white) !important;
   background-color: var(--primary) !important;
+}
+.bg-white .nav-link.active {
+  background-color: var(--white) !important;
 }
 .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
   background-color: var(--light);
+}
+.sidebar-menu .nav-link {
+  background-color: var(--gray);
+  margin: 0 0.25rem;
+  text-transform: uppercase;
+}
+.sidebar-menu .nav-link .active {
+  background-color: var(--white);
+}
+#shiny-tab-page-1 {
+  padding: 0;
+}
+#boxOverview_box {
+  min-height: 29rem;
+  margin: 0;
 }

@@ -15,7 +15,7 @@ iwmi_theme <- create_theme(
 
   bs4dash_status(
     primary = pal[["navy"]],
-    secondary = pal[["light-blue"]],
+    secondary = pal[["light"]],
     success = pal[["green"]],
     info = pal[["blue"]],
     warning = pal[["orange"]],
@@ -62,6 +62,8 @@ iwmi_theme <- create_theme(
   ),
 
   bs4dash_vars(
+    `gray-dark` = "lighten($dark, 40%)", # status color
+    `gray` = "$main_bg", # main_bg status color
     `gray-100` = "lighten($dark, 64%)",
     `gray-200` = "lighten($dark, 56%)",
     `gray-300` = "lighten($dark, 48%)",
@@ -76,13 +78,16 @@ iwmi_theme <- create_theme(
     `h5-font-size` = "1rem",
     `h6-font-size` = ".9rem",
     `headings-font-weight` = 300,
-    `small-font-size` = "90%",
+    `text-muted` = "darken($light, 50%)",
+    `small-font-size` = "100%",
     `line-height-base` = 1.3,
     `line-height-lg` = 1.3,
     `line-height-sm` = 1.3,
 
     `enable-gradients` = TRUE,
     `border-radius` = 0,
+    `border-radius-sm` = 0,
+    `border-radius-lg` = 0,
     `input-color` = "$gray-800",
     `input-bg` = "$white",
     `input-disabled-bg` = "lighten($light, 4%)", # main_bg
@@ -94,6 +99,7 @@ iwmi_theme <- create_theme(
     `button-default-color` = "$gray-700",
     `button-default-border-color` = "$input-border-color",
     `button-default-background-color` = "$light",
+    `button-border-radius-xs` = 0,
 
     `custom-select-bg` = "$input-bg",
     `custom-control-gutter` = 0,

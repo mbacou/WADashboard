@@ -22,10 +22,10 @@ lmap_init <- function(iso3=names(ISO3)) {
 
   bbox = st_bbox(ZOI[[1]]$admin)
 
-  # Performance
-  opts = leafletOptions(preferCanvas=TRUE)
-
-  m = leaflet(options=opts) %>%
+  m = leaflet(options=leafletOptions(zoomControl=FALSE)) %>%
+    htmlwidgets::onRender("function(el, x) {
+        L.control.zoom({ position: 'bottomright' }).addTo(this)
+    }") %>%
 
     # Default config
     addGraticule(1, group="Graticule",
@@ -52,14 +52,16 @@ lmap_init <- function(iso3=names(ISO3)) {
       attribution = fao_data$attr,
       group = names(fao_data$layers)[i],
       options = WMSTileOptions(
-        version="1.1.1", format="image/png", transparent=TRUE)
+        version="1.1.1", format="image/png", transparent=TRUE,
+        time=as.POSIXct(Sys.Date())-days(5)
+      )
     )
 
   m %>%
     addLayersControl(
       baseGroups=c("Default", names(fao_bmap$layers)),
       overlayGroups=c("Graticule", "Boundaries", "River Basin", names(fao_data$layers)),
-      position="bottomright"
+      position="bottomleft"
     ) %>%
 
     hideGroup(c("Graticule", names(fao_data$layers))) %>%
@@ -84,7 +86,7 @@ lmap_update <- function(m, iso3=names(ISO3)) {
 
   iso3 = match.arg(tolower(iso3), names(ISO3))
   zoi = ZOI[[iso3]]
-  bbox = st_bbox(zoi[["admin"]]) + c(1,1,-1,-1)
+  bbox = st_bbox(zoi[["admin"]])
 
   m %>%
     fitBounds(bbox[[1]], bbox[[2]], bbox[[3]], bbox[[4]]) %>%
@@ -93,8 +95,8 @@ lmap_update <- function(m, iso3=names(ISO3)) {
     addPolygons(data=zoi[["admin"]], group="Boundaries",
       color=pal[["green"]], opacity=.9, weight=1,
       fill=~colorNumeric(unname(pal[1:3]), range(ADM2_CODE))(ADM2_CODE),
-      fillOpacity=.4,
-      label=~paste(ADM1_NAME, ADM2_NAME, sep="<br/>")
+      fillOpacity=.4, highlightOptions=highlightOptions(fillOpacity=.8),
+      label=~paste(ADM1_NAME, ADM2_NAME, sep=("\n"))
     ) %>%
 
     # Water streams

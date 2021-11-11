@@ -58,8 +58,8 @@ SOURCES <- list(
 # Basin boundaries (clipped) ----
 ZOI <- list(
   ken = list(
-    admin = st_read("./data-raw/json/mli_basin.geojson"),
-    water = st_read("./data-raw/json/mli_gloric.geojson")
+    admin = st_read("./data-raw/json/ken_basin.geojson"),
+    water = st_read("./data-raw/json/ken_gloric.geojson")
   ),
   mli = list(
     admin = st_read("./data-raw/json/mli_basin.geojson"),
