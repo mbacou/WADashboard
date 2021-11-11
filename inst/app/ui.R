@@ -214,7 +214,7 @@ page_3 <- fluidRow(class="mt-3",
 
 function() {
   navbarPage(
-    theme = bslib::bs_theme(version="4"),
+    theme = "bs4Dash.css",
     windowTitle = "IWMI | Water Accounting+",
     title = a(class="text-primary",
       href="https://wateraccounting.org/",
@@ -225,6 +225,9 @@ function() {
     collapsible = TRUE,
     header = tagList(
       tags$head(
+        #tags$link(rel="stylesheet", type="text/css", href="adminlte.min.css"),
+        #tags$script(type="text/javascript", language="javascript", src="adminlte.min.js"),
+        tags$script(type="text/javascript", language="javascript", src="bs4Dash.min.js"),
         #tags$link(rel="stylesheet", type="text/css", href="iwmi.css"),
         tags$link(rel="shortcut icon", href="favicon.ico")
       ),
@@ -238,3 +241,4 @@ function() {
     tabPanel("My Summary", page_3)
   )
 }
+
