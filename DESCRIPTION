@@ -1,5 +1,5 @@
 Package: WADashboard
-Version: 0.0.1
+Version: 0.0.2
 Title: IWMI Water Accounting+ Dashboard
 Description: This package includes all dependencies to run WA+ Dashboard 
   application either locally inside RStudio or containerized.

@@ -6,24 +6,24 @@
 #####################################################################################
 
 # Footer ----
-footer <- fluidRow(class="align-items-end",
-  column(9,
+footer <- fluidRow(
+  class="bg-dark align-items-center",
+  column(8,
     a(href="https://iwmi.cgiar.org/",
-      img(class="mx-3", height="50px", src="./fig/iwmi_logo_w.svg")),
+      img(class="m-3", height="50px", src="./fig/iwmi_logo_w.svg")),
     a(href="https://cgiar.org/",
-      img(class="mx-3", height="60px", src="./fig/cgiar_w.png")),
+      img(class="m-3", height="60px", src="./fig/cgiar_w.png")),
     a(href="https://fao.org/",
-      img(class="mx-3", height="50px", src="./fig/fao_logo_w.svg")),
+      img(class="m-3", height="50px", src="./fig/fao_logo_w.svg")),
     a(href="https://en.unesco.org/wwap/",
-      img(class="mx-3", height="50px", src="./fig/wwap_w.png"))
+      img(class="m-3", height="50px", src="./fig/wwap_w.png"))
   ),
-  column(3, class="pr-3 text-right",
+  column(4, class="p-3 text-right",
     p(a(class="text-white", "Terms of use",
       href="https://www.iwmi.cgiar.org/about/legal-information/"), br(),
       HTML("&copy; IWMI"),
-      paste(year(Sys.Date()), "All rights reserved.", sep=". ")
-    ),
-    p("Version",
+      paste(year(Sys.Date()), "All rights reserved.", sep=". "),
+      br(), "Version",
       as.character(packageVersion("WADashboard")[1]),
       "(", a(class="text-white",
         href="https://mbacou.github.io/WADashboard/news", "what's new"), ")"
@@ -32,126 +32,116 @@ footer <- fluidRow(class="align-items-end",
 )
 
 # Scorecards ----
-tab_11 <- tabPanel(span("Water", br(), "Productivity"), class="p-0",
+tab_11 <- nav(
+  span("Water", br(), "Productivity"),
   p("[placeholder]", br(), "
         Which scoring dimensions and key indicators / measures to highlight in this section?
         "),
   fluidRow(
-    valueBox(
-      span(class="text-gray", "Score 1"), "Good",
-      icon=icon("tint"), width=6),
-    valueBox(
-      span(class="text-gray", "Score 2"), "Poor",
-      icon=icon("check-double"), width=6)
+    scoreBox("Score 1", "Good",
+      icon=icon("faucet"), footer="Indicator 1", width=6, color="success"),
+    scoreBox("Score 2", "Poor",
+      icon=icon("check-double"), footer="Indicator 2", width=6, color="warning")
   ),
-  uiOutput("ui_Overview", inline=F),
-  div(class="text-right",
-    actionButton("btnScore1", "Details", width="6rem", status="secondary")
-  )
+  p(),
+  uiOutput("ui_score_prod", inline=F)
 )
 
-tab_12 <- tabPanel(span("Sustainability", br(), "Score"), class="p-0",
+tab_12 <- nav(
+  span("Sustainability", br(), "Score"),
   p("[placeholder]", br(), "
         Which scoring dimensions and key indicators / measures to highlight in this section?
         "),
   fluidRow(
-    valueBox(
-      span(class="text-gray", "Score 1"), "Good",
-      icon=icon("leaf"), width=6),
-    valueBox(
-      span(class="text-gray", "Score 2"), "Poor",
-      icon=icon("check-double"), width=6)
+    scoreBox("Score 1", "Good",
+      icon=icon("tint"), footer="Indicator 1", width=6, color="success"),
+    scoreBox("Score 2", "Poor",
+      icon=icon("check-double"), footer="Indicator 2", width=6, color="danger")
   ),
-  #uiOutput("ui_Overview", inline=F),
-  div(class="text-right",
-    actionButton("btnScore2", "Details", width="6rem", status="secondary")
-  )
+  p(),
+  uiOutput("ui_score_sust", inline=F)
 )
 
 
 # Profile ----
-tab_13 <- tabPanel(span("Basin", br(), "Profile"), icon=icon("table"),
+tab_13 <- nav(
+  span("Basin", br(), "Profile"), icon=icon("table"),
   div(class="table-responsive",
     p("[placeholder]", br(), "
         Which key basin features / characteristics to highlight in this section?
         "),
-    tableOutput("tb_basin"),
-    div(class="text-right",
-      actionButton("btnProfile", "Details", width="6rem", status="secondary")
-    )
+    tableOutput("tb_basin")
   )
 )
 
 # Filters ----
-row_1 <- fluidRow(class="bg-gradient-light no-gutters align-items-end",
-
-  # Map ----
-  column(7,
-    fluidRow(class="mx-2 align-items-end",
-      column(12,
-        p(class="my-4 mr-2 text-muted font-italic",
-          "This dashboard compiles results of a new",
-          a(class="text-gray-dark", href="https://wateraccounting.org/",
-            "Water Accounting"),
-          " methodology (WA+) based on global-scale public-domain datasets. Its
+intro <- fluidRow(class="pt-5 bg-light align-items-start",
+  column(8,
+    p(class="text-muted",
+      "This dashboard compiles results of a new",
+      a(class="text-gray-dark", href="https://wateraccounting.org/",
+        "Water Accounting"),
+      " methodology (WA+) based on global-scale public-domain datasets. Its
           objective is to achieve equitable and transparent water governance for
           all water consumers and ensure a sustainable water balance.")
-      ),
-      column(10,
-        pickerInput("txtISO3",
-          span(class="text-info h4", "Choose a river basin"),
-          choices=names(ISO3), selected=init$iso3,
-          options=pickerOptions(style="btn-white"),
-          choicesOpt=list(content=l_iso3))
-      ),
-      column(2, class="text-right",
-        pickerInput("txtUnit", span(class="text-info", "Units"),
-          c("km³", "ft³", "MCM"),
-          options=pickerOptions(style="btn-white"))
-      )
-    ),
-    leafletOutput("map", width="100%", height="22rem")
   ),
+  column(3, offset=1, class="text-right pb-3",
+    actionButton("btnRefresh",
+      span("Last model run", strong(format(init$date, "%Y %b"))),
+      icon=icon("sync"), class="btn-outline-info btn-sm", width="12rem")
+  )
+)
 
-  # Overview ----
-  column(5,
-    fluidRow(class="no-gutters mt-4 align-items-end",
-      column(7, class="pl-2",
-        h3(class="text-lightblue", "Basin Situation")),
-      column(5, class="p-2",
-        actionButton("btnRefresh",
-          span("Last model run", strong(format(init$date, "%Y %b"))),
-          icon=icon("sync"), status="info", width="100%", outline=T, size="sm")
-      ),
-      tabBox(id="boxOverview", width=12, type="pills",
-        collapsible=F, elevation=0, side="right",
-        background="white", status="info", solidHeader=T,
-        tab_11, tab_12, tab_13
-      )
+filters <- fluidRow(class="bg-light align-items-end",
+  column(8,
+    pickerInput("txtISO3",
+      span(class="h4 text-info", "Choose a river basin"),
+      choices=names(ISO3), selected=init$iso3, width="18rem",
+      options=pickerOptions(style="btn-white"),
+      choicesOpt=list(content=l_iso3))
+  ),
+  column(4,
+    div(class="float-right text-right",
+      pickerInput("txtUnit", span(class="text-info", "Units"), width="6rem",
+        c("km³", "ft³", "MCM"),
+        options=pickerOptions(style="btn-white btn-sm"))
     )
   )
 )
 
-# Timeline ----
-tab_21 <- tabPanel("Recharge and Abstraction", icon=icon("tint"),
-  fluidRow(class="m-2",
-    column(8,
-      highchartOutput("hcTimeline")
-    ),
-    column(4, p("more"))
+# Map ----
+map <- leafletOutput("map", width="100%", height="24rem")
+
+# Overview ----
+overview <- fluidRow(
+  column(4,
+    h3(class="text-info", "Basin Profile"),
+    tab_13),
+  column(4,
+    h3(class="text-info", "Water Productivity"),
+    tab_11),
+  column(4,
+    h3(class="text-info", "Sustainability Score"),
+    tab_12),
+  column(12, class="text-right",
+    actionButton("btnScores", "Details", width="6rem", class="my-3")
   )
 )
 
+# Timeline ----
+timeline <- fluidRow(class="bg-white",
+  column(8,
+    h4(class="text-info", icon=icon("tint"), "Recharge and Abstraction"),
+    highchartOutput("hcTimeline")
+  ),
+  column(4, p("more"))
+)
+
 # Sheet 1 ----
-tab_22 <- tabPanel("Resource Base", icon=icon("th"),
-  fluidRow(class="m-2",
+sheet_1 <- nav("Resource Base", icon=icon("th"),
+  fluidRow(class="bg-white",
     column(8,
-      sliderInput("numYear", "Year",
-        min=data[, min(year)], max=data[, max(year)],
-        value=data[, max(year)], timeFormat="%Y"),
-      d3Output("d3", width="100%"),
-      p(), p(),
-      textAreaInput("objSelected", "Click a cell to get its value", "none")
+      d3Output("d3_sheet1", width="100%")
     ),
     column(4,
       highchartOutput("plot_ts", height="200px")
@@ -160,85 +150,116 @@ tab_22 <- tabPanel("Resource Base", icon=icon("th"),
 )
 
 # Sheet 2 ----
-tab_23 <- tabPanel("Evapotranspiration", icon=icon("envira"),
-  fluidRow(class="m-2",
-    column(3,
-      textAreaInput("objSelected", "Click a cell to get its value", "none")
+sheet_2 <- nav("Evapotranspiration", icon=icon("envira"),
+  fluidRow(
+    column(8,
+      d3Output("d3_sheet2", width="100%")
     ),
-    column(9
+    column(4
+    )
+  )
+)
+
+# Sheet 3 ----
+sheet_3 <- nav("Agricultural Services", icon=icon("faucet"),
+  fluidRow(
+    column(8,
+      d3Output("d3_sheet3", width="100%")
+    ),
+    column(4
     )
   )
 )
 
 
 # Page 1 ----
-page_1 <- fluidRow(class="no-gutters",
-  tabBox(width=12, type="pills", collapsible=F, side="right",
-    background="white", status="gray-dark", solidHeader=T,
-    tab_21, tab_22, tab_23)
+page_1 <- fluidRow(style="display:block",
+  column(12, overview, timeline)
 )
 
 # Page 2 ----
-page_2 <- fluidRow(
+page_2 <- fluidRow(style="min-height:20rem;",
   column(12,
-    p("[placeholder content for detailed scorecard and basin profile.]")
+    h4(class="text-info", "Scorecards"),
+    p("[placeholder content for detailed scorecard and basin profile]")
   )
 )
 
 # Page 3 ----
-page_3 <- fluidRow(class="mt-3",
+page_3 <- fluidRow(style="display:block;",
+  navs_bar(
+    title="Water Accounts", bg=pal[["black"]],
+    header=column(12,
+      sliderTextInput("numYear", NULL,
+        data[, year(seq(min(year), max(year), by="year"))],
+        selected=data[, year(max(year))], width="100%", grid=TRUE)
+    ),
+    footer=column(12,
+      textAreaInput("objSelected", "Click a cell to get its value", "none")
+    ),
+    nav_spacer(), sheet_1, sheet_2, sheet_3)
+)
+
+# Page 4 ----
+page_4 <- fluidRow(
   column(6,
-    box(title="My Summary", width=12, icon=icon("draw-polygon"),
-      elevation=0, collapsible=F, background="white", status="gray-dark", solidHeader=T,
-      p("[placeholder]", br(), "
+    h4(class="text-info", "My Area"),
+    p("[placeholder]", br(), "
         Allow users to provide a custom area to summarize over and to select a list of
         indicators to include in a custom report.
         "),
-      pickerInput("txtAdmin",
-        span(class="text-info mb-2", "Choose a subdivision..."),
-        l_admin(init$iso3), width="240px"),
-      fileInput("fileGeo",
-        span(class="text-info", "... or upload a zone of interest"),
-        placeholder="zoi.geojson", accept=c(".csv", ".geojson", ".kml", ".shp"),
-        width="240px"),
-      checkboxGroupInput("txtReport",
-        span(class="text-info mb-2", "Water variables to include:"),
-        names(SOURCES[["FAO-DATA"]]$layers)[-c(1:2)]),
-      actionButton("btnUpload", "Upload")
-    )
+    checkboxGroupInput("txtReport",
+      span(class="text-info mb-2", "Water variables to include:"),
+      names(SOURCES[["FAO-DATA"]]$layers)[-c(1:2)]),
+    pickerInput("txtAdmin",
+      span(class="text-info mb-2", "Choose a subdivision..."),
+      l_admin(init$iso3), width="240px"),
+    fileInput("fileGeo",
+      span(class="text-info", "... or upload a zone of interest"),
+      placeholder="zoi.geojson", accept=c(".csv", ".geojson", ".kml", ".shp"),
+      width="240px"),
+    actionButton("btnUpload", "Upload"),
+    p()
   ),
   column(6,
     p("[preview]")
   )
 )
 
+# Page 5 ----
+page_5 <- fluidRow(style="min-height:20rem",
+  column(12,
+    h4(class="text-info", "About WA+"),
+    p("[About]")
+  )
+)
+
 function() {
-  navbarPage(
-    theme = "bs4Dash.css",
-    windowTitle = "IWMI | Water Accounting+",
-    title = a(class="text-primary",
-      href="https://wateraccounting.org/",
+  page_navbar(
+    theme = bs_themed(),
+    window_title = "IWMI | Water Accounting+",
+    title = span(class="h4 text-primary",
       "WATER", strong("Accounting+"),
-      span(class="ml-4 text-warning", "DRAFT")
+      span(class="mx-4 text-warning", "DRAFT")
     ),
+    bg = pal[["light"]],
     position = "fixed-top",
-    collapsible = TRUE,
     header = tagList(
       tags$head(
-        #tags$link(rel="stylesheet", type="text/css", href="adminlte.min.css"),
-        #tags$script(type="text/javascript", language="javascript", src="adminlte.min.js"),
-        tags$script(type="text/javascript", language="javascript", src="bs4Dash.min.js"),
-        #tags$link(rel="stylesheet", type="text/css", href="iwmi.css"),
+        tags$link(rel="stylesheet", type="text/css", href="iwmi.css"),
         tags$link(rel="shortcut icon", href="favicon.ico")
       ),
       setSliderColor(pal[["blue"]], 1:2),
-      row_1
+      column(12, intro, filters), map
     ),
-    footer = footer,
+    footer = column(12, footer),
     selected = "Overview",
-    tabPanel("Overview", page_1),
-    tabPanel("Scorecard", page_2),
-    tabPanel("My Summary", page_3)
+    nav_spacer(),
+    nav("Overview", page_1),
+    nav("Scorecards", page_2),
+    nav("Water Accounts", page_3),
+    nav("My Area", page_4),
+    nav("About", page_5)
   )
 }
 

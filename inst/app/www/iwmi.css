@@ -6,56 +6,48 @@
   src: url("./font/dm-serif-text.woff2");
   font-family: "DM Serif Text";
 }
+ul.nav.navbar-nav>li>a.active, ul.nav.navbar-nav>li>a:hover {
+  background-color: rgba(255, 255, 255, .3);
+}
+.navbar-nav .nav-link, .navbar-nav .nav-tabs>li>a,
+.navbar-nav .nav-pills>li>a, ul.nav.navbar-nav>li>a {
+  padding-left: 1rem;
+}
 
-.custom-control {
-  display: none;
+.small-box {
+  border-radius: 0;
+  display: block;
+  margin-bottom: 20px;
+  position: relative;
 }
-.text-sm .layout-navbar-fixed .wrapper .main-header~.content-wrapper,
-.layout-navbar-fixed .wrapper .main-header.text-sm~.content-wrapper {
-  margin-top: 2.8rem;
+.small-box>.inner {
+  padding: 10px;
 }
-.main-header.text-sm~.control-sidebar {
-  top: 0;
+.small-box .icon {
+  color: rgba(17,17,17,0.15);
+  z-index: 0;
 }
-.content-wrapper>.content {
-  padding: 0 !important;
+.small-box>.small-box-footer {
+  background-color: rgba(17,17,17,0.1);
+  color: rgba(255,255,255,0.8);
+  display: block;
+  padding: 3px 0;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  z-index: 10;
 }
-label {
-  font-weight: 300;
-  margin-bottom: .25rem;
+.small-box .icon>i {
+  font-size: 90px;
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  transition: transform .3s linear;
 }
-label:not(.form-check-label):not(.custom-file-label) {
-  font-weight: 300;
+.small-box .icon>i.fa, .small-box .icon>i.fas, .small-box .icon>i.far,
+.small-box .icon>i.fab, .small-box .icon>i.fal, .small-box .icon>i.fad,
+.small-box .icon>i.ion {
+  font-size: 70px;
+  top: 20px;
 }
-.shiny-input-checkboxgroup label~.shiny-options-group,
-.shiny-input-radiogroup label~.shiny-options-group {
-  margin-top: unset;
-}
-.bg-light .nav-link.active {
-  background-color: var(--light) !important;
-}
-.bg-primary .nav-link.active {
-  color: var(--white) !important;
-  background-color: var(--primary) !important;
-}
-.bg-white .nav-link.active {
-  background-color: var(--white) !important;
-}
-.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
-  background-color: var(--light);
-}
-.sidebar-menu .nav-link {
-  background-color: var(--gray);
-  margin: 0 0.25rem;
-  text-transform: uppercase;
-}
-.sidebar-menu .nav-link .active {
-  background-color: var(--white);
-}
-#shiny-tab-page-1 {
-  padding: 0;
-}
-#boxOverview_box {
-  min-height: 29rem;
-  margin: 0;
-}
+

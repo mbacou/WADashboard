@@ -50,9 +50,9 @@ iwmi_theme <- create_theme(
   ),
 
   bs4dash_layout(
-    main_bg = "lighten($light, 4%)",
-    content_padding_x = 0,
-    content_padding_y = 0
+    main_bg = "lighten($light, 4%)"
+    #content_padding_x = 0,
+    #content_padding_y = 0
   ),
 
   bs4dash_sidebar_light(

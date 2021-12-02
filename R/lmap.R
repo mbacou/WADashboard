@@ -24,7 +24,7 @@ lmap_init <- function(iso3=names(ISO3)) {
 
   m = leaflet(options=leafletOptions(zoomControl=FALSE)) %>%
     htmlwidgets::onRender("function(el, x) {
-        L.control.zoom({ position: 'bottomright' }).addTo(this)
+        L.control.zoom({ position: 'bottomleft' }).addTo(this)
     }") %>%
 
     # Default config
@@ -61,7 +61,8 @@ lmap_init <- function(iso3=names(ISO3)) {
     addLayersControl(
       baseGroups=c("Default", names(fao_bmap$layers)),
       overlayGroups=c("Graticule", "Boundaries", "River Basin", names(fao_data$layers)),
-      position="bottomleft"
+      #options=layersControlOptions(collapsed=FALSE),
+      position="bottomright"
     ) %>%
 
     hideGroup(c("Graticule", names(fao_data$layers))) %>%
