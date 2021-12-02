@@ -75,17 +75,17 @@ tab_13 <- nav(
 )
 
 # Filters ----
-intro <- fluidRow(class="pt-5 bg-light align-items-start",
+intro <- fluidRow(class="pt-5 pb-3 bg-light align-items-start",
   column(8,
     p(class="text-muted",
-      "This dashboard compiles results of a new",
+      "This dashboard compiles results from the",
       a(class="text-gray-dark", href="https://wateraccounting.org/",
-        "Water Accounting"),
-      " methodology (WA+) based on global-scale public-domain datasets. Its
-          objective is to achieve equitable and transparent water governance for
-          all water consumers and ensure a sustainable water balance.")
+        "Water Accounting+"),
+      "method based on global-scale public-domain datasets. Its
+      objective is to achieve equitable and transparent water governance for
+      all water consumers and to ensure a sustainable water balance.")
   ),
-  column(3, offset=1, class="text-right pb-3",
+  column(3, offset=1, class="text-right",
     actionButton("btnRefresh",
       span("Last model run", strong(format(init$date, "%Y %b"))),
       icon=icon("sync"), class="btn-outline-info btn-sm", width="12rem")
@@ -110,7 +110,7 @@ filters <- fluidRow(class="bg-light align-items-end",
 )
 
 # Map ----
-map <- leafletOutput("map", width="100%", height="24rem")
+map <- leafletOutput("map", width="100%", height="20rem")
 
 # Overview ----
 overview <- fluidRow(
@@ -124,7 +124,7 @@ overview <- fluidRow(
     h3(class="text-info", "Sustainability Score"),
     tab_12),
   column(12, class="text-right",
-    actionButton("btnScores", "Details", width="6rem", class="my-3")
+    actionButton("btnScore", "Learn More", width="6rem", class="my-3")
   )
 )
 
@@ -140,10 +140,22 @@ timeline <- fluidRow(class="bg-white",
 # Sheet 1 ----
 sheet_1 <- nav("Resource Base", icon=icon("th"),
   fluidRow(class="bg-white",
-    column(8,
-      d3Output("d3_sheet1", width="100%")
-    ),
     column(4,
+      p(),
+      markdown("
+      The **Resource Base** sheet provides an overview on over‑exploitation,
+      unmanageable, manageable, exploitable, reserved, utilized and utilizable
+      flows at river basin scale. It is used to:
+
+      - Discern between landscape ET (from rainfall) and incremental ET (from natural
+      and manmade withdrawals)
+      - Assess commitments to environment and legal agreements
+      - Quantify atmospheric water recycling
+      - Understand water scarcity during dry years.
+        ")
+    ),
+    column(8,
+      d3Output("d3_sheet1", width="100%"),
       highchartOutput("plot_ts", height="200px")
     )
   )
@@ -151,22 +163,44 @@ sheet_1 <- nav("Resource Base", icon=icon("th"),
 
 # Sheet 2 ----
 sheet_2 <- nav("Evapotranspiration", icon=icon("envira"),
-  fluidRow(
+  fluidRow(class="bg-white",
+    column(4,
+      p(),
+      markdown("
+      The purpose of the **Evapotranspiration** is to:
+
+      - Quantify water consumption for all land use classes throughout the entire
+      water basin
+      - Describe the anthropogenic impact on ET and concepts of ET management to
+      reduce total water consumption from withdrawals and inundations
+      - Understand the impact of land use planning on consumptive use
+      - Relate water consumption to intended processes (beneficial vs.
+        non-beneficial ET).
+        ")
+    ),
     column(8,
       d3Output("d3_sheet2", width="100%")
-    ),
-    column(4
     )
   )
 )
 
 # Sheet 3 ----
 sheet_3 <- nav("Agricultural Services", icon=icon("faucet"),
-  fluidRow(
+  fluidRow(class="bg-white",
+    column(4,
+      p(),
+      markdown("
+      The purpose of the **Agricultural Services** is to:
+
+      - Assess agricultural yields for food, feed, timber and fish products
+      - Compute the related water productivity (kg/m³) and the gap to demonstrate
+      loss of returns in volume or value terms
+      - Decide on future rainfed and irrigated cropping systems
+      - Identify opportunities for saving water in agriculture.
+        ")
+    ),
     column(8,
       d3Output("d3_sheet3", width="100%")
-    ),
-    column(4
     )
   )
 )
@@ -188,7 +222,7 @@ page_2 <- fluidRow(style="min-height:20rem;",
 # Page 3 ----
 page_3 <- fluidRow(style="display:block;",
   navs_bar(
-    title="Water Accounts", bg=pal[["black"]],
+    title="Accounting Sheets", bg=pal[["black"]],
     header=column(12,
       sliderTextInput("numYear", NULL,
         data[, year(seq(min(year), max(year), by="year"))],
@@ -236,13 +270,14 @@ page_5 <- fluidRow(style="min-height:20rem",
 
 function() {
   page_navbar(
+    id = "navPage",
     theme = bs_themed(),
     window_title = "IWMI | Water Accounting+",
-    title = span(class="h4 text-primary",
-      "WATER", strong("Accounting+"),
+    title = tagList(
+      span(class="h4 text-primary", "WATER", strong("Accounting+")),
       span(class="mx-4 text-warning", "DRAFT")
     ),
-    bg = pal[["light"]],
+    bg = alpha(pal[["light"]], .9),
     position = "fixed-top",
     header = tagList(
       tags$head(
@@ -256,7 +291,7 @@ function() {
     selected = "Overview",
     nav_spacer(),
     nav("Overview", page_1),
-    nav("Scorecards", page_2),
+    nav("Scorecard", page_2),
     nav("Water Accounts", page_3),
     nav("My Area", page_4),
     nav("About", page_5)

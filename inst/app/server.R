@@ -80,6 +80,14 @@ function(input, output, session) {
     ) %>% tagList()
   })
 
+  observeEvent(input$btnScore, {
+    updateNavbarPage(session, "navPage", selected="Scorecard")
+  })
+
+  observeEvent(input$btnRefresh, {
+    updateNavbarPage(session, "navPage", selected="About")
+  })
+
   observeEvent(input$txtISO3, {
     s$iso3 = tolower(input$txtISO3)
   })

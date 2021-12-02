@@ -8,7 +8,7 @@
 bs_themed <- function() {
   bs_theme(
     version = "4",
-    bg = pal[["light"]],
+    bg = "white",
     fg = pal[["black"]],
 
     primary = pal[["navy"]],
@@ -44,21 +44,23 @@ bs_themed <- function() {
     maroon = pal[["maroon"]],
     red = pal[["red"]],
 
-    `enable-rounded` = FALSE
+    `enable-rounded` = FALSE,
+    `enable-gradients` = FALSE,
+
+    `navbar-padding-x` = 0,
+    `navbar-padding-y` = 0,
+    `navbar-nav-link-padding-x` = "1rem",
+    `navbar-toggler-font-size` = "1rem",
+    `nav-link-padding-x` = "1rem",
+    `input-focus-width` = 0,
+    `input-border-width` = 0,
+    `input-disabled-bg` = "white"
 
   ) %>%
 
     bs_add_variables(
       .where = "declarations",
 
-      # layout
-      #`content-padding-x` = 0,
-      #`content-padding-y` = 0,
-      `navbar-padding-x` = 0,
-      `navbar-padding-y` = 0,
-      `navbar-nav-link-padding-x` = "1rem",
-      `navbar-toggler-font-size` = "1rem",
-      `nav-link-padding-x` = "1rem",
       `navbar-brand-height` = "$nav-link-height",
 
       `body-bg` = "lighten($light, 4%)",
@@ -82,7 +84,6 @@ bs_themed <- function() {
       `line-height-lg` = 1.2,
       `line-height-sm` = 1.2,
 
-      `enable-gradients` = "false",
       `input-focus-bg` = "$white",
       `nav-tabs-link-active-bg` = "$white",
 
@@ -92,7 +93,8 @@ bs_themed <- function() {
       `custom-file-button-color` = "$input-color",
       `custom-file-button-bg` = "$input-bg",
 
-      `component-active-bg` = "rgba($dark, .2)",
+      `component-active-bg` = "lighten($light, 2%)",
+      `custom-select-indicator-color` = "$light",
       `progress-bg` = "$light",
 
       `card-title-font-size` = "1rem",
@@ -100,8 +102,8 @@ bs_themed <- function() {
       `card-bg` = "$white",
       `link-color` = "$blue",
       `headings-font-family` = "'DM Serif Text'",
-      `headings-font-weight` = 400,
-      `min-contrast-ratio` = 2.5
+      `headings-font-weight` = 400
+     # `min-contrast-ratio` = 2.5
 
     )
 }
