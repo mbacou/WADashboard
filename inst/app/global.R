@@ -21,14 +21,17 @@ root <- getOption("wa.data")
 elev <- getOption("wa.elevation")
 dir <- "../../data-raw"
 
-data <- fread(file.path(dir, "./csv/data_sheet.csv"))
-schema <- fread(file.path(dir, "./csv/sheet_1_schema.csv"))
+data <- system.file("csv/data_sheet.csv", package="WADashboard")
+schema <- system.file("csv/sheet_1_schema.csv", package="WADashboard")
+
+data <- fread(data)
+schema <- fread(schema)
 
 # Format basin list
 l_iso3 <- lapply(names(ISO3), function(x) as.character(
   tagList(
-    img(class="mr-1 float-right", src=sprintf("./svg/%s.svg", x), height="28px"),
-    span(class="text-lg", ISO3[[x]]["label"]),
+    img(class="mr-1 pb-1 float-right", src=sprintf("./svg/%s.svg", x), height="28rem"),
+    span(class="h5", ISO3[[x]]["label"]),
     span(class="mx-3 text-warning", ISO3[[x]]["country"]))))
 
 setnames(data, tolower(names(data)))

@@ -26,6 +26,7 @@ lmap_init <- function(iso3=names(ISO3)) {
     htmlwidgets::onRender("function(el, x) {
         L.control.zoom({ position: 'bottomleft' }).addTo(this)
     }") %>%
+    fitBounds(bbox[[1]], bbox[[2]], bbox[[3]], bbox[[4]]) %>%
 
     # Default config
     addGraticule(1, group="Graticule",
@@ -90,7 +91,7 @@ lmap_update <- function(m, iso3=names(ISO3)) {
   bbox = st_bbox(zoi[["admin"]])
 
   m %>%
-    fitBounds(bbox[[1]], bbox[[2]], bbox[[3]], bbox[[4]]) %>%
+    flyToBounds(bbox[[1]], bbox[[2]], bbox[[3]], bbox[[4]]) %>%
 
     # Admin boundaries
     addPolygons(data=zoi[["admin"]], group="Boundaries",

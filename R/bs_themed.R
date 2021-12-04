@@ -2,6 +2,7 @@
 #'
 #' @return
 #' @import bslib
+#' @importFrom scales alpha
 #' @export
 #'
 #' @examples
@@ -50,11 +51,10 @@ bs_themed <- function() {
     `navbar-padding-x` = 0,
     `navbar-padding-y` = 0,
     `navbar-nav-link-padding-x` = "1rem",
-    `navbar-toggler-font-size` = "1rem",
+    `navbar-toggler-font-size` = ".9rem",
     `nav-link-padding-x` = "1rem",
     `input-focus-width` = 0,
-    `input-border-width` = 0,
-    `input-disabled-bg` = "white"
+    `input-border-width` = 0
 
   ) %>%
 
@@ -65,7 +65,7 @@ bs_themed <- function() {
 
       `body-bg` = "lighten($light, 4%)",
       `gray-100` = "lighten($light, 4%)",
-      `gray-200` = "$light",
+      `gray-200` = "darken($light, 4%)",
       `gray-300` = "darken($light, 8%)",
       `gray-400` = "darken($light, 16%)",
       `gray-500` = "darken($light, 24%)",
@@ -80,30 +80,30 @@ bs_themed <- function() {
       `h5-font-size` = "1rem",
       `h6-font-size` = ".9rem",
       `headings-font-weight` = 300,
-      `line-height-base` = 1.2,
-      `line-height-lg` = 1.2,
-      `line-height-sm` = 1.2,
+      `line-height-base` = 20/15,
 
       `input-focus-bg` = "$white",
       `nav-tabs-link-active-bg` = "$white",
+      `input-disabled-bg` = "$white",
 
       `custom-select-bg` = "$input-bg",
       `dropdown-bg` = "$input-bg",
       `dropdown-border-color` = "$input-border-color",
       `custom-file-button-color` = "$input-color",
       `custom-file-button-bg` = "$input-bg",
+      `label-margin-bottom` = ".25rem",
 
-      `component-active-bg` = "lighten($light, 2%)",
+     # `component-active-bg` = "lighten($light, 2%)",
       `custom-select-indicator-color` = "$light",
       `progress-bg` = "$light",
 
       `card-title-font-size` = "1rem",
-      `card-spacer-y` = ".55rem",
+      `card-spacer-y` = ".5rem",
       `card-bg` = "$white",
       `link-color` = "$blue",
       `headings-font-family` = "'DM Serif Text'",
-      `headings-font-weight` = 400
-     # `min-contrast-ratio` = 2.5
+      `headings-font-weight` = 400,
+      `min-contrast-ratio` = 2.5
 
     )
 }

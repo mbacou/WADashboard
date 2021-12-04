@@ -8,17 +8,19 @@
 # Footer ----
 footer <- fluidRow(
   class="bg-dark align-items-center",
-  column(8,
+  column(4,
     a(href="https://iwmi.cgiar.org/",
       img(class="m-3", height="50px", src="./fig/iwmi_logo_w.svg")),
     a(href="https://cgiar.org/",
-      img(class="m-3", height="60px", src="./fig/cgiar_w.png")),
+      img(class="m-3", height="60px", src="./fig/cgiar_w.png"))
+  ),
+  column(4,
     a(href="https://fao.org/",
       img(class="m-3", height="50px", src="./fig/fao_logo_w.svg")),
     a(href="https://en.unesco.org/wwap/",
       img(class="m-3", height="50px", src="./fig/wwap_w.png"))
   ),
-  column(4, class="p-3 text-right",
+  column(4, class="p-3 text-md-right",
     p(a(class="text-white", "Terms of use",
       href="https://www.iwmi.cgiar.org/about/legal-information/"), br(),
       HTML("&copy; IWMI"),
@@ -26,7 +28,7 @@ footer <- fluidRow(
       br(), "Version",
       as.character(packageVersion("WADashboard")[1]),
       "(", a(class="text-white",
-        href="https://mbacou.github.io/WADashboard/news", "what's new"), ")"
+        href="https://github.com/mbacou/WADashboard", "what's new"), ")"
     )
   )
 )
@@ -75,7 +77,7 @@ tab_13 <- nav(
 )
 
 # Filters ----
-intro <- fluidRow(class="pt-5 pb-3 bg-light align-items-start",
+filters <- fluidRow(class="mt-5 pt-4 align-items-end waved",
   column(8,
     p(class="text-muted",
       "This dashboard compiles results from the",
@@ -85,32 +87,53 @@ intro <- fluidRow(class="pt-5 pb-3 bg-light align-items-start",
       objective is to achieve equitable and transparent water governance for
       all water consumers and to ensure a sustainable water balance.")
   ),
-  column(3, offset=1, class="text-right",
-    actionButton("btnRefresh",
-      span("Last model run", strong(format(init$date, "%Y %b"))),
-      icon=icon("sync"), class="btn-outline-info btn-sm", width="12rem")
-  )
-)
-
-filters <- fluidRow(class="bg-light align-items-end",
-  column(8,
+  column(5,
     pickerInput("txtISO3",
-      span(class="h4 text-info", "Choose a river basin"),
-      choices=names(ISO3), selected=init$iso3, width="18rem",
+      span(class="text-info", "Select a river basin"),
+      choices=names(ISO3), selected=init$iso3, width="16rem",
       options=pickerOptions(style="btn-white"),
       choicesOpt=list(content=l_iso3))
   ),
-  column(4,
-    div(class="float-right text-right",
-      pickerInput("txtUnit", span(class="text-info", "Units"), width="6rem",
-        c("km³", "ft³", "MCM"),
-        options=pickerOptions(style="btn-white btn-sm"))
+  column(7,
+    fluidRow(class="float-md-right",
+      column(5,
+        tags$label(class="text-info", "Last model run"), br(),
+        actionButton("btnRefresh",
+          span(strong(format(init$date, "%Y %b"))),
+          icon=icon("sync"), class="btn-outline-info btn-sm", width="9rem")
+      ),
+      column(6, offset=1,
+        radioGroupButtons("txtUnit",
+          span(class="text-info", "Flow units"), c("km³", "ft³", "MCM"),
+          status="outline-info", justified=TRUE, size="sm", width="9rem")
+      )
     )
   )
 )
 
 # Map ----
-map <- leafletOutput("map", width="100%", height="20rem")
+map <- fluidRow(class="w-100 no-gutters",
+  column(8, class="border-top", leafletOutput("map", width="100%", height="22rem")),
+  column(4, class="bg-dark",
+    navs_bar(
+      collapsible=FALSE,
+      nav("Layers",
+        p("[placeholder]"),
+        p("Map layer options")
+      ),
+      nav("Layers",
+        p("[placeholder]"),
+        p("Map layer options")
+      )
+    )
+  ),
+  column(12, class="bg-light border-bottom border-top px-4 pt-2 pb-0",
+    sliderTextInput("numYear", NULL,
+      data[iso3==init$iso3 & sheet=="sheet1"][order(year), format(unique(year), "%Y %b")],
+      selected=data[, format(max(year), "%Y %b")],
+      width="98%", grid=TRUE, hide_min_max=TRUE)
+  )
+)
 
 # Overview ----
 overview <- fluidRow(
@@ -132,6 +155,7 @@ overview <- fluidRow(
 timeline <- fluidRow(class="bg-white",
   column(8,
     h4(class="text-info", icon=icon("tint"), "Recharge and Abstraction"),
+    p("[basin timeline and anomalies]"),
     highchartOutput("hcTimeline")
   ),
   column(4, p("more"))
@@ -212,22 +236,19 @@ page_1 <- fluidRow(style="display:block",
 )
 
 # Page 2 ----
-page_2 <- fluidRow(style="min-height:20rem;",
+page_2 <- fluidRow(style="min-height:40rem;",
   column(12,
-    h4(class="text-info", "Scorecards"),
-    p("[placeholder content for detailed scorecard and basin profile]")
+    h4(class="text-info", "Water Cycle"),
+    p("[placeholder content for water flux dynamics]")
   )
 )
 
 # Page 3 ----
-page_3 <- fluidRow(style="display:block;",
+page_3 <- fluidRow(class="bg-white", style="display:block;",
   navs_bar(
-    title="Accounting Sheets", bg=pal[["black"]],
-    header=column(12,
-      sliderTextInput("numYear", NULL,
-        data[, year(seq(min(year), max(year), by="year"))],
-        selected=data[, year(max(year))], width="100%", grid=TRUE)
-    ),
+    title = span(class="h4 text-info", "Water Accounts"),
+    bg = "transparent",
+    inverse = FALSE,
     footer=column(12,
       textAreaInput("objSelected", "Click a cell to get its value", "none")
     ),
@@ -261,10 +282,13 @@ page_4 <- fluidRow(
 )
 
 # Page 5 ----
-page_5 <- fluidRow(style="min-height:20rem",
+page_5 <- fluidRow(style="min-height:30rem",
   column(12,
     h4(class="text-info", "About WA+"),
-    p("[About]")
+    p("Units"),
+    p("Land use categories"),
+    p("Model structure"),
+    p("Data Catalog")
   )
 )
 
@@ -274,24 +298,23 @@ function() {
     theme = bs_themed(),
     window_title = "IWMI | Water Accounting+",
     title = tagList(
-      span(class="h4 text-primary", "WATER", strong("Accounting+")),
+      span(class="h3 text-primary", "WATER Accounting+"),
       span(class="mx-4 text-warning", "DRAFT")
     ),
     bg = alpha(pal[["light"]], .9),
     position = "fixed-top",
+    fluid = TRUE,
     header = tagList(
       tags$head(
         tags$link(rel="stylesheet", type="text/css", href="iwmi.css"),
         tags$link(rel="shortcut icon", href="favicon.ico")
       ),
-      setSliderColor(pal[["blue"]], 1:2),
-      column(12, intro, filters), map
-    ),
+      column(12, filters), map),
     footer = column(12, footer),
     selected = "Overview",
     nav_spacer(),
     nav("Overview", page_1),
-    nav("Scorecard", page_2),
+    nav("Water Cycle", page_2),
     nav("Water Accounts", page_3),
     nav("My Area", page_4),
     nav("About", page_5)
