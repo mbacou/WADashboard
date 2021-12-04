@@ -24,8 +24,9 @@ lmap_init <- function(iso3=names(ISO3)) {
 
   m = leaflet(options=leafletOptions(zoomControl=FALSE)) %>%
     htmlwidgets::onRender("function(el, x) {
-        L.control.zoom({ position: 'bottomright' }).addTo(this)
+        L.control.zoom({ position: 'bottomleft' }).addTo(this)
     }") %>%
+    fitBounds(bbox[[1]], bbox[[2]], bbox[[3]], bbox[[4]]) %>%
 
     # Default config
     addGraticule(1, group="Graticule",
@@ -61,7 +62,8 @@ lmap_init <- function(iso3=names(ISO3)) {
     addLayersControl(
       baseGroups=c("Default", names(fao_bmap$layers)),
       overlayGroups=c("Graticule", "Boundaries", "River Basin", names(fao_data$layers)),
-      position="bottomleft"
+      #options=layersControlOptions(collapsed=FALSE),
+      position="bottomright"
     ) %>%
 
     hideGroup(c("Graticule", names(fao_data$layers))) %>%
@@ -89,7 +91,7 @@ lmap_update <- function(m, iso3=names(ISO3)) {
   bbox = st_bbox(zoi[["admin"]])
 
   m %>%
-    fitBounds(bbox[[1]], bbox[[2]], bbox[[3]], bbox[[4]]) %>%
+    flyToBounds(bbox[[1]], bbox[[2]], bbox[[3]], bbox[[4]]) %>%
 
     # Admin boundaries
     addPolygons(data=zoi[["admin"]], group="Boundaries",

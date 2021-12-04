@@ -24,8 +24,16 @@ function(input, output, session) {
   output$map = renderLeaflet(lmap_init(init$iso3))
 
   # Sheet 1
-  output$d3 = renderD3({
-    r2d3(dt()[sheet=="sheet1" & year(year)==s$year], script="./www/js/sheet_1.js")
+  output$d3_sheet1 = renderD3({
+    r2d3(dt()[sheet=="sheet1" & year==s$year], script="./www/js/sheet_1.js")
+  })
+
+  output$d3_sheet2 = renderD3({
+    r2d3(dt()[sheet=="sheet2" & year==s$year], script="./www/js/sheet_2.js")
+  })
+
+  output$d3_sheet3 = renderD3({
+    r2d3(dt()[sheet=="sheet3" & year(year)==s$year], script="./www/js/sheet_3.js")
   })
 
   output$tb_basin = renderTable(
@@ -46,19 +54,38 @@ function(input, output, session) {
       ')[, label := sprintf('<span class="text-info">%s</span>', label)]
   )
 
-  output$ui_Overview = renderUI({
+  output$ui_score_prod = renderUI({
     dt = fread("
     variable, value, status, max
+    Agr. Water Productivity, 12, warning, 60
     Utilizable Flow, 79, success, 120
     Blue water availability, 30, danger, 110
-    Green water availability, 12, warning, 60
       ")
     lapply(1:nrow(dt), function(x) dt[x,
-      tagList(
-        p(HTML(sprintf('%s <span class="float-right">%s / %s km³</span>',
-          variable, comma(value), comma(max)))),
-        bs4ProgressBar(value, label=NULL, status=status, animated=T, size="sm"))]
+        progressBar(paste0("pbg-", x), value, total=max,
+          title=span(class="pt-3", variable), status=status, display_pct=T)]
     ) %>% tagList()
+  })
+
+  output$ui_score_sust = renderUI({
+    dt = fread("
+    variable, value, status, max
+    Green water availability, 12, warning, 60
+    Sustaining Rainfall, 79, success, 120
+    Storage Change, 20, danger, 100
+      ")
+    lapply(1:nrow(dt), function(x) dt[x,
+      progressBar(paste0("pbg-", x), value, total=max,
+        title=span(class="pt-3", variable), status=status, display_pct=T)]
+    ) %>% tagList()
+  })
+
+  observeEvent(input$btnScore, {
+    updateNavbarPage(session, "navPage", selected="Scorecard")
+  })
+
+  observeEvent(input$btnRefresh, {
+    updateNavbarPage(session, "navPage", selected="About")
   })
 
   observeEvent(input$txtISO3, {
@@ -66,11 +93,14 @@ function(input, output, session) {
   })
 
   observeEvent(input$numYear, {
-    s$year = year(input$numYear)
+    s$year = ym(input$numYear)
   })
 
   observeEvent(s$iso3, {
     leafletProxy("map") %>% lmap_update(s$iso3)
+    updateSliderTextInput(session, "numYear", NULL,
+      data[iso3==s$iso3 & sheet=="sheet1"][order(year), format(unique(year), "%Y %b")],
+      selected=data[, format(max(year), "%Y %b")])
   })
 
   output$plot_ts = renderHighchart({

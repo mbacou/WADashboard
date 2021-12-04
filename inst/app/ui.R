@@ -5,283 +5,319 @@
 # Author:  BACOU, Melanie <mel@mbacou.comm>
 #####################################################################################
 
-# Navbar ----
-navbar <- dashboardHeader(
-  title = a(class="ml-2 p-1 text-xl text-primary",
-    href="https://wateraccounting.org/",
-    "WATER", strong("Accounting+"),
-    span(class="ml-4 text-warning", "DRAFT")
-  ),
-  skin = "light",
-  status = "light",
-  fixed = TRUE,
-  border = FALSE,
-  compact = TRUE,
-  controlbarIcon = icon("info-circle"),
-  rightUi = tags$li(class="navbar-collapse collapse dropdown",
-    tags$ul(class="nav navbar-nav sidebar-menu",
-      bs4SidebarMenuItem("Overview", tabName="page-1", selected=TRUE),
-      bs4SidebarMenuItem("Scorecard", tabName="page-2"),
-      bs4SidebarMenuItem("My Summary", tabName="page-3")
-    )
-  )
-)
-
 # Footer ----
-footer <- dashboardFooter(
-  fluidRow(class="align-items-end",
-
-    column(9,
-      a(href="https://iwmi.cgiar.org/",
-        img(class="mx-3", height="50px", src="./fig/iwmi_logo_w.svg")),
-      a(href="https://cgiar.org/",
-        img(class="mx-3", height="60px", src="./fig/cgiar_w.png")),
-      a(href="https://fao.org/",
-        img(class="mx-3", height="50px", src="./fig/fao_logo_w.svg")),
-      a(href="https://en.unesco.org/wwap/",
-        img(class="mx-3", height="50px", src="./fig/wwap_w.png"))
-    ),
-
-    column(3, class="pr-3 text-right",
-      p(a(class="text-white", "Terms of use",
-        href="https://www.iwmi.cgiar.org/about/legal-information/"), br(),
-        HTML("&copy; IWMI"),
-        paste(year(Sys.Date()), "All rights reserved.", sep=". ")
-      ),
-      p("Version",
-        as.character(packageVersion("WADashboard")[1]),
-        "(", a(class="text-white",
-          href="https://mbacou.github.io/WADashboard/news", "what's new"), ")"
-      ))
-  )
-)
-
-# Sidebar ----
-sidebar <- dashboardSidebar(
-  disable = TRUE,
-  skin = "dark",
-  status = "primary",
-  elevation = 0,
-  expandOnHover = FALSE
-)
-
-# Controlbar ----
-controlbar = dashboardControlbar(
-  skin = "dark",
-  width = "33%",
-
-  controlbarMenu(type="pills",
-    controlbarItem("About", icon=icon("info-circle"),
-      p("[to be inserted]")
-    ),
-    controlbarItem("Definitions", icon=icon("info-circle"),
-      p("[to be inserted]")
+footer <- fluidRow(
+  class="bg-dark align-items-center",
+  column(4,
+    a(href="https://iwmi.cgiar.org/",
+      img(class="m-3", height="50px", src="./fig/iwmi_logo_w.svg")),
+    a(href="https://cgiar.org/",
+      img(class="m-3", height="60px", src="./fig/cgiar_w.png"))
+  ),
+  column(4,
+    a(href="https://fao.org/",
+      img(class="m-3", height="50px", src="./fig/fao_logo_w.svg")),
+    a(href="https://en.unesco.org/wwap/",
+      img(class="m-3", height="50px", src="./fig/wwap_w.png"))
+  ),
+  column(4, class="p-3 text-md-right",
+    p(a(class="text-white", "Terms of use",
+      href="https://www.iwmi.cgiar.org/about/legal-information/"), br(),
+      HTML("&copy; IWMI"),
+      paste(year(Sys.Date()), "All rights reserved.", sep=". "),
+      br(), "Version",
+      as.character(packageVersion("WADashboard")[1]),
+      "(", a(class="text-white",
+        href="https://github.com/mbacou/WADashboard", "what's new"), ")"
     )
   )
 )
 
 # Scorecards ----
-tab_11 <- tabPanel(span("Water", br(), "Productivity"), class="p-0",
+tab_11 <- nav(
+  span("Water", br(), "Productivity"),
   p("[placeholder]", br(), "
         Which scoring dimensions and key indicators / measures to highlight in this section?
         "),
   fluidRow(
-    valueBox(
-      span(class="text-gray", "Score 1"), "Good",
-      icon=icon("tint"), width=6),
-    valueBox(
-      span(class="text-gray", "Score 2"), "Poor",
-      icon=icon("check-double"), width=6)
+    scoreBox("Score 1", "Good",
+      icon=icon("faucet"), footer="Indicator 1", width=6, color="success"),
+    scoreBox("Score 2", "Poor",
+      icon=icon("check-double"), footer="Indicator 2", width=6, color="warning")
   ),
-  uiOutput("ui_Overview", inline=F),
-  div(class="text-right",
-    actionButton("btnScore1", "Details", width="6rem", status="secondary")
-  )
+  p(),
+  uiOutput("ui_score_prod", inline=F)
 )
 
-tab_12 <- tabPanel(span("Sustainability", br(), "Score"), class="p-0",
+tab_12 <- nav(
+  span("Sustainability", br(), "Score"),
   p("[placeholder]", br(), "
         Which scoring dimensions and key indicators / measures to highlight in this section?
         "),
   fluidRow(
-    valueBox(
-      span(class="text-gray", "Score 1"), "Good",
-      icon=icon("leaf"), width=6),
-    valueBox(
-      span(class="text-gray", "Score 2"), "Poor",
-      icon=icon("check-double"), width=6)
+    scoreBox("Score 1", "Good",
+      icon=icon("tint"), footer="Indicator 1", width=6, color="success"),
+    scoreBox("Score 2", "Poor",
+      icon=icon("check-double"), footer="Indicator 2", width=6, color="danger")
   ),
-  #uiOutput("ui_Overview", inline=F),
-  div(class="text-right",
-    actionButton("btnScore2", "Details", width="6rem", status="secondary")
-  )
+  p(),
+  uiOutput("ui_score_sust", inline=F)
 )
 
 
 # Profile ----
-tab_13 <- tabPanel(span("Basin", br(), "Profile"), icon=icon("table"),
+tab_13 <- nav(
+  span("Basin", br(), "Profile"), icon=icon("table"),
   div(class="table-responsive",
     p("[placeholder]", br(), "
         Which key basin features / characteristics to highlight in this section?
         "),
-    tableOutput("tb_basin"),
-    div(class="text-right",
-      actionButton("btnProfile", "Details", width="6rem", status="secondary")
-    )
+    tableOutput("tb_basin")
   )
 )
 
 # Filters ----
-row_1 <- fluidRow(class="bg-gradient-light no-gutters align-items-end",
-
-  # Map ----
-  column(7,
-    fluidRow(class="mx-2 align-items-end",
-      column(12,
-        p(class="my-4 mr-2 text-muted font-italic",
-          "This dashboard compiles results of a new",
-          a(class="text-gray-dark", href="https://wateraccounting.org/",
-            "Water Accounting"),
-          " methodology (WA+) based on global-scale public-domain datasets. Its
-          objective is to achieve equitable and transparent water governance for
-          all water consumers and ensure a sustainable water balance.")
-      ),
-      column(10,
-        pickerInput("txtISO3",
-          span(class="text-info h4", "Choose a river basin"),
-          choices=names(ISO3), selected=init$iso3,
-          options=pickerOptions(style="btn-white"),
-          choicesOpt=list(content=l_iso3))
-      ),
-      column(2, class="text-right",
-        pickerInput("txtUnit", span(class="text-info", "Units"),
-          c("km³", "ft³", "MCM"),
-          options=pickerOptions(style="btn-white"))
-      )
-    ),
-    leafletOutput("map", width="100%", height="22rem")
+filters <- fluidRow(class="mt-5 pt-4 align-items-end waved",
+  column(8,
+    p(class="text-muted",
+      "This dashboard compiles results from the",
+      a(class="text-gray-dark", href="https://wateraccounting.org/",
+        "Water Accounting+"),
+      "method based on global-scale public-domain datasets. Its
+      objective is to achieve equitable and transparent water governance for
+      all water consumers and to ensure a sustainable water balance.")
   ),
-
-  # Overview ----
   column(5,
-    fluidRow(class="no-gutters mt-4 align-items-end",
-      column(7, class="pl-2",
-        h3(class="text-lightblue", "Basin Situation")),
-      column(5, class="p-2",
+    pickerInput("txtISO3",
+      span(class="text-info", "Select a river basin"),
+      choices=names(ISO3), selected=init$iso3, width="16rem",
+      options=pickerOptions(style="btn-white"),
+      choicesOpt=list(content=l_iso3))
+  ),
+  column(7,
+    fluidRow(class="float-md-right",
+      column(5,
+        tags$label(class="text-info", "Last model run"), br(),
         actionButton("btnRefresh",
-          span("Last model run", strong(format(init$date, "%Y %b"))),
-          icon=icon("sync"), status="info", width="100%", outline=T, size="sm")
+          span(strong(format(init$date, "%Y %b"))),
+          icon=icon("sync"), class="btn-outline-info btn-sm", width="9rem")
       ),
-      tabBox(id="boxOverview", width=12, type="pills",
-        collapsible=F, elevation=0, side="right",
-        background="white", status="info", solidHeader=T,
-        tab_11, tab_12, tab_13
+      column(6, offset=1,
+        radioGroupButtons("txtUnit",
+          span(class="text-info", "Flow units"), c("km³", "ft³", "MCM"),
+          status="outline-info", justified=TRUE, size="sm", width="9rem")
       )
     )
   )
 )
 
-# Timeline ----
-tab_21 <- tabPanel("Recharge and Abstraction", icon=icon("tint"),
-  fluidRow(class="m-2",
-    column(8,
-      highchartOutput("hcTimeline")
-    ),
-    column(4, p("more"))
+# Map ----
+map <- fluidRow(class="w-100 no-gutters",
+  column(8, class="border-top", leafletOutput("map", width="100%", height="22rem")),
+  column(4, class="bg-dark",
+    navs_bar(
+      collapsible=FALSE,
+      nav("Layers",
+        p("[placeholder]"),
+        p("Map layer options")
+      ),
+      nav("Layers",
+        p("[placeholder]"),
+        p("Map layer options")
+      )
+    )
+  ),
+  column(12, class="bg-light border-bottom border-top px-4 pt-2 pb-0",
+    sliderTextInput("numYear", NULL,
+      data[iso3==init$iso3 & sheet=="sheet1"][order(year), format(unique(year), "%Y %b")],
+      selected=data[, format(max(year), "%Y %b")],
+      width="98%", grid=TRUE, hide_min_max=TRUE)
   )
 )
 
+# Overview ----
+overview <- fluidRow(
+  column(4,
+    h3(class="text-info", "Basin Profile"),
+    tab_13),
+  column(4,
+    h3(class="text-info", "Water Productivity"),
+    tab_11),
+  column(4,
+    h3(class="text-info", "Sustainability Score"),
+    tab_12),
+  column(12, class="text-right",
+    actionButton("btnScore", "Learn More", width="6rem", class="my-3")
+  )
+)
+
+# Timeline ----
+timeline <- fluidRow(class="bg-white",
+  column(8,
+    h4(class="text-info", icon=icon("tint"), "Recharge and Abstraction"),
+    p("[basin timeline and anomalies]"),
+    highchartOutput("hcTimeline")
+  ),
+  column(4, p("more"))
+)
+
 # Sheet 1 ----
-tab_22 <- tabPanel("Resource Base", icon=icon("th"),
-  fluidRow(class="m-2",
-    column(8,
-      sliderInput("numYear", "Year",
-        min=data[, min(year)], max=data[, max(year)],
-        value=data[, max(year)], timeFormat="%Y"),
-      d3Output("d3", width="100%"),
-      p(), p(),
-      textAreaInput("objSelected", "Click a cell to get its value", "none")
-    ),
+sheet_1 <- nav("Resource Base", icon=icon("th"),
+  fluidRow(class="bg-white",
     column(4,
+      p(),
+      markdown("
+      The **Resource Base** sheet provides an overview on over‑exploitation,
+      unmanageable, manageable, exploitable, reserved, utilized and utilizable
+      flows at river basin scale. It is used to:
+
+      - Discern between landscape ET (from rainfall) and incremental ET (from natural
+      and manmade withdrawals)
+      - Assess commitments to environment and legal agreements
+      - Quantify atmospheric water recycling
+      - Understand water scarcity during dry years.
+        ")
+    ),
+    column(8,
+      d3Output("d3_sheet1", width="100%"),
       highchartOutput("plot_ts", height="200px")
     )
   )
 )
 
 # Sheet 2 ----
-tab_23 <- tabPanel("Evapotranspiration", icon=icon("envira"),
-  fluidRow(class="m-2",
-    column(3,
-      textAreaInput("objSelected", "Click a cell to get its value", "none")
+sheet_2 <- nav("Evapotranspiration", icon=icon("envira"),
+  fluidRow(class="bg-white",
+    column(4,
+      p(),
+      markdown("
+      The purpose of the **Evapotranspiration** is to:
+
+      - Quantify water consumption for all land use classes throughout the entire
+      water basin
+      - Describe the anthropogenic impact on ET and concepts of ET management to
+      reduce total water consumption from withdrawals and inundations
+      - Understand the impact of land use planning on consumptive use
+      - Relate water consumption to intended processes (beneficial vs.
+        non-beneficial ET).
+        ")
     ),
-    column(9
+    column(8,
+      d3Output("d3_sheet2", width="100%")
+    )
+  )
+)
+
+# Sheet 3 ----
+sheet_3 <- nav("Agricultural Services", icon=icon("faucet"),
+  fluidRow(class="bg-white",
+    column(4,
+      p(),
+      markdown("
+      The purpose of the **Agricultural Services** is to:
+
+      - Assess agricultural yields for food, feed, timber and fish products
+      - Compute the related water productivity (kg/m³) and the gap to demonstrate
+      loss of returns in volume or value terms
+      - Decide on future rainfed and irrigated cropping systems
+      - Identify opportunities for saving water in agriculture.
+        ")
+    ),
+    column(8,
+      d3Output("d3_sheet3", width="100%")
     )
   )
 )
 
 
 # Page 1 ----
-page_1 <- fluidRow(class="no-gutters",
-  tabBox(width=12, type="pills", collapsible=F, side="right",
-    background="white", status="gray-dark", solidHeader=T,
-    tab_21, tab_22, tab_23)
+page_1 <- fluidRow(style="display:block",
+  column(12, overview, timeline)
 )
 
 # Page 2 ----
-page_2 <- fluidRow(
+page_2 <- fluidRow(style="min-height:40rem;",
   column(12,
-    p("[placeholder content for detailed scorecard and basin profile.]")
+    h4(class="text-info", "Water Cycle"),
+    p("[placeholder content for water flux dynamics]")
   )
 )
 
 # Page 3 ----
-page_3 <- fluidRow(class="mt-3",
+page_3 <- fluidRow(class="bg-white", style="display:block;",
+  navs_bar(
+    title = span(class="h4 text-info", "Water Accounts"),
+    bg = "transparent",
+    inverse = FALSE,
+    footer=column(12,
+      textAreaInput("objSelected", "Click a cell to get its value", "none")
+    ),
+    nav_spacer(), sheet_1, sheet_2, sheet_3)
+)
+
+# Page 4 ----
+page_4 <- fluidRow(
   column(6,
-    box(title="My Summary", width=12, icon=icon("draw-polygon"),
-      elevation=0, collapsible=F, background="white", status="gray-dark", solidHeader=T,
-      p("[placeholder]", br(), "
+    h4(class="text-info", "My Area"),
+    p("[placeholder]", br(), "
         Allow users to provide a custom area to summarize over and to select a list of
         indicators to include in a custom report.
         "),
-      pickerInput("txtAdmin",
-        span(class="text-info mb-2", "Choose a subdivision..."),
-        l_admin(init$iso3), width="240px"),
-      fileInput("fileGeo",
-        span(class="text-info", "... or upload a zone of interest"),
-        placeholder="zoi.geojson", accept=c(".csv", ".geojson", ".kml", ".shp"),
-        width="240px"),
-      checkboxGroupInput("txtReport",
-        span(class="text-info mb-2", "Water variables to include:"),
-        names(SOURCES[["FAO-DATA"]]$layers)[-c(1:2)]),
-      actionButton("btnUpload", "Upload")
-    )
+    checkboxGroupInput("txtReport",
+      span(class="text-info mb-2", "Water variables to include:"),
+      names(SOURCES[["FAO-DATA"]]$layers)[-c(1:2)]),
+    pickerInput("txtAdmin",
+      span(class="text-info mb-2", "Choose a subdivision..."),
+      l_admin(init$iso3), width="240px"),
+    fileInput("fileGeo",
+      span(class="text-info", "... or upload a zone of interest"),
+      placeholder="zoi.geojson", accept=c(".csv", ".geojson", ".kml", ".shp"),
+      width="240px"),
+    actionButton("btnUpload", "Upload"),
+    p()
   ),
   column(6,
     p("[preview]")
   )
 )
 
-# Main layout ----
-body <- dashboardBody(
-  fresh::use_theme("bs4Dash.css"),
-  tags$head(
-    tags$link(rel="stylesheet", type="text/css", href="iwmi.css"),
-    tags$link(rel="shortcut icon", href="favicon.ico")
-  ),
-  setSliderColor(pal[["blue"]], 1:2),
-  div(id="tabs-main",
-    class="sidebarMenuSelectedTabItem shiny-bound-input", `data-value`="page-1"),
-  row_1,
-  tabItems(
-    tabItem("page-1", page_1),
-    tabItem("page-2", page_2),
-    tabItem("page-3", page_3)
+# Page 5 ----
+page_5 <- fluidRow(style="min-height:30rem",
+  column(12,
+    h4(class="text-info", "About WA+"),
+    p("Units"),
+    p("Land use categories"),
+    p("Model structure"),
+    p("Data Catalog")
   )
 )
 
 function() {
-  dashboardPage(navbar, sidebar, body, controlbar, footer,
-    title = "IWMI | Water Accounting+",
-    dark = FALSE
+  page_navbar(
+    id = "navPage",
+    theme = bs_themed(),
+    window_title = "IWMI | Water Accounting+",
+    title = tagList(
+      span(class="h3 text-primary", "WATER Accounting+"),
+      span(class="mx-4 text-warning", "DRAFT")
+    ),
+    bg = alpha(pal[["light"]], .9),
+    position = "fixed-top",
+    fluid = TRUE,
+    header = tagList(
+      tags$head(
+        tags$link(rel="stylesheet", type="text/css", href="iwmi.css"),
+        tags$link(rel="shortcut icon", href="favicon.ico")
+      ),
+      column(12, filters), map),
+    footer = column(12, footer),
+    selected = "Overview",
+    nav_spacer(),
+    nav("Overview", page_1),
+    nav("Water Cycle", page_2),
+    nav("Water Accounts", page_3),
+    nav("My Area", page_4),
+    nav("About", page_5)
   )
 }
+
