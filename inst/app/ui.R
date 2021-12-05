@@ -6,25 +6,32 @@
 #####################################################################################
 
 # Footer ----
-footer <- fluidRow(
-  class="bg-dark align-items-center",
-  column(4,
-    a(href="https://iwmi.cgiar.org/",
-      img(class="m-3", height="50px", src="./fig/iwmi_logo_w.svg")),
-    a(href="https://cgiar.org/",
-      img(class="m-3", height="60px", src="./fig/cgiar_w.png"))
+footer <- fluidRow(class="bg-dark align-items-center",
+  column(8,
+    fluidRow(
+      div(class="mx-3 pt-3 pb-1",
+        a(href="https://iwmi.cgiar.org/",
+          img(height="50px", src="./fig/iwmi_logo_w.svg"))
+      ),
+      div(class="mx-3 pt-2 pb-2",
+        a(href="https://cgiar.org/",
+          img(height="60px", src="./fig/cgiar_w.png"))
+      ),
+      div(class="mx-3 pt-3",
+        a(href="https://fao.org/",
+          img(height="50px", src="./fig/fao_logo_w.svg"))
+      ),
+      div(class="mx-3 pt-3",
+        a(href="https://en.unesco.org/wwap/",
+          img(height="50px", src="./fig/wwap_w.png"))
+      )
+    )
   ),
-  column(4,
-    a(href="https://fao.org/",
-      img(class="m-3", height="50px", src="./fig/fao_logo_w.svg")),
-    a(href="https://en.unesco.org/wwap/",
-      img(class="m-3", height="50px", src="./fig/wwap_w.png"))
-  ),
-  column(4, class="p-3 text-md-right",
+  column(4, class="pt-3 text-md-right",
     p(a(class="text-white", "Terms of use",
       href="https://www.iwmi.cgiar.org/about/legal-information/"), br(),
       HTML("&copy; IWMI"),
-      paste(year(Sys.Date()), "All rights reserved.", sep=". "),
+      paste(year(Sys.Date()), "All rights reserved", sep=". "),
       br(), "Version",
       as.character(packageVersion("WADashboard")[1]),
       "(", a(class="text-white",
@@ -77,11 +84,11 @@ tab_13 <- nav(
 )
 
 # Filters ----
-filters <- fluidRow(class="mt-5 pt-4 align-items-end waved",
-  column(8,
+filters <- fluidRow(class="mt-3 pt-5 align-items-end waved3",
+  column(9,
     p(class="text-muted",
       "This dashboard compiles results from the",
-      a(class="text-gray-dark", href="https://wateraccounting.org/",
+      a(class="text-gray-dark", href="https://wateraccounting.org/", target="wa",
         "Water Accounting+"),
       "method based on global-scale public-domain datasets. Its
       objective is to achieve equitable and transparent water governance for
@@ -91,47 +98,65 @@ filters <- fluidRow(class="mt-5 pt-4 align-items-end waved",
     pickerInput("txtISO3",
       span(class="text-info", "Select a river basin"),
       choices=names(ISO3), selected=init$iso3, width="16rem",
-      options=pickerOptions(style="btn-white"),
-      choicesOpt=list(content=l_iso3))
+      options=pickerOptions(style="btn-white btn-lg"),
+      choicesOpt=list(content=l_iso3()))
   ),
   column(7,
-    fluidRow(class="float-md-right",
-      column(5,
+    fluidRow(class="no-gutters float-md-right align-items-end",
+      div(class="col pb-3",
         tags$label(class="text-info", "Last model run"), br(),
         actionButton("btnRefresh",
           span(strong(format(init$date, "%Y %b"))),
           icon=icon("sync"), class="btn-outline-info btn-sm", width="9rem")
       ),
-      column(6, offset=1,
+      div(class="col pl-2",
         radioGroupButtons("txtUnit",
           span(class="text-info", "Flow units"), c("km³", "ft³", "MCM"),
           status="outline-info", justified=TRUE, size="sm", width="9rem")
+      ),
+      div(class="col pl-2 pb-3",
+        actionButton("btnMap", NULL, icon=icon("globe"), class="btn-outline-info btn-sm",
+          `data-toggle`="collapse", `data-target`="#divMap",
+          `aria-expanded`="true", `aria-controls`="divMap")
       )
     )
   )
 )
 
-# Map ----
-map <- fluidRow(class="w-100 no-gutters",
-  column(8, class="border-top", leafletOutput("map", width="100%", height="22rem")),
-  column(4, class="bg-dark",
-    navs_bar(
-      collapsible=FALSE,
-      nav("Layers",
-        p("[placeholder]"),
-        p("Map layer options")
-      ),
-      nav("Layers",
-        p("[placeholder]"),
-        p("Map layer options")
-      )
-    )
-  ),
-  column(12, class="bg-light border-bottom border-top px-4 pt-2 pb-0",
+# Slider ----
+slider <- fluidRow(class="w-100 no-gutters",
+  column(12, class="waved border-bottom border-top px-4 pt-2 pb-0",
+    div(class="float-left", p("Basin Timeline")),
     sliderTextInput("numYear", NULL,
       data[iso3==init$iso3 & sheet=="sheet1"][order(year), format(unique(year), "%Y %b")],
       selected=data[, format(max(year), "%Y %b")],
       width="98%", grid=TRUE, hide_min_max=TRUE)
+  )
+)
+
+# Map ----
+map <- fluidRow(id="divMap", class="w-100 no-gutters collapse show",
+  column(8, style="min-height:20rem; height:34vh;",
+    leafletOutput("map", width="100%", height="100%")
+  ),
+  column(4, class="waved3 text-muted",
+    navs_pill(
+      nav(title="Layers", icon=icon("layer-group"),
+        br(),
+        checkboxGroupInput("chkLayer", NULL, width="100%",
+          choices=names(LAYERS[[3]]$layers))
+      ),
+      nav(title="Legend", icon=icon("palette"),
+        h4("Layers 2"),
+        p("[placeholder]"),
+        p("Map layer options")
+      ),
+      nav(title="Info", icon=icon("info-circle"),
+        h4("Layers 2"),
+        p("[placeholder]"),
+        p("Map layer options")
+      )
+    )
   )
 )
 
@@ -265,7 +290,7 @@ page_4 <- fluidRow(
         "),
     checkboxGroupInput("txtReport",
       span(class="text-info mb-2", "Water variables to include:"),
-      names(SOURCES[["FAO-DATA"]]$layers)[-c(1:2)]),
+      names(LAYERS[["FAO-DATA"]]$layers)[-c(1:2)]),
     pickerInput("txtAdmin",
       span(class="text-info mb-2", "Choose a subdivision..."),
       l_admin(init$iso3), width="240px"),
@@ -301,7 +326,7 @@ function() {
       span(class="h3 text-primary", "WATER Accounting+"),
       span(class="mx-4 text-warning", "DRAFT")
     ),
-    bg = alpha(pal[["light"]], .9),
+    bg = alpha("white", .9),
     position = "fixed-top",
     fluid = TRUE,
     header = tagList(
@@ -309,7 +334,7 @@ function() {
         tags$link(rel="stylesheet", type="text/css", href="iwmi.css"),
         tags$link(rel="shortcut icon", href="favicon.ico")
       ),
-      column(12, filters), map),
+      column(12, filters), map, slider),
     footer = column(12, footer),
     selected = "Overview",
     nav_spacer(),
@@ -317,7 +342,6 @@ function() {
     nav("Water Cycle", page_2),
     nav("Water Accounts", page_3),
     nav("My Area", page_4),
-    nav("About", page_5)
+    nav("About WA+", page_5)
   )
 }
-

@@ -1,16 +1,29 @@
 #' Custom Bootstrap theme
 #'
-#' @return
-#' @import bslib
-#' @importFrom scales alpha
-#' @export
+#' @inheritParams bslib::bs_theme
+#' @param font_size base font size in pixel
 #'
+#' @importFrom bslib bs_theme bs_add_variables
+#' @return Modified Bootstrap 4 theme
+#' @export
 #' @examples
-bs_themed <- function() {
+#' if (interactive()) bs_theme_preview(bs_themed())
+#'
+bs_themed <- function(
+  base_font = getOption("wa.font")[1],
+  heading_font = getOption("wa.font")[2],
+  font_size = 15
+) {
+
   bs_theme(
     version = "4",
     bg = "white",
     fg = pal[["black"]],
+
+    base_font = base_font,
+    heading_font = heading_font,
+    code_font = NULL,
+    font_scale = font_size/16,
 
     primary = pal[["navy"]],
     secondary = pal[["light"]],
@@ -19,17 +32,9 @@ bs_themed <- function() {
     warning = pal[["orange"]],
     danger = pal[["red"]],
 
-    base_font = "'national-web-regular'",
-    code_font = NULL,
-    heading_font = "'DM Serif Text'",
-    font_scale = 0.9375,
-
-    light = pal[["light"]],
-    dark = pal[["black"]],
-
-    # Use colors
+    # Use color palette
     black = pal[["black"]],
-    white = "#ffffff",
+    white = "white",
     yellow = pal[["yellow"]],
     orange = pal[["orange"]],
     lime = pal[["light-blue"]],
@@ -45,6 +50,9 @@ bs_themed <- function() {
     maroon = pal[["maroon"]],
     red = pal[["red"]],
 
+    `light` = pal[["light"]],
+    `dark` = pal[["black"]],
+
     `enable-rounded` = FALSE,
     `enable-gradients` = FALSE,
 
@@ -52,9 +60,17 @@ bs_themed <- function() {
     `navbar-padding-y` = 0,
     `navbar-nav-link-padding-x` = "1rem",
     `navbar-toggler-font-size` = ".9rem",
-    `nav-link-padding-x` = "1rem",
-    `input-focus-width` = 0,
-    `input-border-width` = 0
+
+    `h1-font-size` = "1.8rem",
+    `h2-font-size` = "1.6rem",
+    `h3-font-size` = "1.4rem",
+    `h4-font-size` = "1.2rem",
+    `h5-font-size` = "1rem",
+    `h6-font-size` = ".9rem",
+
+    `line-height-base` = 20/font_size,
+    `headings-font-weight` = 300,
+    `min-contrast-ratio` = 2.5
 
   ) %>%
 
@@ -64,6 +80,7 @@ bs_themed <- function() {
       `navbar-brand-height` = "$nav-link-height",
 
       `body-bg` = "lighten($light, 4%)",
+      `border-color` = "darken($light, 4%)",
       `gray-100` = "lighten($light, 4%)",
       `gray-200` = "darken($light, 4%)",
       `gray-300` = "darken($light, 8%)",
@@ -73,38 +90,25 @@ bs_themed <- function() {
       `gray-800` = "darken($light, 40%)",
       `gray-900` = "darken($light, 48%)",
 
-      `h1-font-size` = "1.8rem",
-      `h2-font-size` = "1.6rem",
-      `h3-font-size` = "1.4rem",
-      `h4-font-size` = "1.2rem",
-      `h5-font-size` = "1rem",
-      `h6-font-size` = ".9rem",
-      `headings-font-weight` = 300,
-      `line-height-base` = 20/15,
-
       `input-focus-bg` = "$white",
-      `nav-tabs-link-active-bg` = "$white",
+      `nav-pills-link-active-bg` = "$blue",
       `input-disabled-bg` = "$white",
 
-      `custom-select-bg` = "$input-bg",
-      `dropdown-bg` = "$input-bg",
       `dropdown-border-color` = "$input-border-color",
+      `dropdown-inner-border-radius` = 0,
+      `component-active-bg` = "lighten($light, 4%)",
+      `dropdown-link-active-bg` = "lighten($light, 4%)",
+      `dropdown-link-hover-bg` = "lighten($light, 4%)",
+      `custom-select-bg` = "$input-bg",
       `custom-file-button-color` = "$input-color",
       `custom-file-button-bg` = "$input-bg",
       `label-margin-bottom` = ".25rem",
 
-     # `component-active-bg` = "lighten($light, 2%)",
-      `custom-select-indicator-color` = "$light",
       `progress-bg` = "$light",
-
       `card-title-font-size` = "1rem",
       `card-spacer-y` = ".5rem",
-      `card-bg` = "$white",
-      `link-color` = "$blue",
-      `headings-font-family` = "'DM Serif Text'",
-      `headings-font-weight` = 400,
-      `min-contrast-ratio` = 2.5
-
+      `card-bg` = "transparent",
+      `link-color` = "$blue"
     )
 }
 

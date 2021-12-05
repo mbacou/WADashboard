@@ -21,7 +21,7 @@ function(input, output, session) {
   )
 
   # Map
-  output$map = renderLeaflet(lmap_init(init$iso3))
+  output$map = renderLeaflet(map_init(init$iso3))
 
   # Sheet 1
   output$d3_sheet1 = renderD3({
@@ -85,7 +85,7 @@ function(input, output, session) {
   })
 
   observeEvent(input$btnRefresh, {
-    updateNavbarPage(session, "navPage", selected="About")
+    updateNavbarPage(session, "navPage", selected="About WA+")
   })
 
   observeEvent(input$txtISO3, {
@@ -97,7 +97,7 @@ function(input, output, session) {
   })
 
   observeEvent(s$iso3, {
-    leafletProxy("map") %>% lmap_update(s$iso3)
+    leafletProxy("map") %>% map_update(s$iso3)
     updateSliderTextInput(session, "numYear", NULL,
       data[iso3==s$iso3 & sheet=="sheet1"][order(year), format(unique(year), "%Y %b")],
       selected=data[, format(max(year), "%Y %b")])

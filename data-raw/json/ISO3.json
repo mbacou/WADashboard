@@ -1,0 +1,38 @@
+{
+  "mli": {
+    "label": ["Niger River"],
+    "country": ["Mali"],
+    "countries": [4],
+    "admin": ["./data-raw/json/mli_basin.geojson"],
+    "water": ["./data-raw/json/mli_gloric.geojson"],
+    "area": ["40,000 km²"],
+    "population": ["800,000"],
+    "authorities": ["Niger Basin Authority"],
+    "url": ["http://www.sath.abn.ne/"],
+    "annual_rainfall": ["600 mm"],
+    "annual_ET": ["400 mm"],
+    "major_season": ["Apr-Sep"],
+    "minor_season": ["Oct-Dec"],
+    "irrigated_land": ["400 ha"],
+    "major_dams": [5],
+    "hydro_power_generation": ["50 MW"]
+  },
+  "ken": {
+    "label": ["Mara River"],
+    "country": ["Kenya"],
+    "countries": [1],
+    "admin": ["./data-raw/json/ken_basin.geojson"],
+    "water": ["./data-raw/json/ken_gloric.geojson"],
+    "area": ["40,000 km²"],
+    "population": ["800,000"],
+    "authorities": ["Nile Basin Initiative"],
+    "url": ["https://www.nilebasin.org/"],
+    "annual_rainfall": ["600 mm"],
+    "annual_ET": ["400 mm"],
+    "major_season": ["Apr-Sep"],
+    "minor_season": ["Oct-Dec"],
+    "irrigated_land": ["400 ha"],
+    "major_dams": [5],
+    "hydro_power_generation": ["50 MW"]
+  }
+}
