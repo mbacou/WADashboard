@@ -67,8 +67,11 @@ bs_themed <- function(
     `h4-font-size` = "1.2rem",
     `h5-font-size` = "1rem",
     `h6-font-size` = ".9rem",
+    `small-font-size` = "87.5%",
 
     `line-height-base` = 20/font_size,
+    `line-height-sm` = 20/font_size,
+    `line-height-lg` = 20/font_size,
     `headings-font-weight` = 300,
     `min-contrast-ratio` = 2.5
 
@@ -80,25 +83,26 @@ bs_themed <- function(
       `navbar-brand-height` = "$nav-link-height",
 
       `body-bg` = "lighten($light, 4%)",
-      `border-color` = "darken($light, 4%)",
+      `border-color` = "darken($light, 8%)",
       `gray-100` = "lighten($light, 4%)",
       `gray-200` = "darken($light, 4%)",
-      `gray-300` = "darken($light, 8%)",
+      `gray-300` = "darken($light, 8%)", # border-color
       `gray-400` = "darken($light, 16%)",
       `gray-500` = "darken($light, 24%)",
-      `gray-700` = "darken($light, 32%)",
-      `gray-800` = "darken($light, 40%)",
-      `gray-900` = "darken($light, 48%)",
+      `gray-600` = "darken($light, 32%)", # secondary
+      `gray-700` = "darken($light, 40%)",
+      `gray-800` = "darken($light, 48%)",
+      `gray-900` = "darken($light, 56%)",
 
       `input-focus-bg` = "$white",
       `nav-pills-link-active-bg` = "$blue",
       `input-disabled-bg` = "$white",
 
-      `dropdown-border-color` = "$input-border-color",
+      `dropdown-border-color` = "$border-color",
       `dropdown-inner-border-radius` = 0,
-      `component-active-bg` = "lighten($light, 4%)",
-      `dropdown-link-active-bg` = "lighten($light, 4%)",
-      `dropdown-link-hover-bg` = "lighten($light, 4%)",
+      `component-active-bg` = "$body-bg",
+      `dropdown-link-active-bg` = "$body-bg",
+      `dropdown-link-hover-bg` = "$body-bg",
       `custom-select-bg` = "$input-bg",
       `custom-file-button-color` = "$input-color",
       `custom-file-button-bg` = "$input-bg",

@@ -98,7 +98,7 @@ filters <- fluidRow(class="mt-3 pt-5 align-items-end waved3",
     pickerInput("txtISO3",
       span(class="text-info", "Select a river basin"),
       choices=names(ISO3), selected=init$iso3, width="16rem",
-      options=pickerOptions(style="btn-white btn-lg"),
+      options=pickerOptions(style="btn-white"),
       choicesOpt=list(content=l_iso3()))
   ),
   column(7,

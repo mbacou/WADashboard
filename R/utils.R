@@ -7,9 +7,11 @@
 l_iso3 <- function() {
   lapply(names(ISO3), function(x) as.character(
     tagList(
-      img(class="px-2 pb-1 float-right", src=sprintf("./svg/%s.svg", x), height="30rem"),
+      img(class="px-2 float-right", src=sprintf("./svg/%s.svg", x), height="28rem"),
       span(class="h5", ISO3[[x]]["label"]),
-      span(class="mx-3 text-warning", ISO3[[x]]["country"]))))
+      span(class="mx-3 text-warning", ISO3[[x]]["country"])
+    )
+  ))
 }
 
 # Format district picklist
