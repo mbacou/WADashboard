@@ -8,6 +8,7 @@
 function(input, output, session) {
 
   session$allowReconnect(TRUE)
+  router$server(input, output, session)
 
   s = reactiveValues(
     iso3 = init$iso3,
