@@ -2,15 +2,13 @@
 
   options(
 
-    # Bootstrap
-    wa.elevation = 0,
-    wa.font = c("'national-web-regular'", "'DM Serif Text'"),
-
     # Root data dir
-    wa.data = if(Sys.getenv("WA_DATA_ROOT") != "") Sys.getenv("WA_DATA_ROOT")
-    else if(dir.exists(system.file("csv", package="WADashboard")))
+    wa.data = if(Sys.getenv("WA_DATA_ROOT") != "") Sys.getenv("WA_DATA_ROOT") else
+      if(dir.exists(system.file("csv", package="WADashboard")))
       system.file("csv", package="WADashboard") else "./",
 
+    # Mapbox API key
+    wa.mapbox = Sys.getenv("MAPBOX_KEY"),
     # Maptiler API key
     wa.maptiler = Sys.getenv("MAPTILER_KEY"),
 

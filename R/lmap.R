@@ -3,10 +3,12 @@
 #' Load basin boundaries with default configuration.
 #'
 #' @param iso3 3-letter country code to center the map on (see [ISO3])
+#' @param key Maptiler API key
 #'
 #' @import leaflet
 #' @import leaflet.extras
 #' @importFrom sf st_bbox
+#' @importFrom lubridate days
 #' @return leaflet map widget with default layers
 #' @export
 #'
@@ -14,15 +16,15 @@
 #' # Default rendering
 #' map_init()
 #'
-map_init <- function(iso3=names(ISO3)) {
+map_init <- function(
+  iso3 = names(ISO3),
+  key = getOption("wa.maptiler")
+) {
 
   iso3 = match.arg(iso3)
-  tileset = LAYERS[["MAPTILER"]]
+  tileset = LAYERS[["MAPTILER-R"]]
   fao_bmap = LAYERS[["FAO-BASEMAP"]]
   fao_data = LAYERS[["FAO-DATA"]]
-
-  key = tileset$key
-  key = if(key != "")  key else getOption("wa.maptiler")
 
   bbox = st_bbox(ZOI[[iso3]]$admin)
 
@@ -31,11 +33,10 @@ map_init <- function(iso3=names(ISO3)) {
         L.control.zoom({ position: 'bottomleft' }).addTo(this)
     }") %>%
 
-    # Default config
-    addGraticule(1, group="Graticule",
-      style=list(color=pal[["light"]], weight=.2)) %>%
+    # Default config with Maptiler basemap
     addTiles(
-      sprintf(tileset$url[[1]], tileset$layers[[1]], key),
+      "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+      #sprintf(tileset$url[[1]], tileset$layers[[1]], key),
       attribution = tileset$attr,
       group = "Default")
 
@@ -61,19 +62,29 @@ map_init <- function(iso3=names(ISO3)) {
       )
     )
 
+  # WASA data
+  # m = leafem:::addGeoRaster(m, stars::read_stars(nc[[1]]$source),
+  #   group = "WASA", opacity=.8,
+  #   colorOptions = leafem::colorOptions(
+  #     palette = viridisLite::inferno,
+  #     breaks=seq(0, 10, 100)
+  #   )
+  # )
+
   m %>%
     addLayersControl(
-      baseGroups=c("Default", names(fao_bmap$layers)),
-      overlayGroups=c("Graticule", "Boundaries", "River Basin", names(fao_data$layers)),
-      #options=layersControlOptions(collapsed=FALSE),
-      position="bottomright"
+      baseGroups = c("Default", names(fao_bmap$layers)),
+      overlayGroups = c("Boundaries", "River Basin", names(fao_data$layers), "WASA"),
+      #options = layersControlOptions(collapsed=FALSE),
+      position = "bottomright"
     ) %>%
 
     hideGroup(c("Graticule", names(fao_data$layers))) %>%
     addSearchOSM(searchOptions(
-      position="topright", zoom=9, minLength=3, tooltipLimit=8, )) %>%
+      position="topright", zoom=9, minLength=3, tooltipLimit=8)) %>%
     addFullscreenControl(pseudoFullscreen=TRUE, position="topright") %>%
     fitBounds(bbox[[1]], bbox[[2]], bbox[[3]], bbox[[4]])
+
 }
 
 

@@ -26,10 +26,16 @@
       "Monthly Precipitation Anomaly": ["NMME:fmpa"]
     }
   },
-  "MAPTILER": {
+  "MAPTILER-R": {
     "url": ["//api.maptiler.com/maps/%s/{z}/{x}/{y}@2x.png?key=%s"],
     "attr": ["OSM | FAO WaPOR"],
-    "key": ["JdazoF74wMMlc8Esnhmm"],
+    "layers": {
+      "default": ["42a84100-2300-4647-ba8f-a70afaf51946"]
+    }
+  },
+  "MAPTILER-V": {
+    "url": ["//api.maptiler.com/maps/%s/style.json?key=%s"],
+    "attr": ["OSM | FAO WaPOR"],
     "layers": {
       "default": ["42a84100-2300-4647-ba8f-a70afaf51946"]
     }
