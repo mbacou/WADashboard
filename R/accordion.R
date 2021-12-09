@@ -1,7 +1,6 @@
-#' Bootstrap 4 accordion container
+#' Bootstrap 4 accordion
 #'
-#' [accordionItem] is to be inserted in a [accordion]. This is a modified
-#' version of [bs4Dash::accordion()].
+#' This is a modified version of [bs4Dash::accordion()].
 #'
 #' @param ... slot for \link{accordionItem}.
 #' @param id unique accordion id.
@@ -30,12 +29,12 @@ accordion <- function(..., id, width = 12) {
 
 #' Bootstrap 4 accordion item
 #'
-#' \link{accordionItem} is to be inserted in a \link{accordion}. This is a modified
+#' [accordionItem] to be inserted in a [accordion] container. This is a modified
 #' version of [bs4Dash::accordionItem()].
 #'
 #' @inheritParams bs4Dash::bs4AccordionItem
 #' @param class additional classes to apply to the parent card element
-#' @partam bg background color
+#' @param bg background color
 #'
 #' @rdname accordion
 #' @importFrom shiny div
