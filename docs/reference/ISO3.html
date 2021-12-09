@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>River basin ISO3 codes — ISO3 • WADashboard</title>
+<title>River basins — ISO3 • WADashboard</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,9 +46,11 @@
 
 
 
-<meta property="og:title" content="River basin ISO3 codes — ISO3" />
-<meta property="og:description" content="A named list of basin metadata. Names are unique country ISO3 codes. By default
-this list is read in from package configuration file ./data-raw/json/ISO3.json." />
+<meta property="og:title" content="River basins — ISO3" />
+<meta property="og:description" content="A named list of basin metadata. Names are the basin's largest country ISO3 codes.
+This list is read in from package configuration file at
+./data-raw/json/ISO3.json. This file may be manually edited to add new basin
+configurations." />
 <meta property="og:image" content="https://github.mbacou.io/WADashboard/inst/app/www/fig/iwmi_logo_w.svg" />
 <meta property="og:image:alt" content="Water Accounting+" />
 <meta name="twitter:card" content="summary_large_image" />
@@ -124,14 +126,16 @@ this list is read in from package configuration file ./data-raw/json/ISO3.json."
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>River basin ISO3 codes</h1>
+    <h1>River basins</h1>
     <small class="dont-index">Source: <a href='https://github.com/mbacou/WADashboard/blob/master/R/data.R'><code>R/data.R</code></a></small>
     <div class="hidden name"><code>ISO3.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>A named list of basin metadata. Names are unique country ISO3 codes. By default
-this list is read in from package configuration file <code>./data-raw/json/ISO3.json</code>.</p>
+    <p>A named list of basin metadata. Names are the basin's largest country ISO3 codes.
+This list is read in from package configuration file at
+<code>./data-raw/json/ISO3.json</code>. This file may be manually edited to add new basin
+configurations.</p>
     </div>
 
     <pre class="usage"><span class='va'>ISO3</span></pre>
@@ -146,15 +150,10 @@ this list is read in from package configuration file <code>./data-raw/json/ISO3.
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='r-in'><span class='co'># Processed river basins</span></span>
-<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>lapply</a></span><span class='op'>(</span><span class='va'>ISO3</span>, <span class='va'>`[[`</span>, <span class='st'>"Label"</span><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> $mli</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> NULL</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> $ken</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> NULL</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>ISO3</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "mli" "ken"</span>
 <span class='r-in'></span>
-<span class='r-in'><span class='co'># Sample metadata terms currently in use for each basin</span></span>
+<span class='r-in'><span class='co'># Metadata terms currently in use for each basin</span></span>
 <span class='r-in'><span class='va'>ISO3</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> $label</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Niger River"</span>

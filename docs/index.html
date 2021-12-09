@@ -84,7 +84,7 @@
 <div id="dashboard-for-wa-water-accounts" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#dashboard-for-wa-water-accounts" class="anchor"></a>Dashboard for WA+ Water Accounts</h1></div>
-<p>Development package for a <a href="https://shiny.rstudio.com/">Shiny</a> data visualization dashboard that collects results from <a href="https://www.wateraccounting.org/">Water Accounting+</a> (WA+) hydrological models.</p>
+<p>Development package for a <a href="https://shiny.rstudio.com/">Shiny</a> data visualization application that collects results from <a href="https://www.wateraccounting.org/">Water Accounting+</a> (WA+) hydrological models.</p>
 <p>Water accounting integrates hydrological processes with land use, managed water flows and the services that result from water consumption in river basins. Its objective is to achieve equitable and transparent water governance for all users and a more sustainable water balance.</p>
 <p>WA+ is a multi-institutional effort from a consortium of international research centers (<a href="https://www.iwmi.cgiar.org/">IWMI</a>, <a href="https://www.un-ihe.org/">UNESCO-IHE</a>, <a href="https://www.fao.org/land-water/water/en/">FAO</a>, and <a href="https://en.unesco.org/wwap">WWAP</a>). These institutions are neither politically or geographically connected to any river basin.</p>
 <div id="installation" class="section level2">
@@ -102,17 +102,22 @@
 <h2 class="hasAnchor">
 <a href="#documentation" class="anchor"></a>Documentation</h2>
 <p>In addition to the usual R package documentation, we also have extensive docs at: <a href="https://mbacou.github.io/WADashboard/">https://mbacou.github.io/WADashboard/</a>.</p>
-<p>To configure and extend the application:</p>
+<p>To configure and extend this application:</p>
 <ol>
-<li><p>Set environment variable <code>WA_DATA</code> pointing to the root location of WA+ model output</p></li>
+<li><p>Set a system or user environment variable <code>WA_DATA</code> pointing to the root location of your WA+ model output.</p></li>
 <li>
 <p>Edit 2 configuration files:</p>
 <ul>
-<li><a href="./data-raw/json/ISO3.json">List of river basins</a></li>
-<li><a href="./data-raw/json/SOURCES.json">Contextual spatial layers</a></li>
+<li><a href="https://github.com/mbacou/WADashboard/blob/main/data-raw/json/ISO3.json">List of river basins</a></li>
+<li><a href="https://github.com/mbacou/WADashboard/blob/main/data-raw/json/LAYERS.json">Contextual spatial layers</a></li>
 </ul>
 </li>
 </ol>
+</div>
+<div id="application-deployment" class="section level2">
+<h2 class="hasAnchor">
+<a href="#application-deployment" class="anchor"></a>Application Deployment</h2>
+<p>Two Docker files are provided for deployment to AWS Fargate.</p>
 </div>
 <div id="license" class="section level2">
 <h2 class="hasAnchor">

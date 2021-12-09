@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Basin boundaries — ZOI • WADashboard</title>
+<title>Initialize map — map_init • WADashboard</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,9 +46,10 @@
 
 
 
-<meta property="og:title" content="Basin boundaries — ZOI" />
-<meta property="og:description" content="Named list of simplified basin boundaries and water stream networks as sf
-objects, read in from GeoJSON file locations defined in ISO3." />
+<meta property="og:title" content="Initialize map — map_init" />
+<meta property="og:description" content="Load basin boundaries with default configuration.
+Add selected hydrological features across river basins.
+Used to toggle 3rd-party contextual layers." />
 <meta property="og:image" content="https://github.mbacou.io/WADashboard/inst/app/www/fig/iwmi_logo_w.svg" />
 <meta property="og:image:alt" content="Water Accounting+" />
 <meta name="twitter:card" content="summary_large_image" />
@@ -124,33 +125,53 @@ objects, read in from GeoJSON file locations defined in ISO3." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Basin boundaries</h1>
-    <small class="dont-index">Source: <a href='https://github.com/mbacou/WADashboard/blob/master/R/data.R'><code>R/data.R</code></a></small>
-    <div class="hidden name"><code>ZOI.Rd</code></div>
+    <h1>Initialize map</h1>
+    <small class="dont-index">Source: <a href='https://github.com/mbacou/WADashboard/blob/master/R/leaflet.R'><code>R/leaflet.R</code></a></small>
+    <div class="hidden name"><code>leaflet.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Named list of simplified basin boundaries and water stream networks as <code>sf</code>
-objects, read in from GeoJSON file locations defined in <a href='ISO3.html'>ISO3</a>.</p>
+    <p>Load basin boundaries with default configuration.</p>
+<p>Add selected hydrological features across river basins.</p>
+<p>Used to toggle 3rd-party contextual layers.</p>
     </div>
 
-    <pre class="usage"><span class='va'>ZOI</span></pre>
+    <pre class="usage"><span class='fu'>map_init</span><span class='op'>(</span>iso3 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>ISO3</span><span class='op'>)</span>, key <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"wa.maptiler"</span><span class='op'>)</span><span class='op'>)</span>
 
+<span class='fu'>map_update</span><span class='op'>(</span><span class='va'>map</span>, iso3 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>ISO3</span><span class='op'>)</span><span class='op'>)</span>
 
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+<span class='fu'>map_toggle</span><span class='op'>(</span><span class='va'>map</span>, layers <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
-    <p>A named list, names are 3-letter ISO3 country codes.</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>iso3</th>
+      <td><p>3-letter country code to update the map (see <a href='ISO3.html'>ISO3</a>)</p></td>
+    </tr>
+    <tr>
+      <th>key</th>
+      <td><p>Maptiler API key</p></td>
+    </tr>
+    <tr>
+      <th>map</th>
+      <td><p>leaflet map</p></td>
+    </tr>
+    <tr>
+      <th>layers</th>
+      <td><p>vector of layer names (see <a href='LAYERS.html'>LAYERS</a>)</p></td>
+    </tr>
+    </table>
 
-    <div class='dont-index'><p><a href='ISO3.html'>ISO3</a></p></div>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>leaflet map widget with default layers</p>
+<p>leaflet map widget with default layers</p>
+<p>updated leaflet map</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span>mfrow<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>ZOI</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span>
-<span class='r-in'><span class='kw'>for</span><span class='op'>(</span><span class='va'>i</span> <span class='kw'>in</span> <span class='va'>ZOI</span><span class='op'>)</span> <span class='op'>{</span></span>
-<span class='r-in'> <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fu'>st_geometry</span><span class='op'>(</span><span class='va'>i</span><span class='op'>[[</span><span class='st'>"admin"</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>, col<span class='op'>=</span><span class='va'>pal</span><span class='op'>[</span><span class='st'>"light"</span><span class='op'>]</span><span class='op'>)</span></span>
-<span class='r-in'> <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fu'>st_geometry</span><span class='op'>(</span><span class='va'>i</span><span class='op'>[[</span><span class='st'>"water"</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>, col<span class='op'>=</span><span class='va'>pal</span><span class='op'>[</span><span class='st'>"blue"</span><span class='op'>]</span>, add<span class='op'>=</span><span class='cn'>T</span><span class='op'>)</span></span>
-<span class='r-in'><span class='op'>}</span></span>
-<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in st_geometry(i[["admin"]]):</span> could not find function "st_geometry"</span>
+    <pre class="examples"><span class='r-in'><span class='co'># Default rendering</span></span>
+<span class='r-in'><span class='fu'>map_init</span><span class='op'>(</span><span class='op'>)</span></span>
 <span class='r-in'></span>
 </pre>
   </div>

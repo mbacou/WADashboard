@@ -47,8 +47,11 @@
 
 
 <meta property="og:title" content="WMS and map tile providers — LAYERS" />
-<meta property="og:description" content="List of external spatial layers. By default layers are read in from package
-configuration file ./data-raw/json/LAYERS.json." />
+<meta property="og:description" content="Named list of external spatial layers. By default layers are read in from package
+configuration file at ./data-raw/json/LAYERS.json. This file may be manually
+edited to add new layers to the dashboard. All spatial formats supported by the
+Leaflet JS viewer are supported (e.g. raster tiles, WMS,
+GeoJSON, KML, rasters, etc.), aside from vector tiles." />
 <meta property="og:image" content="https://github.mbacou.io/WADashboard/inst/app/www/fig/iwmi_logo_w.svg" />
 <meta property="og:image:alt" content="Water Accounting+" />
 <meta name="twitter:card" content="summary_large_image" />
@@ -130,8 +133,11 @@ configuration file ./data-raw/json/LAYERS.json." />
     </div>
 
     <div class="ref-description">
-    <p>List of external spatial layers. By default layers are read in from package
-configuration file <code>./data-raw/json/LAYERS.json</code>.</p>
+    <p>Named list of external spatial layers. By default layers are read in from package
+configuration file at <code>./data-raw/json/LAYERS.json</code>. This file may be manually
+edited to add new layers to the dashboard. All spatial formats supported by the
+<a href='https://leafletjs.com/'>Leaflet</a> JS viewer are supported (e.g. raster tiles, WMS,
+GeoJSON, KML, rasters, etc.), aside from <strong>vector tiles</strong>.</p>
     </div>
 
     <pre class="usage"><span class='va'>LAYERS</span></pre>
@@ -140,7 +146,77 @@ configuration file <code>./data-raw/json/LAYERS.json</code>.</p>
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
     <p>A named list, names are provider codes.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
+    <p>The list is organized by data provider (e.g. Digital Earth Africa, ESRI World
+Atlas, FAO WaPOR, etc.).</p>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><span class='r-in'><span class='va'>LAYERS</span><span class='op'>[[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $url</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $url[[1]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "https://io.apps.fao.org/geoserver/wms?"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $attr</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $attr[[1]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "FAO WaPOR"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $layers</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $layers$`Natural Earth`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $layers$`Natural Earth`[[1]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "RICCAR:gray_hr_sr_w_3"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $layers$`Blue Marble`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $layers$`Blue Marble`[[1]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "NASA:bluemarble_ls_sw_st"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $layers$`Hydrological Basins`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $layers$`Hydrological Basins`[[1]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "AQUAMAPS:hydrobasins_africa"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $layers$`Major Rivers`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $layers$`Major Rivers`[[1]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "AQUAMAPS:rivers_africa"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $layers$`Land Cover 30m`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $layers$`Land Cover 30m`[[1]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "WAPOR_2:l3_odn_lcc_d"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $layers$`Monthly Precipitation 5km`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $layers$`Monthly Precipitation 5km`[[1]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "WAPOR_2:l1_pcp_m"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $layers$`Actual ET`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $layers$`Actual ET`[[1]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "WAPOR_2:l3_odn_aeti_d"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $layers$`Incremental ET`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $layers$`Incremental ET`[[1]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "WATER:niger_etincr"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $layers$`Drought Intensity`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $layers$`Drought Intensity`[[1]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "ASIS:di_d"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $layers$`Monthly Precipitation Anomaly`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $layers$`Monthly Precipitation Anomaly`[[1]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "NMME:fmpa"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
