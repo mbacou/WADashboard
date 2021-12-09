@@ -16,6 +16,10 @@ function(input, output, session) {
     var = list(var="var_incremental_etnat", color="green")
   )
 
+  layers = reactive(
+    c(input$chkLayer_1, input$chkLayer_2, input$chkLayer_3)
+  )
+
   dt = reactive(
     data[iso3==s$iso3]
   )
@@ -62,8 +66,8 @@ function(input, output, session) {
     Blue water availability, 30, danger, 110
       ")
     lapply(1:nrow(dt), function(x) dt[x,
-        progressBar(paste0("pbg-", x), value, total=max,
-          title=span(class="pt-3", variable), status=status, display_pct=T)]
+      progressBar(paste0("pbg-", x), value, total=max,
+        title=span(class="pt-3", variable), status=status, display_pct=T)]
     ) %>% tagList()
   })
 
@@ -96,11 +100,17 @@ function(input, output, session) {
     s$year = ym(input$numYear)
   })
 
+  # Reset map ----
   observeEvent(s$iso3, {
     leafletProxy("map") %>% map_update(s$iso3)
     updateSliderTextInput(session, "numYear", NULL,
       data[iso3==s$iso3 & sheet=="sheet1"][order(year), format(unique(year), "%Y %b")],
       selected=data[, format(max(year), "%Y %b")])
+  })
+
+  # Toggle map layers ----
+  observeEvent(layers(), {
+    leafletProxy("map") %>% map_toggle(layers())
   })
 
   output$plot_ts = renderHighchart({

@@ -17,7 +17,8 @@ library(bslib)
 library(data.table)
 if(!interactive()) library(WADashboard) else devtools::load_all(".")
 
-root <- getOption("wa.data")
+#root <- getOption("wa.data")
+root <- system.file("csv", package="WADashboard")
 
 #load(file.path(root, "data.RData"))
 data <- file.path(root, "data_sheet.csv") %>% fread()

@@ -28,8 +28,12 @@ ul.nav.navbar-nav>li>a:hover {
 .bootstrap-select .dropdown-menu li a span.text {
   display: unset;
 }
+.shiny-input-checkboxgroup label ~ .shiny-options-group,
+.shiny-input-radiogroup label ~ .shiny-options-group {
+  margin-top: unset;
+}
 .shiny-input-checkboxgroup .checkbox {
-  padding: .25rem 2rem;
+  padding: .25rem 2.4rem;
   border-top: 1px solid rgba(194, 194, 194, 0.6);
 }
 .shiny-input-checkboxgroup .checkbox label>input {
@@ -103,7 +107,7 @@ ul.nav.navbar-nav>li>a:hover {
   background: linear-gradient(180deg, rgba(232,231,231,1) 0%, rgba(242,241,241,1) 45%, rgba(255,255,255,1) 100%);
 }
 .waved2 {
-  background: linear-gradient(180deg, rgba(232,231,231,1) 0%, rgba(242,241,241,1) 100%);
+  background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(242,241,241,1) 50%, rgba(255,255,255,1) 100%);
 }
 .waved3 {
   background-color: var(--white);

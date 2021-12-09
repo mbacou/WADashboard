@@ -112,6 +112,7 @@ bs_themed <- function(
       `card-title-font-size` = "1rem",
       `card-spacer-y` = ".5rem",
       `card-bg` = "transparent",
+      `card-cap-bg` = "transparent",
       `link-color` = "$blue"
     )
 }

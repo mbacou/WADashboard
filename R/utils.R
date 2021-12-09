@@ -1,4 +1,4 @@
-# Format basin picklist
+#' Format basin picklist
 #'
 #' @return list of html tags
 #' @importFrom shiny tagList
@@ -14,7 +14,7 @@ l_iso3 <- function() {
   ))
 }
 
-# Format district picklist
+#' Format district picklist
 #'
 #' @param iso3 Basin ISO3 code (see [ISO3])
 #'

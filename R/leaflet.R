@@ -23,32 +23,21 @@ map_init <- function(
 
   iso3 = match.arg(iso3)
   tileset = LAYERS[["MAPTILER-R"]]
-  fao_bmap = LAYERS[["FAO-BASEMAP"]]
   fao_data = LAYERS[["FAO-DATA"]]
-
   bbox = st_bbox(ZOI[[iso3]]$admin)
 
   m = leaflet(options=leafletOptions(zoomControl=FALSE)) %>%
-    htmlwidgets::onRender("function(el, x) {
-        L.control.zoom({ position: 'bottomleft' }).addTo(this)
-    }") %>%
 
-    # Default config with Maptiler basemap
+    # Basemaps
     addTiles(
       "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
       #sprintf(tileset$url[[1]], tileset$layers[[1]], key),
       attribution = tileset$attr,
-      group = "Default")
+      group = "Default") %>%
 
-  # WaPOR basemaps
-  for(i in seq_along(fao_bmap$layers))
-    m = addWMSTiles(m, fao_bmap$url[[1]],
-      layers = unname(fao_bmap$layers[[i]]),
-      attribution = fao_bmap$attr[[1]],
-      group = names(fao_bmap$layers)[i],
-      options = WMSTileOptions(
-        version="1.1.1", format="image/png", transparent=TRUE)
-    )
+    addProviderTiles("OpenStreetMap.HOT", group="OSM HOT") %>%
+    addProviderTiles("Esri.WorldShadedRelief", group="ESRI Shaded Relief") %>%
+    addProviderTiles("GeoportailFrance.orthos", group="Geoportail Ortho")
 
   # WaPOR data
   for(i in seq_along(fao_data$layers))
@@ -62,27 +51,16 @@ map_init <- function(
       )
     )
 
-  # WASA data
-  # m = leafem:::addGeoRaster(m, stars::read_stars(nc[[1]]$source),
-  #   group = "WASA", opacity=.8,
-  #   colorOptions = leafem::colorOptions(
-  #     palette = viridisLite::inferno,
-  #     breaks=seq(0, 10, 100)
-  #   )
-  # )
-
   m %>%
+    hideGroup(names(fao_data$layers)) %>%
     addLayersControl(
-      baseGroups = c("Default", names(fao_bmap$layers)),
-      overlayGroups = c("Boundaries", "River Basin", names(fao_data$layers), "WASA"),
-      #options = layersControlOptions(collapsed=FALSE),
+      baseGroups = c("Default", "OSM HOT", "ESRI Shaded Relief", "Geoportail Ortho"),
       position = "bottomright"
     ) %>%
-
-    hideGroup(c("Graticule", names(fao_data$layers))) %>%
+    addFullscreenControl(pseudoFullscreen=TRUE, position="topright") %>%
     addSearchOSM(searchOptions(
       position="topright", zoom=9, minLength=3, tooltipLimit=8)) %>%
-    addFullscreenControl(pseudoFullscreen=TRUE, position="topright") %>%
+
     fitBounds(bbox[[1]], bbox[[2]], bbox[[3]], bbox[[4]])
 
 }
@@ -92,20 +70,18 @@ map_init <- function(
 #'
 #' Add selected hydrological features across river basins.
 #'
-#' @param m leaflet map
+#' @param map leaflet map
 #' @param iso3 3-letter country code to update the map (see [ISO3])
 #'
 #' @return leaflet map widget with default layers
 #' @export
-#'
-#' @examples
-map_update <- function(m, iso3=names(ISO3)) {
+map_update <- function(map, iso3=names(ISO3)) {
 
   iso3 = match.arg(iso3)
   zoi = ZOI[[iso3]]
   bbox = st_bbox(zoi[["admin"]])
 
-  m %>%
+  map %>%
     # Admin boundaries
     addPolygons(data=zoi[["admin"]], group="Boundaries",
       color=pal[["orange"]], opacity=.8, weight=1,
@@ -120,4 +96,31 @@ map_update <- function(m, iso3=names(ISO3)) {
       weight=~rescale(Class_hydr, to=c(.5, 4.5))
     ) %>%
     flyToBounds(bbox[[1]], bbox[[2]], bbox[[3]], bbox[[4]])
+}
+
+
+#' Toggle map layers
+#'
+#' Used to toggle 3rd-party contextual layers.
+#'
+#' @param map leaflet map
+#' @param layers vector of layer names (see [LAYERS])
+#'
+#' @return updated leaflet map
+#' @export
+map_toggle <- function(map, layers=NULL) {
+
+  # WASA data
+  # map = leafem:::addGeoRaster(map, stars::read_stars(nc[[1]]$source),
+  #   group = "WASA", opacity=.8,
+  #   colorOptions = leafem::colorOptions(
+  #     palette = viridisLite::inferno,
+  #     breaks=seq(0, 10, 100)
+  #   )
+  # )
+
+  if(is.null(layers) || is.na(layers)) layers = ""
+  map %>%
+    hideGroup(names(fao_data$layers)) %>%
+    showGroup(layers)
 }

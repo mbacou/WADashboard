@@ -136,15 +136,36 @@ slider <- fluidRow(class="w-100 no-gutters",
 
 # Map ----
 map <- fluidRow(id="divMap", class="w-100 no-gutters collapse show",
-  column(8, style="min-height:20rem; height:34vh;",
+  column(8, style="min-height:20rem; height:30vh;",
     leafletOutput("map", width="100%", height="100%")
   ),
-  column(4, class="waved3 text-muted",
+  column(4, class="waved2",
     navs_pill(
       nav(title="Layers", icon=icon("layer-group"),
-        br(),
-        checkboxGroupInput("chkLayer", NULL, width="100%",
-          choices=names(LAYERS[[3]]$layers))
+        fluidRow(class="no-gutters",
+          column(12, class="py-3",
+            accordion(id="accLayers",
+              accordionItem(
+              title=span(icon(class="mr-3 text-muted", "caret-down"), "Basin Features"),
+                class="border-0", bg="white", collapsed=FALSE,
+                checkboxGroupInput("chkLayer_1", NULL, width="100%",
+                  choices=names(LAYERS[[3]]$layers[1:2]))
+              ),
+              accordionItem(
+                title=span(icon(class="mr-3 text-muted", "caret-down"), "Land Cover"),
+                class="border-0", bg="white", collapsed=TRUE,
+                checkboxGroupInput("chkLayer_2", NULL, width="100%",
+                  choices=names(LAYERS[[3]]$layers[3]))
+              ),
+              accordionItem(
+                title=span(icon(class="mr-3 text-muted", "caret-down"), "Hydrology"),
+                class="border-0", bg="white", collapsed=TRUE,
+                checkboxGroupInput("chkLayer_3", NULL, width="100%",
+                  choices=names(LAYERS[[3]]$layers[4:8]))
+              )
+            )
+          )
+        )
       ),
       nav(title="Legend", icon=icon("palette"),
         h4("Layers 2"),
