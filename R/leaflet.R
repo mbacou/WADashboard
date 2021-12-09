@@ -1,3 +1,15 @@
+mapboxDependencies <- function() {
+  list(
+    htmltools::htmlDependency(
+      "mapbox-gl",
+      "1.13.2",
+      system.file("js/mapbox-gl", package="WADashboard"),
+      script = c("mapbox-gl.js", "leaflet-mapbox-gl.js"),
+      stylesheet = c("mapbox-gl.css")
+    )
+  )
+}
+
 #' Initialize map
 #'
 #' Load basin boundaries with default configuration.
@@ -10,6 +22,7 @@
 #' @importFrom sf st_bbox
 #' @importFrom lubridate days
 #' @return leaflet map widget with default layers
+#' @rdname leaflet
 #' @export
 #'
 #' @examples
@@ -22,29 +35,28 @@ map_init <- function(
 ) {
 
   iso3 = match.arg(iso3)
-  tileset = LAYERS[["MAPTILER-R"]]
-  fao_data = LAYERS[["FAO-DATA"]]
+  tileset = LAYERS[["MAPTILER"]]
+  fao = LAYERS[["FAO"]]
   bbox = st_bbox(ZOI[[iso3]]$admin)
 
-  m = leaflet(options=leafletOptions(zoomControl=FALSE)) %>%
+  m = leaflet() %>%
 
     # Basemaps
     addTiles(
-      "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-      #sprintf(tileset$url[[1]], tileset$layers[[1]], key),
+      sprintf(tileset$url[[1]], tileset$layers[[1]], key),
       attribution = tileset$attr,
       group = "Default") %>%
 
     addProviderTiles("OpenStreetMap.HOT", group="OSM HOT") %>%
-    addProviderTiles("Esri.WorldShadedRelief", group="ESRI Shaded Relief") %>%
-    addProviderTiles("GeoportailFrance.orthos", group="Geoportail Ortho")
+    addProviderTiles("Esri.WorldShadedRelief", group="ESRI shaded eelief") %>%
+    addProviderTiles("GeoportailFrance.orthos", group="Geoportail ortho")
 
-  # WaPOR data
-  for(i in seq_along(fao_data$layers))
-    m = addWMSTiles(m, fao_data$url[[1]],
-      layers = unname(fao_data$layers[[i]]),
-      attribution = fao_data$attr[[1]],
-      group = names(fao_data$layers)[i],
+  # FAO WaPOR
+  for(i in seq_along(fao$layers))
+    m = addWMSTiles(m, fao$url[[1]],
+      layers = unname(fao$layers[[i]]),
+      attribution = fao$attr[[1]],
+      group = names(fao$layers)[i],
       options = WMSTileOptions(
         version="1.1.1", format="image/png", transparent=TRUE,
         time=as.POSIXct(Sys.Date())-days(5)
@@ -52,9 +64,9 @@ map_init <- function(
     )
 
   m %>%
-    hideGroup(names(fao_data$layers)) %>%
+    hideGroup(names(fao$layers)) %>%
     addLayersControl(
-      baseGroups = c("Default", "OSM HOT", "ESRI Shaded Relief", "Geoportail Ortho"),
+      baseGroups = c("Default", "OSM HOT", "ESRI shaded relief", "Geoportail ortho"),
       position = "bottomright"
     ) %>%
     addFullscreenControl(pseudoFullscreen=TRUE, position="topright") %>%
@@ -74,6 +86,7 @@ map_init <- function(
 #' @param iso3 3-letter country code to update the map (see [ISO3])
 #'
 #' @return leaflet map widget with default layers
+#' @rdname leaflet
 #' @export
 map_update <- function(map, iso3=names(ISO3)) {
 
@@ -107,8 +120,11 @@ map_update <- function(map, iso3=names(ISO3)) {
 #' @param layers vector of layer names (see [LAYERS])
 #'
 #' @return updated leaflet map
+#' @rdname leaflet
 #' @export
 map_toggle <- function(map, layers=NULL) {
+
+  fao = LAYERS[["FAO"]]
 
   # WASA data
   # map = leafem:::addGeoRaster(map, stars::read_stars(nc[[1]]$source),
@@ -121,6 +137,6 @@ map_toggle <- function(map, layers=NULL) {
 
   if(is.null(layers) || is.na(layers)) layers = ""
   map %>%
-    hideGroup(names(fao_data$layers)) %>%
+    hideGroup(names(fao$layers)) %>%
     showGroup(layers)
 }

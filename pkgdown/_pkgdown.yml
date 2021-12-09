@@ -1,0 +1,15 @@
+url: https://github.mbacou.io/WADashboard
+
+template:
+  opengraph:
+    image:
+      src: inst/app/www/fig/iwmi_logo_w.svg
+      alt: "Water Accounting+"
+    twitter:
+      site: "@iwmi"
+      card: summary_large_image
+
+home:
+  strip_header: false
+
+

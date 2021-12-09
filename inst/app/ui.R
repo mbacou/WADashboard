@@ -41,8 +41,8 @@ footer <- fluidRow(class="bg-dark align-items-center",
 )
 
 # Scorecards ----
-tab_11 <- nav(
-  span("Water", br(), "Productivity"),
+tab_11 <- tagList(
+  h3(class="text-info", "Water Productivity"),
   p("[placeholder]", br(), "
         Which scoring dimensions and key indicators / measures to highlight in this section?
         "),
@@ -56,8 +56,8 @@ tab_11 <- nav(
   uiOutput("ui_score_prod", inline=F)
 )
 
-tab_12 <- nav(
-  span("Sustainability", br(), "Score"),
+tab_12 <- tagList(
+  h3(class="text-info", "Sustainability Score"),
   p("[placeholder]", br(), "
         Which scoring dimensions and key indicators / measures to highlight in this section?
         "),
@@ -68,19 +68,16 @@ tab_12 <- nav(
       icon=icon("check-double"), footer="Indicator 2", width=6, color="danger")
   ),
   p(),
-  uiOutput("ui_score_sust", inline=F)
+  uiOutput("ui_score_sust", inline=F),
+  div(class="text-right",
+    actionButton("btnScore", "Learn More", width="6rem", class="my-3")
+  )
 )
 
-
-# Profile ----
-tab_13 <- nav(
-  span("Basin", br(), "Profile"), icon=icon("table"),
-  div(class="table-responsive",
-    p("[placeholder]", br(), "
-        Which key basin features / characteristics to highlight in this section?
-        "),
-    tableOutput("tb_basin")
-  )
+tab_13 <- tagList(
+  h3(class="text-info", "Basin Profile"),
+  p("Key basin characteristics."),
+  div(class="table-responsive waved2", tableOutput("tb_basin"))
 )
 
 # Filters ----
@@ -136,7 +133,7 @@ slider <- fluidRow(class="w-100 no-gutters",
 
 # Map ----
 map <- fluidRow(id="divMap", class="w-100 no-gutters collapse show",
-  column(8, style="min-height:20rem; height:30vh;",
+  column(8, style="min-height:21rem; height:28vh;",
     leafletOutput("map", width="100%", height="100%")
   ),
   column(4, class="waved2",
@@ -146,22 +143,22 @@ map <- fluidRow(id="divMap", class="w-100 no-gutters collapse show",
           column(12, class="py-3",
             accordion(id="accLayers",
               accordionItem(
-              title=span(icon(class="mr-3 text-muted", "caret-down"), "Basin Features"),
+                title=span(icon(class="mr-3 text-muted", "caret-down"), "Basin Features"),
                 class="border-0", bg="white", collapsed=FALSE,
                 checkboxGroupInput("chkLayer_1", NULL, width="100%",
-                  choices=names(LAYERS[[3]]$layers[1:2]))
+                  choices=names(LAYERS[[2]]$layers[3:4]))
               ),
               accordionItem(
                 title=span(icon(class="mr-3 text-muted", "caret-down"), "Land Cover"),
                 class="border-0", bg="white", collapsed=TRUE,
                 checkboxGroupInput("chkLayer_2", NULL, width="100%",
-                  choices=names(LAYERS[[3]]$layers[3]))
+                  choices=names(LAYERS[[2]]$layers[5]))
               ),
               accordionItem(
                 title=span(icon(class="mr-3 text-muted", "caret-down"), "Hydrology"),
                 class="border-0", bg="white", collapsed=TRUE,
                 checkboxGroupInput("chkLayer_3", NULL, width="100%",
-                  choices=names(LAYERS[[3]]$layers[4:8]))
+                  choices=names(LAYERS[[2]]$layers[6:10]))
               )
             )
           )
@@ -183,18 +180,9 @@ map <- fluidRow(id="divMap", class="w-100 no-gutters collapse show",
 
 # Overview ----
 overview <- fluidRow(
-  column(4,
-    h3(class="text-info", "Basin Profile"),
-    tab_13),
-  column(4,
-    h3(class="text-info", "Water Productivity"),
-    tab_11),
-  column(4,
-    h3(class="text-info", "Sustainability Score"),
-    tab_12),
-  column(12, class="text-right",
-    actionButton("btnScore", "Learn More", width="6rem", class="my-3")
-  )
+  column(4, tab_13),
+  column(4, tab_11),
+  column(4, tab_12)
 )
 
 # Timeline ----

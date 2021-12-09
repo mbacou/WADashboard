@@ -1,7 +1,7 @@
 #' Bootstrap 4 accordion container
 #'
 #' [accordionItem] is to be inserted in a [accordion]. This is a modified
-#' version from [bs4Dash::accordion()].
+#' version of [bs4Dash::accordion()].
 #'
 #' @param ... slot for \link{accordionItem}.
 #' @param id unique accordion id.
@@ -31,7 +31,7 @@ accordion <- function(..., id, width = 12) {
 #' Bootstrap 4 accordion item
 #'
 #' \link{accordionItem} is to be inserted in a \link{accordion}. This is a modified
-#' version from [bs4Dash::accordionItem()].
+#' version of [bs4Dash::accordionItem()].
 #'
 #' @inheritParams bs4Dash::bs4AccordionItem
 #' @param class additional classes to apply to the parent card element
@@ -53,7 +53,7 @@ accordionItem <- function(..., title,
 
   div(class=cl,
     # box header
-    div(class="card-header px-3 py-1",
+    div(class="card-header waved3 px-3 pt-1 pb-2",
       div(class="w-100",
         a(class="d-block w-100", href="#",
           `data-toggle`="collapse", `aria-expanded`=if(collapsed) "false" else "true",
@@ -68,11 +68,10 @@ accordionItem <- function(..., title,
 
 #' Update accordion
 #'
-#' Alias of [bs4Dash::updateAccordion()]
+#' Alias for [bs4Dash::updateAccordion()]
 #'
 #' @inheritParams bs4Dash::updateAccordion
 #'
-#' @return
 #' @rdname accordion
 #' @importFrom shiny getDefaultReactiveDomain
 #' @importFrom bs4Dash updateAccordion

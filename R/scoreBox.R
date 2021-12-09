@@ -1,6 +1,6 @@
 #' Scorecard Box
 #'
-#' Modified version of [bs4Dash::infoBox()]
+#' Modified version of [bs4Dash::valueBox()]
 #'
 #' @inheritParams bs4Dash::valueBox
 #'

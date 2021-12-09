@@ -42,20 +42,16 @@ function(input, output, session) {
 
   output$tb_basin = renderTable(
     hover=T, spacing="xs", colnames=F, align="lr", width="100%",
-    fread('
-    label, "value"
-    Area, "40,000 km²"
-    Population, "800,000"
-    Countries, "4"
-    Authorities, "Niger Basin Authority"
-    Annual rainfall, "600 mm"
-    Annual ET, "400 mm"
-    Major Season, "Apr-Sep"
-    Minor Season, "Oct-Dec"
-    Irrigated, "400 ha"
-    Major Dams, "5"
-    Hydro power generation, "50 MW"
-      ')[, label := sprintf('<span class="text-info">%s</span>', label)]
+    melt(as.data.table(ISO3[[s$iso3]])[, `:=`(
+      `area` = sprintf("%s ha", comma(area)),
+      `population` = sprintf("%s", comma(`population`)),
+      `annual rainfall` = sprintf("%s mm", comma(`annual rainfall`)),
+      `annual ET` = sprintf("%s mm", comma(`annual ET`)),
+      `irrigated area` = sprintf("%s ha", comma(`irrigated area`)),
+      `hydro power` = sprintf("%s GWh/year", comma(`hydro power`))
+    )], id.vars=1)[c(1:2, 5:7, 9:15), .(
+      variable = sprintf('<span class="text-info">%s</span>', str_to_title(variable)),
+      value)]
   )
 
   output$ui_score_prod = renderUI({

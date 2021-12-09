@@ -1,21 +1,18 @@
 {
   "DEA": {
     "url": ["https://ows.digitalearth.africa/"],
-    "attr": ["Digital Earth Africa"],
-    "layers": []
+    "attr": ["DEA"],
+    "layers": {
+
+    }
   },
-  "FAO-BASEMAP": {
+  "FAO": {
     "url": ["https://io.apps.fao.org/geoserver/wms?"],
     "attr": ["FAO WaPOR"],
     "layers": {
       "Natural Earth": ["RICCAR:gray_hr_sr_w_3"],
-      "Blue Marble": ["NASA:bluemarble_ls_sw_st"]
-    }
-  },
-  "FAO-DATA": {
-    "url": ["https://io.apps.fao.org/geoserver/wms?"],
-    "attr": ["FAO WaPOR"],
-    "layers": {
+      "Blue Marble": ["NASA:bluemarble_ls_sw_st"],
+
       "Hydrological Basins": ["AQUAMAPS:hydrobasins_africa"],
       "Major Rivers": ["AQUAMAPS:rivers_africa"],
       "Land Cover 30m": ["WAPOR_2:l3_odn_lcc_d"],
@@ -26,16 +23,16 @@
       "Monthly Precipitation Anomaly": ["NMME:fmpa"]
     }
   },
-  "MAPTILER-R": {
+  "MAPTILER": {
     "url": ["//api.maptiler.com/maps/%s/{z}/{x}/{y}@2x.png?key=%s"],
-    "attr": ["OSM | FAO WaPOR"],
+    "attr": ["OSM"],
     "layers": {
       "default": ["42a84100-2300-4647-ba8f-a70afaf51946"]
     }
   },
-  "MAPTILER-V": {
+  "MAPTILERV": {
     "url": ["//api.maptiler.com/maps/%s/style.json?key=%s"],
-    "attr": ["OSM | FAO WaPOR"],
+    "attr": ["OSM"],
     "layers": {
       "default": ["42a84100-2300-4647-ba8f-a70afaf51946"]
     }

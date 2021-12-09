@@ -1,7 +1,15 @@
 #' Custom Bootstrap theme
 #'
+#' A modified BS4 theme based on IWMI branding guidelines.
+#'
 #' @inheritParams bslib::bs_theme
 #' @param font_size base font size in pixel
+#' @param elevation add or remove shadows to elements (see [BS4
+#'   shadows](https://getbootstrap.com/docs/4.1/utilities/shadows/))
+#' @param rounded enable rounded elements (see [BS4
+#'   borders](https://getbootstrap.com/docs/4.0/utilities/borders/))
+#' @param gradients enable background gradients (see [BS4
+#'   colors](https://getbootstrap.com/docs/4.0/utilities/colors/))
 #'
 #' @importFrom bslib bs_theme bs_add_variables
 #' @return Modified Bootstrap 4 theme
@@ -10,10 +18,18 @@
 #' if (interactive()) bs_theme_preview(bs_themed())
 #'
 bs_themed <- function(
-  base_font = getOption("wa.font")[1],
-  heading_font = getOption("wa.font")[2],
-  font_size = 15
+  base_font = "'national-web-regular'",
+  heading_font = "'DM Serif Text'",
+  font_size = 15,
+  elevation = 0,
+  rounded = FALSE,
+  gradients = FALSE
 ) {
+
+  stopifnot(
+    is.logical(rounded),
+    is.logical(gradients)
+  )
 
   bs_theme(
     version = "4",
@@ -53,8 +69,8 @@ bs_themed <- function(
     `light` = pal[["light"]],
     `dark` = pal[["black"]],
 
-    `enable-rounded` = FALSE,
-    `enable-gradients` = FALSE,
+    `enable-rounded` = rounded,
+    `enable-gradients` = gradients,
 
     `navbar-padding-x` = 0,
     `navbar-padding-y` = 0,

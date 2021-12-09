@@ -107,9 +107,8 @@ ul.nav.navbar-nav>li>a:hover {
   background: linear-gradient(180deg, rgba(232,231,231,1) 0%, rgba(242,241,241,1) 45%, rgba(255,255,255,1) 100%);
 }
 .waved2 {
-  background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(242,241,241,1) 50%, rgba(255,255,255,1) 100%);
+  background: linear-gradient(180deg, rgba(255,255,255,.3) 0%, rgba(255,255,255,.9) 50%, rgba(255,255,255,0) 100%);
 }
 .waved3 {
-  background-color: var(--white);
-  background: linear-gradient(180deg, rgba(255,255,255,1) 6%, rgba(242,241,241,1) 100%);
+  background: linear-gradient(180deg, rgba(255,255,255,1) 6%, rgba(255,255,255,0) 100%);
 }

@@ -2,12 +2,8 @@
 
   options(
 
-    # Bootstrap
-    wa.elevation = 0,
-    wa.font = c("'national-web-regular'", "'DM Serif Text'"),
-
     # Root data dir
-    wa.data = if(Sys.getenv("WA_DATA_ROOT") != "") Sys.getenv("WA_DATA_ROOT") else
+    wa.data = if(Sys.getenv("WA_DATA") != "") Sys.getenv("WA_DATA") else
       if(dir.exists(system.file("csv", package="WADashboard")))
       system.file("csv", package="WADashboard") else "./",
 

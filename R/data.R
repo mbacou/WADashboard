@@ -1,7 +1,7 @@
 #' Default color palette
 #'
-#' A list of Bootstrap color codes. By default this is read in from package
-#' configuration file `./data-raw/json/palette.gpl` (GIMP palette format).
+#' A list of Bootstrap color codes. By default colors are read in from package
+#' configuration file at `./data-raw/json/palette.gpl` (GIMP palette format).
 #'
 #' @keywords datasets
 #' @name pal
@@ -11,10 +11,12 @@
 #' @export
 "pal"
 
-#' River basin ISO3 codes
+#' River basins
 #'
-#' A named list of basin metadata. Names are unique country ISO3 codes. By default
-#' this list is read in from package configuration file `./data-raw/json/ISO3.json`.
+#' A named list of basin metadata. Names are the basin's largest country ISO3 codes.
+#' This list is read in from package configuration file at
+#' `./data-raw/json/ISO3.json`. This file may be manually edited to add new basin
+#' configurations.
 #'
 #' @keywords datasets
 #' @name ISO3
@@ -22,9 +24,9 @@
 #' @seealso [ZOI]
 #' @examples
 #' # Processed river basins
-#' lapply(ISO3, `[[`, "Label")
+#' names(ISO3)
 #'
-#' # Sample metadata terms currently in use for each basin
+#' # Metadata terms currently in use for each basin
 #' ISO3[[1]]
 #'
 #' @export
@@ -32,26 +34,39 @@
 
 #' Basin boundaries
 #'
-#' Simplified basin boundaries and water stream networks, read in from GeoJSON files
-#' at `./data-raw/json/`.
+#' Named list of simplified basin boundaries and water stream networks as `sf`
+#' objects, read in from GeoJSON file locations defined in [ISO3].
 #'
 #' @keywords datasets
 #' @name ZOI
 #' @format A named list, names are 3-letter ISO3 country codes.
 #' @seealso [ISO3]
 #' @examples
-#' for(i in ZOI) plot(i[[admin]])
+#' par(mfrow=c(1, length(ZOI)))
+#' for(i in ZOI) {
+#'  plot(st_geometry(i[["admin"]]), col=pal["light"])
+#'  plot(st_geometry(i[["water"]]), col=pal["blue"], add=T)
+#' }
 #'
 #' @export
 "ZOI"
 
 #' WMS and map tile providers
 #'
-#' List of external spatial layers. By default layers are read in from package
-#' configuration file `./data-raw/json/LAYERS.json`.
+#' Named list of external spatial layers. By default layers are read in from package
+#' configuration file at `./data-raw/json/LAYERS.json`. This file may be manually
+#' edited to add new layers to the dashboard. All spatial formats supported by the
+#' [Leaflet](https://leafletjs.com/) JS viewer are supported (e.g. raster tiles, WMS,
+#' GeoJSON, KML, rasters, etc.), aside from **vector tiles**.
+#'
+#' The list is organized by data provider (e.g. Digital Earth Africa, ESRI World
+#' Atlas, FAO WaPOR, etc.).
 #'
 #' @keywords datasets
 #' @name LAYERS
 #' @format A named list, names are provider codes.
+#' @examples
+#' LAYERS[[2]]
+#'
 #' @export
 "LAYERS"
