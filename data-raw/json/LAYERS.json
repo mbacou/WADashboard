@@ -1,40 +1,44 @@
 {
   "DEA": {
-    "url": ["https://ows.digitalearth.africa/"],
-    "attr": ["DEA"],
+    "label": "Digital Earth Africa",
+    "url": "https://ows.digitalearth.africa/",
+    "attr": "DEA",
     "layers": {
 
     }
   },
   "FAO": {
-    "url": ["https://io.apps.fao.org/geoserver/wms?"],
-    "attr": ["FAO WaPOR"],
+    "label": "FAO WaPOR GeoServer",
+    "url": "https://io.apps.fao.org/geoserver/wms?",
+    "attr": "FAO WaPOR",
     "layers": {
-      "Natural Earth": ["RICCAR:gray_hr_sr_w_3"],
-      "Blue Marble": ["NASA:bluemarble_ls_sw_st"],
+      "Natural Earth": "RICCAR:gray_hr_sr_w_3",
+      "Blue Marble": "NASA:bluemarble_ls_sw_st",
 
-      "Hydrological Basins": ["AQUAMAPS:hydrobasins_africa"],
-      "Major Rivers": ["AQUAMAPS:rivers_africa"],
-      "Land Cover 30m": ["WAPOR_2:l3_odn_lcc_d"],
-      "Monthly Precipitation 5km": ["WAPOR_2:l1_pcp_m"],
-      "Actual ET": ["WAPOR_2:l3_odn_aeti_d"],
-      "Incremental ET": ["WATER:niger_etincr"],
-      "Drought Intensity": ["ASIS:di_d"],
-      "Monthly Precipitation Anomaly": ["NMME:fmpa"]
+      "Hydrological Basins": "AQUAMAPS:hydrobasins_africa",
+      "Major Rivers": "AQUAMAPS:rivers_africa",
+      "Land Cover 30m": "WAPOR_2:l3_odn_lcc_d",
+      "Monthly Precipitation 5km": "WAPOR_2:l1_pcp_m",
+      "Actual ET": "WAPOR_2:l3_odn_aeti_d",
+      "Incremental ET": "WATER:niger_etincr",
+      "Drought Intensity": "ASIS:di_d",
+      "Monthly Precipitation Anomaly": "NMME:fmpa"
     }
   },
   "MAPTILER": {
-    "url": ["//api.maptiler.com/maps/%s/{z}/{x}/{y}@2x.png?key=%s"],
-    "attr": ["OSM"],
+    "label": "Maptiler custom basemaps",
+    "url": "//api.maptiler.com/maps/%s/{z}/{x}/{y}@2x.png?key=%s",
+    "attr": "OSM",
     "layers": {
-      "default": ["42a84100-2300-4647-ba8f-a70afaf51946"]
+      "default": "42a84100-2300-4647-ba8f-a70afaf51946"
     }
   },
   "MAPTILERV": {
-    "url": ["//api.maptiler.com/maps/%s/style.json?key=%s"],
-    "attr": ["OSM"],
+    "label": "Maptiler custom basemaps (vector tiles)",
+    "url": "//api.maptiler.com/maps/%s/style.json?key=%s",
+    "attr": "OSM",
     "layers": {
-      "default": ["42a84100-2300-4647-ba8f-a70afaf51946"]
+      "default": "42a84100-2300-4647-ba8f-a70afaf51946"
     }
   }
 }

@@ -49,7 +49,7 @@ function(input, output, session) {
       `annual ET` = sprintf("%s mm", comma(`annual ET`)),
       `irrigated area` = sprintf("%s ha", comma(`irrigated area`)),
       `hydro power` = sprintf("%s GWh/year", comma(`hydro power`))
-    )], id.vars=1)[c(1:2, 5:7, 9:15), .(
+    )], id.vars=1)[!variable %in% c("admin", "water"), .(
       variable = sprintf('<span class="text-info">%s</span>', str_to_title(variable)),
       value)]
   )

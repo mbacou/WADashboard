@@ -43,9 +43,10 @@ storage type may be implemented (incl. Amazon S3).
 
 2. Edit 2 configuration files:  
     - [List of river basins](https://github.com/mbacou/WADashboard/blob/main/data-raw/json/ISO3.json)
-    - [Contextual spatial layers](https://github.com/mbacou/WADashboard/blob/main/data-raw/json/LAYERS.json)  
+    - [Catalog of contextual spatial layers](https://github.com/mbacou/WADashboard/blob/main/data-raw/json/LAYERS.json)  
     
-3. Reload the package with `devtools::load_all(".")` or install system-wide with `./build.sh`.
+3. Reload the package with `devtools::load_all(".")` or install system-wide with
+`./build.sh` (edit target locations as needed).
 
 
 ## Application Deployment

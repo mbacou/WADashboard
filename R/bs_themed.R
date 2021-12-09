@@ -4,7 +4,8 @@
 #'
 #' @inheritParams bslib::bs_theme
 #' @param font_size base font size in pixel
-#' @param elevation add or remove shadows to elements (see [BS4
+#' @param palette color palette (list of Bootstrap colors) (see [pal])
+#' @param elevation default element shadow depth (see [BS4
 #'   shadows](https://getbootstrap.com/docs/4.1/utilities/shadows/))
 #' @param rounded enable rounded elements (see [BS4
 #'   borders](https://getbootstrap.com/docs/4.0/utilities/borders/))
@@ -21,6 +22,7 @@ bs_themed <- function(
   base_font = "'national-web-regular'",
   heading_font = "'DM Serif Text'",
   font_size = 15,
+  palette = pal,
   elevation = 0,
   rounded = FALSE,
   gradients = FALSE
@@ -30,6 +32,9 @@ bs_themed <- function(
     is.logical(rounded),
     is.logical(gradients)
   )
+
+  # Alias
+  pal = palette
 
   bs_theme(
     version = "4",

@@ -1,10 +1,10 @@
 {
   "mli": {
     "label": "Niger River",
-    "country": "Mali",
-    "countries": 4,
     "admin": "./data-raw/json/mli_basin.geojson",
     "water": "./data-raw/json/mli_gloric.geojson",
+    "country": "Mali",
+    "countries": 4,
     "area": 40000,
     "population": 800000,
     "authorities": "Niger Basin Authority",
@@ -19,10 +19,10 @@
   },
   "ken": {
     "label": "Mara River",
-    "country": "Kenya",
-    "countries": 1,
     "admin": "./data-raw/json/ken_basin.geojson",
     "water": "./data-raw/json/ken_gloric.geojson",
+    "country": "Kenya",
+    "countries": 1,
     "area": 40000,
     "population": 800000,
     "authorities": "Nile Basin Initiative",
