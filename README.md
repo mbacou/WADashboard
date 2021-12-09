@@ -37,12 +37,16 @@ In addition to the usual R package documentation, we also have extensive docs at
 
 To configure and extend this application:
 
-1. Set a system or user environment variable `WA_DATA` pointing to the root location
-of your WA+ model output.
+1. Define environment variable `WA_DATA` pointing to the root location of your WA+
+model output (collection of CSV and NetCDF files). Any local or cloud-based
+storage type may be implemented (incl. Amazon S3).
 
 2. Edit 2 configuration files:  
     - [List of river basins](https://github.com/mbacou/WADashboard/blob/main/data-raw/json/ISO3.json)
     - [Contextual spatial layers](https://github.com/mbacou/WADashboard/blob/main/data-raw/json/LAYERS.json)  
+    
+3. Reload the package with `devtools::load_all(".")` or install system-wide with `./build.sh`.
+
 
 ## Application Deployment
 

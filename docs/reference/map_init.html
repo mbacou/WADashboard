@@ -47,7 +47,9 @@
 
 
 <meta property="og:title" content="Initialize map — map_init" />
-<meta property="og:description" content="Load basin boundaries with default configuration." />
+<meta property="og:description" content="Load basin boundaries with default configuration.
+Add selected hydrological features across river basins.
+Used to toggle 3rd-party contextual layers." />
 <meta property="og:image" content="https://github.mbacou.io/WADashboard/inst/app/www/fig/iwmi_logo_w.svg" />
 <meta property="og:image:alt" content="Water Accounting+" />
 <meta name="twitter:card" content="summary_large_image" />
@@ -130,26 +132,42 @@
 
     <div class="ref-description">
     <p>Load basin boundaries with default configuration.</p>
+<p>Add selected hydrological features across river basins.</p>
+<p>Used to toggle 3rd-party contextual layers.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>map_init</span><span class='op'>(</span>iso3 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>ISO3</span><span class='op'>)</span>, key <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"wa.maptiler"</span><span class='op'>)</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>map_init</span><span class='op'>(</span>iso3 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>ISO3</span><span class='op'>)</span>, key <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"wa.maptiler"</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='fu'>map_update</span><span class='op'>(</span><span class='va'>map</span>, iso3 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>ISO3</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='fu'>map_toggle</span><span class='op'>(</span><span class='va'>map</span>, layers <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>iso3</th>
-      <td><p>3-letter country code to center the map on (see <a href='ISO3.html'>ISO3</a>)</p></td>
+      <td><p>3-letter country code to update the map (see <a href='ISO3.html'>ISO3</a>)</p></td>
     </tr>
     <tr>
       <th>key</th>
       <td><p>Maptiler API key</p></td>
+    </tr>
+    <tr>
+      <th>map</th>
+      <td><p>leaflet map</p></td>
+    </tr>
+    <tr>
+      <th>layers</th>
+      <td><p>vector of layer names (see <a href='LAYERS.html'>LAYERS</a>)</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>leaflet map widget with default layers</p>
+<p>leaflet map widget with default layers</p>
+<p>updated leaflet map</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='r-in'><span class='co'># Default rendering</span></span>

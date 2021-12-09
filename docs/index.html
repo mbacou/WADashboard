@@ -104,7 +104,7 @@
 <p>In addition to the usual R package documentation, we also have extensive docs at: <a href="https://mbacou.github.io/WADashboard/">https://mbacou.github.io/WADashboard/</a>.</p>
 <p>To configure and extend this application:</p>
 <ol>
-<li><p>Set a system or user environment variable <code>WA_DATA</code> pointing to the root location of your WA+ model output.</p></li>
+<li><p>Define environment variable <code>WA_DATA</code> pointing to the root location of your WA+ model output (collection of CSV and NetCDF files). Any local or cloud-based storage type may be implemented (incl. Amazon S3).</p></li>
 <li>
 <p>Edit 2 configuration files:</p>
 <ul>
@@ -112,6 +112,7 @@
 <li><a href="https://github.com/mbacou/WADashboard/blob/main/data-raw/json/LAYERS.json">Contextual spatial layers</a></li>
 </ul>
 </li>
+<li><p>Reload the package with <code>devtools::load_all(".")</code> or install system-wide with <code>./build.sh</code>.</p></li>
 </ol>
 </div>
 <div id="application-deployment" class="section level2">

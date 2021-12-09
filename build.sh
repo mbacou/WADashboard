@@ -5,7 +5,7 @@
 cd "$(dirname "$(realpath "$0")")";
 
 # Update built-in package datasets
-#Rscript ./data-raw/data.R
+Rscript ./data-raw/data.R
 
 # Build and install system-wide
 R CMD INSTALL --no-multiarch --with-keep.source --library='/usr/local/lib/R/site-library' ./

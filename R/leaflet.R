@@ -22,7 +22,7 @@ mapboxDependencies <- function() {
 #' @importFrom sf st_bbox
 #' @importFrom lubridate days
 #' @return leaflet map widget with default layers
-#' @rdname leaflet
+#' @rdname map_init
 #' @export
 #'
 #' @examples
@@ -86,7 +86,7 @@ map_init <- function(
 #' @param iso3 3-letter country code to update the map (see [ISO3])
 #'
 #' @return leaflet map widget with default layers
-#' @rdname leaflet
+#' @rdname map_init
 #' @export
 map_update <- function(map, iso3=names(ISO3)) {
 
@@ -120,7 +120,7 @@ map_update <- function(map, iso3=names(ISO3)) {
 #' @param layers vector of layer names (see [LAYERS])
 #'
 #' @return updated leaflet map
-#' @rdname leaflet
+#' @rdname map_init
 #' @export
 map_toggle <- function(map, layers=NULL) {
 
