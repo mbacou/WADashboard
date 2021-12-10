@@ -24,9 +24,6 @@ function(input, output, session) {
     data[iso3==s$iso3]
   )
 
-  # Map
-  output$map = renderLeaflet(map_init(init$iso3))
-
   # Sheet 1
   output$d3_sheet1 = renderD3({
     r2d3(dt()[sheet=="sheet1" & year==s$year], script="./www/js/sheet_1.js")
@@ -96,11 +93,15 @@ function(input, output, session) {
     s$year = ym(input$numYear)
   })
 
-  # Reset map ----
+  # Map
+  output$map = renderLeaflet(map_init(init$iso3))
+
+  # Update map ----
   observeEvent(s$iso3, {
     leafletProxy("map") %>% map_update(s$iso3)
     updateSliderTextInput(session, "numYear", NULL,
-      data[iso3==s$iso3 & sheet=="sheet1"][order(year), format(unique(year), "%Y %b")],
+      data[iso3==s$iso3 & sheet=="sheet1"][
+        order(year), format(unique(year), "%Y %b")],
       selected=data[, format(max(year), "%Y %b")])
   })
 
@@ -109,6 +110,20 @@ function(input, output, session) {
     leafletProxy("map") %>% map_toggle(layers())
   })
 
+  output$uiLegend = renderUI(
+    if(length(layers())>0) lapply(layers(), function(x)
+      tagList(h5(class="text-info", x), img(class="img-responsive",
+        src=sprintf(LAYERS[["FAO"]]$legend, LAYERS[["FAO"]]$layers[[x]]))
+      )) else p(class="mt-2 text-muted", "No layer selected.")
+  )
+
+  output$uiInfo = renderUI(
+    if(length(layers())>0) lapply(layers(), function(x)
+      tagList(h5(class="text-info", x), p("")
+      )) else p(class="mt-2 text-muted", "No layer selected.")
+  )
+
+  # Plots ----
   output$plot_ts = renderHighchart({
     req(s$var$var)
     plot_ts(dt()[id==s$var$var], s$var$color)

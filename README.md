@@ -1,8 +1,8 @@
 # Dashboard for WA+ Water Accounts
 
-Development package for a [Shiny](https://shiny.rstudio.com/) data visualization
-application that collects results from [Water
-Accounting+](https://www.wateraccounting.org/) (WA+) hydrological models.
+Development package for a [Shiny](https://shiny.rstudio.com/) data visualization tool
+that collects results from [Water Accounting+](https://www.wateraccounting.org/) (WA+)
+hydrological models.
 
 Water accounting integrates hydrological processes with land use, managed water flows
 and the services that result from water consumption in river basins. Its objective is
@@ -44,7 +44,7 @@ storage type may be implemented (incl. Amazon S3).
 2. Edit 2 configuration files:  
     - [List of river basins](https://github.com/mbacou/WADashboard/blob/main/data-raw/json/ISO3.json)
     - [Catalog of contextual spatial layers](https://github.com/mbacou/WADashboard/blob/main/data-raw/json/LAYERS.json)
-
+    
 3. Reload the package with `devtools::load_all(".")` or install system-wide with
 `./build.sh` (edit target locations as needed).
 

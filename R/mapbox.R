@@ -21,9 +21,8 @@ lmap_init <- function(
 ) {
 
   iso3 = match.arg(iso3)
-  tileset = LAYERS[["MAPTILER-V"]]
-  fao_bmap = LAYERS[["FAO-BASEMAP"]]
-  fao_data = LAYERS[["FAO-DATA"]]
+  tileset = LAYERS[["MAPTILERV"]]
+  fao = LAYERS[["FAO"]]
 
   bbox = st_bbox(ZOI[[iso3]]$admin)
   coords = c(mean(bbox[1:2]), mean(bbox[3:4]))
@@ -35,13 +34,14 @@ lmap_init <- function(
     zoom = 3,
     style = sprintf(paste0("https:", tileset$url[[1]]), tileset$layers[[1]], maptiler_key)
   ) %>%
-    add_sf(ZOI[[iso3]]$admin,
-      auto_highlight=TRUE,
-      stroke_colour=pal[["orange"]], stroke_opacity=.8,
-      fill_colour=pal[["orange"]], fill_opacity=.2)
-    add_hexagon(data[1:1000,], lon="x", lat="y", colour="Band1",
-      radius=111139*(data[2, "x"]-data[1, "x"]),
-      layer_id="precipitation")
+    add_terrain(
+      data="https://api.maptiler.com/tiles/terrain-quantized-mesh/{z}/{x}/{y}.quantized-mesh-1.0?key=YM9A7w168nwbyjivlfzB"
+      ) %>%
+    add_polygon(ZOI[[iso3]]$admin,
+      auto_highlight=TRUE, highlight_colour=alpha(pal[["orange"]], .5),
+      stroke_colour=alpha(pal[["orange"]], .9), fill_colour=alpha(pal[["orange"]], .4)) %>%
+    add_sf(ZOI[[iso3]]$water,
+      stroke_width="Class_hydr", stroke_colour=alpha(pal[["blue"]], .9))
 }
 
 

@@ -2,6 +2,7 @@
   "DEA": {
     "label": "Digital Earth Africa",
     "url": "https://ows.digitalearth.africa/",
+    "legend": "https://ows.digitalearth.africa/",
     "attr": "DEA",
     "layers": {
 
@@ -10,6 +11,7 @@
   "FAO": {
     "label": "FAO WaPOR GeoServer",
     "url": "https://io.apps.fao.org/geoserver/wms?",
+    "legend": "https://io.apps.fao.org/geoserver/wms?request=GetLegendGraphic&format=image/png&layer=%s",
     "attr": "FAO WaPOR",
     "layers": {
       "Natural Earth": "RICCAR:gray_hr_sr_w_3",
@@ -26,19 +28,21 @@
     }
   },
   "MAPTILER": {
-    "label": "Maptiler custom basemaps",
-    "url": "//api.maptiler.com/maps/%s/{z}/{x}/{y}@2x.png?key=%s",
+    "label": "Maptiler raster basemaps",
+    "url": "//api.maptiler.com/maps/%s?key=%s",
     "attr": "OSM",
     "layers": {
-      "default": "42a84100-2300-4647-ba8f-a70afaf51946"
+      "default": "topo/{z}/{x}/{y}.png",
+      "hybrid": "hybrid/{z}/{x}/{y}.jpg"
     }
   },
   "MAPTILERV": {
-    "label": "Maptiler custom basemaps (vector tiles)",
-    "url": "//api.maptiler.com/maps/%s/style.json?key=%s",
+    "label": "Maptiler vector basemaps",
+    "url": "//api.maptiler.com/tiles/%s/style.json?key=%s",
     "attr": "OSM",
     "layers": {
-      "default": "42a84100-2300-4647-ba8f-a70afaf51946"
+      "default": "42a84100-2300-4647-ba8f-a70afaf51946",
+      "topo": "topo"
     }
   }
 }

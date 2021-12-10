@@ -35,6 +35,7 @@ map_init <- function(
 ) {
 
   iso3 = match.arg(iso3)
+  date = Sys.Date()
   tileset = LAYERS[["MAPTILER"]]
   fao = LAYERS[["FAO"]]
   bbox = st_bbox(ZOI[[iso3]]$admin)
@@ -44,12 +45,16 @@ map_init <- function(
     # Basemaps
     addTiles(
       sprintf(tileset$url[[1]], tileset$layers[[1]], key),
-      attribution = tileset$attr,
-      group = "Default") %>%
+      attribution=tileset$attr,
+      group="Default") %>%
+
+    addTiles(
+      sprintf(tileset$url[[1]], tileset$layers[[2]], key),
+      attribution=tileset$attr,
+      group="Hybrid") %>%
 
     addProviderTiles("OpenStreetMap.HOT", group="OSM HOT") %>%
-    addProviderTiles("Esri.WorldShadedRelief", group="ESRI shaded eelief") %>%
-    addProviderTiles("GeoportailFrance.orthos", group="Geoportail ortho")
+    addProviderTiles("Esri.WorldShadedRelief", group="ESRI shaded relief")
 
   # FAO WaPOR
   for(i in seq_along(fao$layers))
@@ -58,15 +63,15 @@ map_init <- function(
       attribution = fao$attr[[1]],
       group = names(fao$layers)[i],
       options = WMSTileOptions(
-        version="1.1.1", format="image/png", transparent=TRUE,
-        time=as.POSIXct(Sys.Date())-days(5)
+        version="1.1.1", format="image/png", transparent=TRUE, opacity=.6,
+        time=sprintf("%s/%s", floor_date(date, "month"), ceiling_date(date, "month")-days(1))
       )
     )
 
   m %>%
     hideGroup(names(fao$layers)) %>%
     addLayersControl(
-      baseGroups = c("Default", "OSM HOT", "ESRI shaded relief", "Geoportail ortho"),
+      baseGroups = c("Default", "Hybrid", "OSM HOT", "ESRI shaded relief"),
       position = "bottomright"
     ) %>%
     addFullscreenControl(pseudoFullscreen=TRUE, position="topright") %>%

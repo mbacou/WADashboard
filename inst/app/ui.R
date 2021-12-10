@@ -140,7 +140,7 @@ map <- fluidRow(id="divMap", class="w-100 no-gutters collapse show",
     navs_pill(
       nav(title="Layers", icon=icon("layer-group"),
         fluidRow(class="no-gutters",
-          column(12, class="py-3",
+          column(12, class="py-2",
             accordion(id="accLayers",
               accordionItem(
                 title=span(icon(class="mr-3 text-muted", "caret-down"), "Basin Features"),
@@ -165,14 +165,13 @@ map <- fluidRow(id="divMap", class="w-100 no-gutters collapse show",
         )
       ),
       nav(title="Legend", icon=icon("palette"),
-        h4("Layers 2"),
-        p("[placeholder]"),
-        p("Map layer options")
+        column(12, class="mt-2 pb-2 bg-white",
+          style="height:18.4rem; overflow:auto;",
+          uiOutput("uiLegend"))
       ),
       nav(title="Info", icon=icon("info-circle"),
-        h4("Layers 2"),
-        p("[placeholder]"),
-        p("Map layer options")
+        column(12, class="mt-2 pb-2",
+          uiOutput("uiInfo"))
       )
     )
   )
