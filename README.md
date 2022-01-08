@@ -43,7 +43,7 @@ storage type may be implemented (incl. Amazon S3).
 
 2. Edit 2 configuration files:  
     - [List of river basins](https://github.com/mbacou/WADashboard/blob/main/data-raw/json/ISO3.json)
-    - [Catalog of contextual spatial layers](https://github.com/mbacou/WADashboard/blob/main/data-raw/json/LAYERS.json)
+    - [Catalog of contextual geospatial layers](https://github.com/mbacou/WADashboard/blob/main/data-raw/json/LAYERS.json)
     
 3. Reload the package with `devtools::load_all(".")` or install system-wide with
 `./build.sh` (edit target locations as needed).
@@ -51,7 +51,16 @@ storage type may be implemented (incl. Amazon S3).
 
 ## Application Deployment
 
-Two Docker files are provided for deployment to AWS Fargate.
+A Docker [image file](https://github.com/mbacou/WADashboard/Dockerfile) is provided for deployment to AWS Fargate. This image includes Shiny Server Community Edition and (for convenience) RStudio Server Preview.
+
+You can build this image locally with:
+
+```sh
+docker build -t WADashboard .
+docker run --rm --name WADashboard -p 3838:3838 WADashboard
+```
+
+Once you’ve established that this runs locally, it can be deployed to AWS ECS.
 
 
 ## License
