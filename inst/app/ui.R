@@ -87,7 +87,7 @@ filters <- fluidRow(class="mt-3 pt-5 align-items-end waved3",
       "This dashboard compiles results from the",
       a(class="text-gray-dark", href="https://wateraccounting.org/", target="wa",
         "Water Accounting+"),
-      "method based on global-scale public-domain datasets. Its
+      "method based on global-scale public-domain datasets. WA+
       objective is to achieve equitable and transparent water governance for
       all water consumers and to ensure a sustainable water balance.")
   ),
@@ -143,19 +143,19 @@ map <- fluidRow(id="divMap", class="w-100 no-gutters collapse show",
           column(12, class="py-2",
             accordion(id="accLayers",
               accordionItem(
-                title=span(icon(class="mr-3 text-muted", "caret-down"), "Basin Features"),
+                title=span(icon(class="mr-3 text-muted", "caret-right"), "Basin Features"),
                 class="border-0", bg="white", collapsed=FALSE,
                 checkboxGroupInput("chkLayer_1", NULL, width="100%",
                   choices=names(LAYERS[[2]]$layers[3:4]))
               ),
               accordionItem(
-                title=span(icon(class="mr-3 text-muted", "caret-down"), "Land Cover"),
+                title=span(icon(class="mr-3 text-muted", "caret-right"), "Land Cover"),
                 class="border-0", bg="white", collapsed=TRUE,
                 checkboxGroupInput("chkLayer_2", NULL, width="100%",
                   choices=names(LAYERS[[2]]$layers[5]))
               ),
               accordionItem(
-                title=span(icon(class="mr-3 text-muted", "caret-down"), "Hydrology"),
+                title=span(icon(class="mr-3 text-muted", "caret-right"), "Hydrology"),
                 class="border-0", bg="white", collapsed=TRUE,
                 checkboxGroupInput("chkLayer_3", NULL, width="100%",
                   choices=names(LAYERS[[2]]$layers[6:10]))
