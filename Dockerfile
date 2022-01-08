@@ -27,7 +27,7 @@ RUN \
 # Install R package from Github
 RUN \
   R -e "install.packages(c(
-  'remotes', '' \
+  'remotes', 'sf', 'terra' \
   ),  \
   dependencies=TRUE, \
   repos='https://packagemanager.rstudio.com/cran/__linux__/focal/2022-01-01')"
