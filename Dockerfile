@@ -19,19 +19,23 @@ RUN mkdir $WA_DATA
 RUN \
   apt update && apt install -y \
   software-properties-common dirmngr apt-transport-https lsb-release ca-certificates \
-  curl git wget sudo
-  libcurl4-openssl-dev libssl-dev
-  libudunits2-dev libgdal-dev libgeos-dev libproj-dev r-base-dev \
+  make curl git wget pandoc sudo
+  libcurl4-openssl-dev libssl-dev libpng-dev
+  libicu-dev libglpk-dev libgmp3-dev libxml2-dev zlib1g-dev
+  libudunits2-dev libgdal-dev gdal-bin libgeos-dev libproj-dev \
   binutils libv8-dev unixodbc unixodbc-dev odbc-postgresql libsqliteodbc
 
-# Install R package from Github
+# Install R packages from Package Manager
 RUN \
   R -e "install.packages(c(
-  'remotes', 'sf', 'terra' \
+  'remotes', 'sf', 'terra', 'data.table', 'bslib', 'r2d3', 'lubridate', 'scales', \
+  'leaflet.extras', 'fresh', 'shinybusy', 'shinyWidgets', \
+  'stringr', 'highcharter', 'rmarkdown' \
   ),  \
   dependencies=TRUE, \
   repos='https://packagemanager.rstudio.com/cran/__linux__/focal/2022-01-01')"
 
+# Install R package from Github
 RUN \
   R -e "remotes::install_github('mbacou/${APP}', dependencies=TRUE)"
 
