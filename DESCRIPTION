@@ -21,7 +21,7 @@ Imports:
   bslib (>= 0.3.1),
   data.table,
   fresh (>= 0.2.0),
-  highcharter (>= 0.8.2),
+  highcharter (>= 0.9.4),
   leaflet (>= 2.0.4),
   leaflet.extras (>= 1.0.0),
   lubridate,
@@ -34,9 +34,9 @@ Imports:
   stringr,
   terra (>= 1.4-16)
 Suggests:
-  knitr, usethis
+  knitr
 Encoding: UTF-8
-SystemRequirements: gdal, geos
+SystemRequirements: C++11, GDAL (>= 2.2.3), GEOS (>= 3.4.0), PROJ (>= 4.9.3), sqlite3
 URL: https://github.com/mbacou/WADashboard/, https://iwmi.cgiar.org/
 BugReports: https://github.com/mbacou/WADashboard/issues/
 MailingList: mel@mbacou.com

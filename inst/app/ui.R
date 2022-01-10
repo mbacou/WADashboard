@@ -133,7 +133,7 @@ slider <- fluidRow(class="w-100 no-gutters",
 
 # Map ----
 map <- fluidRow(id="divMap", class="w-100 no-gutters collapse show",
-  column(8, style="min-height:21rem; height:28vh;",
+  column(8, style="min-height:21rem; height:30vh;",
     leafletOutput("map", width="100%", height="100%")
   ),
   column(4, class="waved2",

@@ -37,30 +37,39 @@ In addition to the usual R package documentation, we also have extensive docs at
 
 To configure and extend this application:
 
-1. Define environment variable `WA_DATA` pointing to the root location of your WA+
-model output (collection of CSV and NetCDF files). Any local or cloud-based
-storage type may be implemented (incl. Amazon S3).
+1. Define environment variable `WA_DATA` in the file `./.Renviron` pointing to the root location of your WA+ model output (collection of CSV and NetCDF files). Any local or cloud-based storage type may be implemented (incl. Amazon S3).
 
 2. Edit 2 configuration files:  
     - [List of river basins](https://github.com/mbacou/WADashboard/blob/main/data-raw/json/ISO3.json)
     - [Catalog of contextual geospatial layers](https://github.com/mbacou/WADashboard/blob/main/data-raw/json/LAYERS.json)
     
-3. Reload the package with `devtools::load_all(".")` or install system-wide with
-`./build.sh` (edit target locations as needed).
+3. Rebuild the R package and reinstall system-wide by executing `./build.sh`.
 
 
 ## Application Deployment
 
-A Docker [image file](https://github.com/mbacou/WADashboard/Dockerfile) is provided for deployment to AWS Fargate. This image includes Shiny Server Community Edition and (for convenience) RStudio Server Preview.
+A Docker [image file](https://github.com/mbacou/WADashboard/Dockerfile) is provided for deployment to AWS Fargate. This image includes Shiny Server Community Edition and (for development only) RStudio Server Preview.
 
-You can build this image locally with:
+You can build and test this image locally with:
 
 ```sh
-docker build -t WADashboard .
-docker run --rm --name WADashboard -p 3838:3838 WADashboard
+# replace {pwd} with a chosen password for the default rstudio user
+docker build -t wa-dashboard .
+docker run --name wa-dashboard PASSWORD={pwd} -p 80:3838 -p 8787:8787 wa-dashboard
 ```
 
-Once you’ve established that this runs locally, it can be deployed to AWS ECS.
+Once you’ve established that this container runs locally, it can be deployed to AWS ECR:
+
+```sh
+# Authenticate your local Docker client
+aws ecr get-login-password --region {region} | docker login --username AWS --password-stdin {aws_account_id}.dkr.ecr.{region}.amazonaws.com
+# Tag your image with your Amazon ECR registry
+docker tag WADashboard {aws_account_id}.dkr.ecr.{region}.amazonaws.com/wa-dashboard
+# Push the image to your AWS ECR registry
+docker push {aws_account_id}.dkr.ecr.{region}.amazonaws.com/wa-dashboard
+```
+
+The dashboard application is served on the host at `http://localhost/WADashboard/`. RStudio IDE is reachable at `http://localhost:8787/` (replace `localhost` with your container's public IP).
 
 
 ## License
