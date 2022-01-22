@@ -7,8 +7,8 @@
 #' @param root base directory (local or remote) to scan for input data files (default:
 #'   package option `getOption("wa.data")` or environment variable `WA_DATA_ROOT` if
 #'   set)
-#' @inheritParams saveRDS
-#' @inheritDotParams saveRDS
+#' @inheritParams base::saveRDS
+#' @inheritDotParams base::saveRDS
 #'
 #' @return normalized data.table with variables:
 #'   -

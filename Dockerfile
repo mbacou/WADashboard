@@ -19,11 +19,11 @@ RUN \
   binutils libv8-dev unixodbc unixodbc-dev odbc-postgresql libsqliteodbc
 
 # Clean up
-RUN apt autoremove -y  
+RUN apt autoremove -y
 
 # Install R dependencies from Package Manager snapshots as of 2022.01.03
 RUN \
-  R -e "install.packages(c('devtools', \
+  R -e "install.packages(c('devtools', 'gtools', 'TTR', \
   'sf', 'terra', 'data.table', 'bslib', 'r2d3', 'lubridate', 'scales', \
   'leaflet.extras', 'fresh', 'shinybusy', 'shinyWidgets', 'bs4Dash', \
   'stringr', 'highcharter', 'rmarkdown' \
@@ -32,16 +32,19 @@ RUN \
 
 # Install application R package from Github
 RUN \
-  R -e "devtools::install_github('mbacou/${APP}', dependencies=TRUE)"
+  R -e "devtools::install_github('mbacou/${APP}', dependencies=TRUE, upgrade='default')"
 
-# Copy the app directory into the image
+# Purge sample Shiny apps
+RUN rm -R /srv/shiny-server/*
+
+# Add app directory into Shiny server root
 RUN mkdir /srv/shiny-server/${APP}
 COPY ./.Renviron /srv/shiny-server/${APP}/
 COPY ./app.R /srv/shiny-server/${APP}/
 COPY ./restart.txt /srv/shiny-server/${APP}/
 RUN chown -R shiny:shiny /srv/shiny-server/
 
-# Install RStudio (for development only)
+# Install RStudio (optional, for development only)
 ENV S6_VERSION=v2.1.0.2
 ENV RSTUDIO_VERSION=2021.09.1+372
 ENV DEFAULT_USER=rstudio
@@ -49,6 +52,10 @@ ENV PATH=/usr/lib/rstudio-server/bin:$PATH
 
 RUN /rocker_scripts/install_rstudio.sh
 RUN /rocker_scripts/install_pandoc.sh
+
+# Custom RStudio IDE settings (optional)
+COPY ./rstudio-server.json /home/rstudio/.local/share/rstudio/
+RUN chown -R rstudio:rstudio /home/rstudio
 
 EXPOSE 8787
 

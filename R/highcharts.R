@@ -119,7 +119,6 @@ plot_ecc_density <- function(
 #' @param yrange y-axis min and max
 #' @inheritParams hc_themed
 #' @import highcharter data.table
-#' @importFrom wcutils dekad
 #' @importFrom lubridate ceiling_date year<-
 #' @examples
 #' dt <- readRDS(file.path(getOption("wc.shared"), "tmp", "2020-burn_lockton_bio.rds"))
@@ -213,7 +212,6 @@ plot_clim <- function(
 #' @param yrange y-axis min and max
 #' @inheritParams hc_themed
 #' @import highcharter data.table
-#' @importFrom wcutils dekad
 #' @importFrom stats ts stl
 #' @importFrom gtools odd even
 #' @examples
@@ -286,7 +284,6 @@ hc_ts <- function(
 #' @param x (optional) which location ID (loc_id) to draw
 #' @inheritParams hc_themed
 #' @import highcharter data.table
-#' @importFrom wcutils INDEX
 #' @examples
 #' pts <- data.table(loc_id=1, X=1, Y=1, day="2020-03-02")
 #' args <- wc_args(pts, crop="maiz", pay_grm=.3)

@@ -58,13 +58,13 @@ docker build -t wa-dashboard .
 docker run --name wa-dashboard PASSWORD={pwd} -p 80:3838 -p 8787:8787 wa-dashboard
 ```
 
-Once you’ve established that this container runs locally, it can be deployed to AWS ECR:
+Once you’ve established that this container runs locally, it can be deployed to AWS ECR (see [deploy.sh](https://github.com/mbacou/WADashboard/deploy.sh) for an automated deployment script):
 
 ```sh
 # Authenticate your local Docker client
 aws ecr get-login-password --region {region} | docker login --username AWS --password-stdin {aws_account_id}.dkr.ecr.{region}.amazonaws.com
 # Tag your image with your Amazon ECR registry
-docker tag WADashboard {aws_account_id}.dkr.ecr.{region}.amazonaws.com/wa-dashboard
+docker tag wa-dashboard {aws_account_id}.dkr.ecr.{region}.amazonaws.com/wa-dashboard
 # Push the image to your AWS ECR registry
 docker push {aws_account_id}.dkr.ecr.{region}.amazonaws.com/wa-dashboard
 ```
