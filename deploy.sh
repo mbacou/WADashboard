@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# description: - build and deploy 'WADashboard' application image to Amazon ECR (IWMI)
+# description: - build and deploy 'wadashboard' Docker image to Amazon ECR (IWMI)
 
 cd "$(dirname "$(realpath "$0")")";
 

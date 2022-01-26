@@ -9,7 +9,42 @@ template:
       site: "@iwmi"
       card: summary_large_image
 
+development:
+  version_tooltip: "Development version"
+
+authors:
+  "Melanie Bacou":
+    href: https://linkedin.com/in/mbacou/
+
 home:
   strip_header: false
+  links:
+  - text: Water Accounting+
+    href: http://wateraccounting.org/
+  - text: IWMI
+    href: http://iwmi.cgiar.org/
+  - text: FAO WaPOR
+    href: https://www.fao.org/in-action/remote-sensing-for-water-productivity/en/
 
-
+navbar:
+  title: ~
+  type: default
+  structure:
+    left:  [intro, articles]
+    right: [reference, news, github]
+  components:
+    home: ~
+    articles:
+      text: Get started
+      href: WA_data_etl.html
+    reference:
+      text: Reference
+      href: reference/index.html
+    github:
+      icon: fab fa-github fa-lg
+      href: https://github.com/mbacou/WADashboard
+    news:
+      text: News
+      menu:
+        - text: "Changelog"
+          href: news/index.html

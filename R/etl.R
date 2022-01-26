@@ -1,8 +1,8 @@
 #' Main data ETL
 #'
-#' Main ETL to ingest raw datasets found in `root`. Shiny application checks for new
-#' input data files and executes this script if necessary. Exact location and
-#' structure for input data files still to be defined.
+#' Main ETL to ingest output datasets found at location `getOption("wa.data")`. This
+#' location may be defined at run time or via environment variable `WA_DATA`. Exact
+#' location and structure for model data files are still to be defined.
 #'
 #' @param root base directory (local or remote) to scan for input data files (default:
 #'   package option `getOption("wa.data")` or environment variable `WA_DATA_ROOT` if
