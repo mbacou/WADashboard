@@ -49,12 +49,11 @@
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-<li>
-  <a href="../WA_data_etl.html">Get started</a>
-</li>
-      </ul>
+      <ul class="nav navbar-nav"></ul>
 <ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="../articles/index.html">Technical Guides</a>
+</li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
@@ -115,11 +114,13 @@
 <p>The repo is structured as a standard R package, in particular:</p>
 <ul>
 <li>
-<code>/R</code>: all custom R functions</li>
+<code>/data-raw</code>: configuration files</li>
 <li>
 <code>/inst</code>: client and server scripts and web assets for the Shiny application</li>
 <li>
-<code>/data-raw</code>: configuration files</li>
+<code>/R</code>: all custom R functions</li>
+<li>
+<code>/docs</code>: rendered HTML documentation</li>
 </ul>
 <p>Inside RStudio IDE the application can be previewed in a browser with <code>source("app.R")</code>.</p>
 <p>Shell scripts are provided to automate common tasks:</p>
@@ -137,8 +138,36 @@
 </h3>
 </div>
 <div class="section level3">
-<h3 id="extend-build-and-deploy">Extend, Build, and Deploy<a class="anchor" aria-label="anchor" href="#extend-build-and-deploy"></a>
+<h3 id="configuration">Configuration<a class="anchor" aria-label="anchor" href="#configuration"></a>
 </h3>
+<ol style="list-style-type: decimal">
+<li><p>Edit environment variable <code>WA_DATA</code> in file <code>./.Renviron</code> pointing to the root location of your WA+ model output (collection of CSV and NetCDF files). Any local or cloud-based storage type may be implemented (incl. Amazon S3).</p></li>
+<li>
+<p>Edit 2 configuration files:</p>
+<ul>
+<li><a href="https://github.com/mbacou/WADashboard/blob/main/data-raw/json/ISO3.json" class="external-link">List of river basins</a></li>
+<li><a href="https://github.com/mbacou/WADashboard/blob/main/data-raw/json/LAYERS.json" class="external-link">Catalog of contextual geospatial layers</a></li>
+</ul>
+</li>
+<li><p>Rebuild the R package and reinstall by executing <code>./build.sh</code>.</p></li>
+</ol>
+</div>
+<div class="section level3">
+<h3 id="application-deployment">Application Deployment<a class="anchor" aria-label="anchor" href="#application-deployment"></a>
+</h3>
+<p>A Docker <a href="https://github.com/mbacou/WADashboard/Dockerfile" class="external-link">image file</a> is provided for deployment to AWS ECS (Fargate). This image includes Shiny Server Community Edition and (for development only) RStudio Server Preview.</p>
+<p>You can build and test this image locally with:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># replace {pwd} with a chosen password for the default rstudio user</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> build <span class="at">-t</span> wadashboard .</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--name</span> wadashboard PASSWORD={pwd} <span class="at">-p</span> 80:3838 <span class="at">-p</span> 8787:8787 wadashboard</span></code></pre></div>
+<p>Once you’ve established that this container runs locally, it can be deployed to AWS ECS (see <a href="https://github.com/mbacou/WADashboard/deploy.sh" class="external-link">./deploy.sh</a> for an automated deployment script):</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Authenticate your local Docker client</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">aws</span> ecr get-login-password <span class="at">--region</span> {region} <span class="kw">|</span> <span class="ex">docker</span> login <span class="at">--username</span> AWS <span class="at">--password-stdin</span> {aws_account_id}.dkr.ecr.{region}.amazonaws.com</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Tag your image with your Amazon ECR registry</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> tag wadashboard {aws_account_id}.dkr.ecr.{region}.amazonaws.com/wadashboard</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Push the image to your AWS ECR registry</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> push {aws_account_id}.dkr.ecr.{region}.amazonaws.com/wadashboard</span></code></pre></div>
+<p>The dashboard application is served on the host at <code>http://localhost/WADashboard/</code>. RStudio IDE is reachable at <code>http://localhost:8787/</code> (replace <code>localhost</code> with your container’s public IP or domain name).</p>
 </div>
 </div>
   </div>
@@ -155,7 +184,7 @@
 
       <footer><div class="copyright">
   <p></p>
-<p>Developed by <a href="https://linkedin.com/in/mbacou/" class="external-link">Melanie Bacou</a>.</p>
+<p>Developed by Lisa-Maria Rebelo, William Rex, <a href="https://linkedin.com/in/mbacou/" class="external-link">Melanie Bacou</a>.</p>
 </div>
 
 <div class="pkgdown">

@@ -6,7 +6,7 @@ template:
       src: inst/app/www/fig/iwmi_logo_w.svg
       alt: "Water Accounting+"
     twitter:
-      site: "@iwmi"
+      creator: "@iwmi"
       card: summary_large_image
 
 development:
@@ -30,13 +30,13 @@ navbar:
   title: ~
   type: default
   structure:
-    left:  [intro, articles]
-    right: [reference, news, github]
+    left:  [intro]
+    right: [articles, reference, news, github]
   components:
     home: ~
     articles:
-      text: Get started
-      href: WA_data_etl.html
+      text: Technical Guides
+      href: articles/index.html
     reference:
       text: Reference
       href: reference/index.html
@@ -48,3 +48,26 @@ navbar:
       menu:
         - text: "Changelog"
           href: news/index.html
+
+reference:
+- title: HTML Widgets
+  desc: >
+    These output formats enable **bookdown's** special
+    features like cross references in single `.Rmd` documents
+    instead of books. There are built with `rmarkdown::render()`.
+  contents:
+  - starts_with("plot")
+  - starts_with("hc")
+
+- title: Map Utilities
+  desc: >
+    These output formats enable **bookdown's** special
+    features like cross references in single `.Rmd` documents
+    instead of books. There are built with `rmarkdown::render()`.
+  contents:
+  - starts_with("map")
+
+- title: Data model
+  contents:
+  - starts_with("data")
+

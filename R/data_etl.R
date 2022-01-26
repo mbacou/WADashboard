@@ -17,7 +17,7 @@
 #' @export
 #'
 #' @examples
-etl <- function(root=getOption("wa.data"), file=NULL, ...) {
+data_etl <- function(root=getOption("wa.data"), file=NULL, ...) {
 
   stopifnot(dir.exists(root))
 

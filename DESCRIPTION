@@ -1,12 +1,12 @@
 Package: WADashboard
 Version: 0.0.8
-Title: IWMI Water Accounting+ Dashboard
+Title: IWMI Water Accounting+ Visualization Dashboard
 Description: This package includes all dependencies to run WA+ Dashboard 
   application either locally inside RStudio or containerized.
 Authors@R: c(
-  person("Lisa-Maria", "Rebelo", role="ctb", email="L.REBELO@CGIAR.ORG",
+  person("Lisa-Maria", "Rebelo", role=c("aut", "ctb"), email="L.REBELO@CGIAR.ORG",
     comment=c(ORCID="0000-0002-8785-7810")),
-  person("William", "Rex", role="ctb", email="W.Rex@cgiar.org",
+  person("William", "Rex", role=c("aut", "ctb"), email="W.Rex@cgiar.org",
     comment=c(ORCID="0000-0003-4979-5257")),
 	person("Melanie", "Bacou", role=c("aut", "cre"), email="mel@mbacou.com", 
 	  comment=c(ORCID="0000-0003-1810-6818")),
