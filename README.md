@@ -32,8 +32,7 @@ source("./app.R")
 
 ## Documentation
 
-R package documentation and technical guides are available at:
-[https://mbacou.github.io/WADashboard/](https://mbacou.github.io/WADashboard/).
+For complete R package documentation, technical guides, and deployment tips, see the [package vignettes](https://mbacou.github.io/WADashboard/articles/).
 
 
 ## License

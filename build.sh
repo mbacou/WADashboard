@@ -8,9 +8,9 @@ cd "$(dirname "$(realpath "$0")")";
 #Rscript ./data-raw/data.R
 
 # Build and install system-wide
-R CMD INSTALL --no-multiarch --with-keep.source --library='/usr/local/lib/R/site-library' ./
+R CMD INSTALL --no-multiarch --with-keep.source --library=$WA_LIB ./
 
 # Update timestamp so shiny-server knows to flush and restart the app
 touch restart.txt
-cp -f ./app.R /home/shiny/docs/WADashboard/
-cp -f ./restart.txt /home/shiny/docs/WADashboard/
+cp -f ./app.R $WA_ROOT
+cp -f ./restart.txt $WA_ROOT

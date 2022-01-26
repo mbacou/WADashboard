@@ -18,38 +18,40 @@ Two hydrological basin are provided in the initial release, the **lower Niger Ri
 
 
 
-# Technical Guide
-
-## Repository Structure
+# Repository Structure
 
 The repo is structured as a standard R package, in particular:
 
 - `/data-raw`: configuration files
+- `/data`: built-in package datasets (see [Data ETL](02_data-etl.html) for more details)
 - `/inst`: client and server scripts and web assets for the Shiny application
-- `/R`: all custom R functions
-- `/docs`: rendered HTML documentation  
+- `/R`: all custom R functions (see [Reference](../reference/))
+- `/docs`: rendered HTML documentation (this website)
 
 Inside RStudio IDE the application can be previewed in a browser with `source("app.R")`.
 
 Shell scripts are provided to automate common tasks: 
 
-- `/build.sh`: rebuild and install the package for testing
+- `/build.sh`: rebuild and install the package
 - `/pkgdown.sh`: rebuild HTML package documentation (uses [pkgdown](https://pkgdown.r-lib.org/) framework)
 - `/deploy.sh`: commit release to Github, rebuild Docker image, and deploy image to AWS ECR  
 
 
-## Configuration
+# Configuration
 
-1. Edit environment variable `WA_DATA` in file `./.Renviron` pointing to the root location of your WA+ model output (collection of CSV and NetCDF files). Any local or cloud-based storage type may be implemented (incl. Amazon S3).
+1. Edit local environment variables in file [.Renviron](https://github.com/mbacou/WADashboard/blob/main/.Renviron) as needed:
+    -  `WA_DATA` pointing to the root location of your WA+ model output (collection of CSV and NetCDF files). Any local or cloud-based storage type may be implemented (incl. Amazon S3).
+    - `WA_ROOT` pointing to Shiny server root location (default to `/srv/shiny-server/WADashboard` but you might want to deploy to a different location).
+    - `WA_LIB` pointing to the location of a local R library (default to Linux shared library `/usr/local/lib/R/site-library`)  
 
-2. Edit 2 configuration files:  
+2. Edit 2 configuration files:
     - [List of river basins](https://github.com/mbacou/WADashboard/blob/main/data-raw/json/ISO3.json)
     - [Catalog of contextual geospatial layers](https://github.com/mbacou/WADashboard/blob/main/data-raw/json/LAYERS.json)  
     
 3. Rebuild the R package and reinstall by executing `./build.sh`.
 
 
-## Application Deployment
+# Application Deployment
 
 A Docker [image file](https://github.com/mbacou/WADashboard/Dockerfile) is provided for deployment to AWS ECS (Fargate). This image includes Shiny Server Community Edition and (for development only) RStudio Server Preview.
 
@@ -73,9 +75,6 @@ docker push {aws_account_id}.dkr.ecr.{region}.amazonaws.com/wadashboard
 ```
 
 The dashboard application is served on the host at `http://localhost/WADashboard/`. RStudio IDE is reachable at `http://localhost:8787/` (replace `localhost` with your container's public IP or domain name).
-
-
-## Data ETL
 
 
 
