@@ -1,16 +1,17 @@
 url: https://github.mbacou.io/WADashboard
 
 template:
+  bootstrap: 5
   opengraph:
     image:
       src: inst/app/www/fig/iwmi_logo_w.svg
-      alt: "Water Accounting+"
+      alt: Water Accounting+
     twitter:
       creator: "@iwmi"
       card: summary_large_image
 
 development:
-  version_tooltip: "Development version"
+  mode: auto
 
 authors:
   "Melanie Bacou":
@@ -30,8 +31,8 @@ navbar:
   title: ~
   type: default
   structure:
-    left:  [intro]
-    right: [articles, reference, news, github]
+    left:  [intro, articles, reference, news]
+    right: [search, github, twitter]
   components:
     home: ~
     articles:
@@ -40,14 +41,16 @@ navbar:
     reference:
       text: Reference
       href: reference/index.html
+    news:
+      text: News
+      href: news/index.html
     github:
       icon: fab fa-github fa-lg
       href: https://github.com/mbacou/WADashboard
-    news:
-      text: News
-      menu:
-        - text: "Changelog"
-          href: news/index.html
+    twitter:
+      icon: fa-twitter
+      href: https://twitter.com/IWMI_
+      aria-label: Twitter
 
 reference:
 - title: HTML Widgets
@@ -67,7 +70,7 @@ reference:
   contents:
   - starts_with("map")
 
-- title: Data model
+- title: Data Model
   contents:
   - starts_with("data")
 

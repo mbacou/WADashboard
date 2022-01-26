@@ -1,6 +1,6 @@
-# Dashboard for WA+ Water Accounts
+# Visualization Dashboard for WA+ Water Accounts
 
-Development package for a [Shiny](https://shiny.rstudio.com/) data visualization tool
+Development package for a [R/Shiny](https://shiny.rstudio.com/) data visualization tool
 that collects results from [Water Accounting+](https://www.wateraccounting.org/) (WA+)
 hydrological models.
 
@@ -32,7 +32,7 @@ source("./app.R")
 
 ## Documentation
 
-In addition to the usual R package documentation, we also have extensive docs at:
+R package documentation and technical guides are available at:
 [https://mbacou.github.io/WADashboard/](https://mbacou.github.io/WADashboard/).
 
 
