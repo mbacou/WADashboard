@@ -35,7 +35,7 @@
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <nav class="navbar fixed-top navbar-default navbar-expand-lg bg-light"><div class="container">
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-secondary"><div class="container">
     
     <a class="navbar-brand me-2" href="index.html">WADashboard</a>
 
@@ -85,9 +85,9 @@
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header"><h1 id="visualization-dashboard-for-wa-water-accounts">Visualization Dashboard for WA+ Water Accounts<a class="anchor" aria-label="anchor" href="#visualization-dashboard-for-wa-water-accounts"></a>
 </h1></div>
-<p>Development package for a <a href="https://shiny.rstudio.com/" class="external-link">R/Shiny</a> data visualization tool that collects results from <a href="https://www.wateraccounting.org/" class="external-link">Water Accounting+</a> (WA+) hydrological models.</p>
-<p>Water accounting integrates hydrological processes with land use, managed water flows and the services that result from water consumption in river basins. Its objective is to achieve equitable and transparent water governance for all users and a more sustainable water balance.</p>
-<p>WA+ is a multi-institutional effort from a consortium of international research centers (<a href="https://www.iwmi.cgiar.org/" class="external-link">IWMI</a>, <a href="https://www.un-ihe.org/" class="external-link">UNESCO-IHE</a>, <a href="https://www.fao.org/land-water/water/en/" class="external-link">FAO</a>, and <a href="https://en.unesco.org/wwap" class="external-link">WWAP</a>). These institutions are neither politically or geographically connected to any river basin.</p>
+<p>Development package for a <a href="https://shiny.rstudio.com/" class="external-link">R/Shiny</a> data visualization tool for <a href="https://www.wateraccounting.org/" class="external-link">Water Accounting+</a> hydrological models.</p>
+<p>The <strong>water accounting</strong> approach integrates hydrological processes with land use, managed water flows and the services that result from water consumption in river basins. Its objective is to achieve equitable and transparent water governance for all users and a more sustainable water balance.</p>
+<p><strong>Water Accouting+</strong> is a multi-institutional effort from a consortium of international research centers (<a href="https://www.iwmi.cgiar.org/" class="external-link">IWMI</a>, <a href="https://www.un-ihe.org/" class="external-link">UNESCO-IHE</a>, <a href="https://www.fao.org/land-water/water/en/" class="external-link">FAO</a>, and <a href="https://en.unesco.org/wwap" class="external-link">WWAP</a>). These institutions are neither politically or geographically connected to any river basin.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -95,7 +95,7 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://devtools.r-lib.org/" class="external-link">"devtools"</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span>
 <span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"mbacou/WADashboard"</span><span class="op">)</span></code></pre></div>
-<p>The app can be previewed in the RStudio IDE with:</p>
+<p>The web application can be previewed in the RStudio IDE with:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/source.html" class="external-link">source</a></span><span class="op">(</span><span class="st">"./app.R"</span><span class="op">)</span></code></pre></div>
 </div>
@@ -141,11 +141,14 @@
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>Lisa-Maria Rebelo <br><small class="roles"> Author, contributor </small> <a href="https://orcid.org/0000-0002-8785-7810" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li>William Rex <br><small class="roles"> Author, contributor </small> <a href="https://orcid.org/0000-0003-4979-5257" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>
 <a href="https://linkedin.com/in/mbacou/" class="external-link">Melanie Bacou</a> <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0003-1810-6818" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li><a href="authors.html">More about authors...</a></li>
+<li>
+<a href="https://www.linkedin.com/in/lisa-maria-rebelo/" class="external-link">Lisa-Maria Rebelo</a> <br><small class="roles"> Author, contributor </small> <a href="https://orcid.org/0000-0002-8785-7810" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>
+<a href="https://www.linkedin.com/in/william-rex-36ba301/" class="external-link">William Rex</a> <br><small class="roles"> Author, contributor </small> <a href="https://orcid.org/0000-0003-4979-5257" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>
+<a href="https://www.linkedin.com/in/naga-manohar-velpuri-879a8726/" class="external-link">Naga Velpuri</a> <br><small class="roles"> Author, contributor </small> <a href="https://orcid.org/0000-0002-6370-1926" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 </ul>
 </div>
 
@@ -157,7 +160,7 @@
 
     <footer><div class="pkgdown-footer-left">
   <p></p>
-<p>Developed by Lisa-Maria Rebelo, William Rex, <a href="https://linkedin.com/in/mbacou/" class="external-link">Melanie Bacou</a>.</p>
+<p>Developed by <a href="https://linkedin.com/in/mbacou/" class="external-link">Melanie Bacou</a>, <a href="https://www.linkedin.com/in/lisa-maria-rebelo/" class="external-link">Lisa-Maria Rebelo</a>, <a href="https://www.linkedin.com/in/william-rex-36ba301/" class="external-link">William Rex</a>, <a href="https://www.linkedin.com/in/naga-manohar-velpuri-879a8726/" class="external-link">Naga Velpuri</a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">

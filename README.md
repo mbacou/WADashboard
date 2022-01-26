@@ -1,16 +1,16 @@
 # Visualization Dashboard for WA+ Water Accounts
 
 Development package for a [R/Shiny](https://shiny.rstudio.com/) data visualization tool
-that collects results from [Water Accounting+](https://www.wateraccounting.org/) (WA+)
-hydrological models.
+for [Water Accounting+](https://www.wateraccounting.org/) hydrological models.
 
-Water accounting integrates hydrological processes with land use, managed water flows
-and the services that result from water consumption in river basins. Its objective is
-to achieve equitable and transparent water governance for all users and a
-more sustainable water balance.
+The **water accounting** approach integrates hydrological processes with land use,
+managed water flows and the services that result from water consumption in river
+basins. Its objective is to achieve equitable and transparent water governance for all
+users and a more sustainable water balance.
 
-WA+ is a multi-institutional effort from a consortium of international research
-centers ([IWMI](https://www.iwmi.cgiar.org/), [UNESCO-IHE](https://www.un-ihe.org/),
+**Water Accouting+** is a multi-institutional effort from a consortium of
+international research centers ([IWMI](https://www.iwmi.cgiar.org/),
+[UNESCO-IHE](https://www.un-ihe.org/),
 [FAO](https://www.fao.org/land-water/water/en/), and
 [WWAP](https://en.unesco.org/wwap)). These institutions are neither politically or
 geographically connected to any river basin.
@@ -24,7 +24,7 @@ if (!require("devtools")) install.packages("devtools")
 devtools::install_github("mbacou/WADashboard")
 ```
 
-The app can be previewed in the RStudio IDE with:
+The web application can be previewed in the RStudio IDE with:
 
 ```r
 source("./app.R")

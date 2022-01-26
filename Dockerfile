@@ -39,6 +39,7 @@ RUN rm -R /srv/shiny-server/*
 
 # Add app directory into Shiny server root
 RUN mkdir /srv/shiny-server/${APP}
+RUN mkdir /srv/shiny-server/${APP}/docs
 COPY ./.Renviron /srv/shiny-server/${APP}/
 COPY ./app.R /srv/shiny-server/${APP}/
 COPY ./restart.txt /srv/shiny-server/${APP}/

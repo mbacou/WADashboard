@@ -14,4 +14,3 @@ R CMD INSTALL --no-multiarch --with-keep.source --library='/usr/local/lib/R/site
 touch restart.txt
 cp -f ./app.R /home/shiny/docs/WADashboard/
 cp -f ./restart.txt /home/shiny/docs/WADashboard/
-

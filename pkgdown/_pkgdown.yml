@@ -2,6 +2,13 @@ url: https://github.mbacou.io/WADashboard
 
 template:
   bootstrap: 5
+  bslib:
+    bg: "#f2f1f1"
+    fg: "#333333"
+    primary: "#5088C6"
+    secondary: "#FFFFFF"
+    enable-rounded: false
+
   opengraph:
     image:
       src: inst/app/www/fig/iwmi_logo_w.svg
@@ -16,6 +23,12 @@ development:
 authors:
   "Melanie Bacou":
     href: https://linkedin.com/in/mbacou/
+  "Lisa-Maria Rebelo":
+    href: https://www.linkedin.com/in/lisa-maria-rebelo/
+  "William Rex":
+    href: https://www.linkedin.com/in/william-rex-36ba301/
+  "Naga Velpuri":
+    href: https://www.linkedin.com/in/naga-manohar-velpuri-879a8726/
 
 home:
   strip_header: false
@@ -28,11 +41,12 @@ home:
     href: https://www.fao.org/in-action/remote-sensing-for-water-productivity/en/
 
 navbar:
+  bg: secondary
+  type: light
   title: ~
-  type: default
   structure:
     left:  [intro, articles, reference, news]
-    right: [search, github, twitter]
+    right: [github, twitter]
   components:
     home: ~
     articles:

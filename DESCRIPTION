@@ -4,13 +4,13 @@ Title: IWMI Water Accounting+ Visualization Dashboard
 Description: This package includes all dependencies to run WA+ visualization dashboard 
   either locally inside RStudio or containerized.
 Authors@R: c(
+	person("Melanie", "Bacou", role=c("aut", "cre"), email="mel@mbacou.com", 
+	  comment=c(ORCID="0000-0003-1810-6818")),
   person("Lisa-Maria", "Rebelo", role=c("aut", "ctb"), email="L.REBELO@CGIAR.ORG",
     comment=c(ORCID="0000-0002-8785-7810")),
   person("William", "Rex", role=c("aut", "ctb"), email="W.Rex@cgiar.org",
     comment=c(ORCID="0000-0003-4979-5257")),
-	person("Melanie", "Bacou", role=c("aut", "cre"), email="mel@mbacou.com", 
-	  comment=c(ORCID="0000-0003-1810-6818")),
-	person("Naga", "Velpuri", role="ctb", email="N.Velpuri@cgiar.org", 
+	person("Naga", "Velpuri", role=c("aut", "ctb"), email="N.Velpuri@cgiar.org", 
 	  comment=c(ORCID="0000-0002-6370-1926"))
 	)	
 License: file LICENSE
