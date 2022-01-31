@@ -102,51 +102,58 @@
 <p>Two hydrological basin are provided in the initial release, the <strong>lower Niger River</strong> in Mali and <strong>Mara River</strong> in Kenya. There are differences between the two use cases, in terms of data availability and temporal scope (e.g. in Mali only a subset of the entire WAPORWA model was obtained), meaning the level of details available through the dashboard will vary according to each river basin.</p>
 </div>
 <div class="section level2">
-<h2 id="technical-guide">Technical Guide<a class="anchor" aria-label="anchor" href="#technical-guide"></a>
+<h2 id="repository-structure">Repository Structure<a class="anchor" aria-label="anchor" href="#repository-structure"></a>
 </h2>
-<div class="section level3">
-<h3 id="repository-structure">Repository Structure<a class="anchor" aria-label="anchor" href="#repository-structure"></a>
-</h3>
 <p>The repo is structured as a standard R package, in particular:</p>
 <ul>
 <li>
 <code>/data-raw</code>: configuration files</li>
 <li>
+<code>/data</code>: built-in package datasets (see <a href="02_data-etl.html">Data ETL</a> for more details)</li>
+<li>
 <code>/inst</code>: client and server scripts and web assets for the Shiny application</li>
 <li>
-<code>/R</code>: all custom R functions</li>
+<code>/R</code>: all custom R functions (see <a href="../reference/">Reference</a>)</li>
 <li>
-<code>/docs</code>: rendered HTML documentation</li>
+<code>/docs</code>: rendered HTML documentation (this website)</li>
 </ul>
 <p>Inside RStudio IDE the application can be previewed in a browser with <code>source("app.R")</code>.</p>
 <p>Shell scripts are provided to automate common tasks:</p>
 <ul>
 <li>
-<code>/build.sh</code>: rebuild and install the package for testing</li>
+<code>/build.sh</code>: rebuild and install the package</li>
 <li>
 <code>/pkgdown.sh</code>: rebuild HTML package documentation (uses <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> framework)</li>
 <li>
 <code>/deploy.sh</code>: commit release to Github, rebuild Docker image, and deploy image to AWS ECR</li>
 </ul>
 </div>
-<div class="section level3">
-<h3 id="configuration">Configuration<a class="anchor" aria-label="anchor" href="#configuration"></a>
-</h3>
+<div class="section level2">
+<h2 id="configuration">Configuration<a class="anchor" aria-label="anchor" href="#configuration"></a>
+</h2>
 <ol style="list-style-type: decimal">
-<li><p>Edit environment variable <code>WA_DATA</code> in file <code>./.Renviron</code> pointing to the root location of your WA+ model output (collection of CSV and NetCDF files). Any local or cloud-based storage type may be implemented (incl. Amazon S3).</p></li>
+<li>Edit local environment variables in file <a href="https://github.com/mbacou/WADashboard/blob/main/.Renviron" class="external-link">.Renviron</a> as needed:
+<ul>
 <li>
-<p>Edit 2 configuration files:</p>
+<code>WA_DATA</code> pointing to the root location of your WA+ model output (collection of CSV and NetCDF files). Any local or cloud-based storage type may be implemented (incl. Amazon S3).</li>
+<li>
+<code>WA_ROOT</code> pointing to Shiny server root location (default to <code>/srv/shiny-server/WADashboard</code> but you might want to deploy to a different location).</li>
+<li>
+<code>WA_LIB</code> pointing to the location of a local R library (default to Linux shared library <code>/usr/local/lib/R/site-library</code>)</li>
+</ul>
+</li>
+<li>Edit 2 configuration files:
 <ul>
 <li><a href="https://github.com/mbacou/WADashboard/blob/main/data-raw/json/ISO3.json" class="external-link">List of river basins</a></li>
 <li><a href="https://github.com/mbacou/WADashboard/blob/main/data-raw/json/LAYERS.json" class="external-link">Catalog of contextual geospatial layers</a></li>
 </ul>
 </li>
-<li><p>Rebuild the R package and reinstall by executing <code>./build.sh</code>.</p></li>
+<li>Rebuild the R package and reinstall by executing <code>./build.sh</code>.</li>
 </ol>
 </div>
-<div class="section level3">
-<h3 id="application-deployment">Application Deployment<a class="anchor" aria-label="anchor" href="#application-deployment"></a>
-</h3>
+<div class="section level2">
+<h2 id="application-deployment">Application Deployment<a class="anchor" aria-label="anchor" href="#application-deployment"></a>
+</h2>
 <p>A Docker <a href="https://github.com/mbacou/WADashboard/Dockerfile" class="external-link">image file</a> is provided for deployment to AWS ECS (Fargate). This image includes Shiny Server Community Edition and (for development only) RStudio Server Preview.</p>
 <p>You can build and test this image locally with:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># replace {pwd} with a chosen password for the default rstudio user</span></span>
@@ -160,11 +167,6 @@
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Push the image to your AWS ECR registry</span></span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> push {aws_account_id}.dkr.ecr.{region}.amazonaws.com/wadashboard</span></code></pre></div>
 <p>The dashboard application is served on the host at <code>http://localhost/WADashboard/</code>. RStudio IDE is reachable at <code>http://localhost:8787/</code> (replace <code>localhost</code> with your container’s public IP or domain name).</p>
-</div>
-<div class="section level3">
-<h3 id="data-etl">Data ETL<a class="anchor" aria-label="anchor" href="#data-etl"></a>
-</h3>
-</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>

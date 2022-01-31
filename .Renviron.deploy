@@ -1,0 +1,3 @@
+WA_DATA = "/data"
+WA_LIB = "/usr/local/lib/R/site-library"
+WA_ROOT = "/srv/shiny-server/WADashboard"

@@ -7,4 +7,349 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+```{css, echo=FALSE}
+.pagedtable-wrapper { border: unset; }
+.pagedtable-not-empty .pagedtable-footer { border-top: unset; }
+.pagedtable-header-name { overflow: unset; }
+```
+
+This vignette documents the steps to ingest model output files (in CSV and NetCDF format) for use in the dashboard.
+
+This ETL was validated against two analyses received from IWMI scientists, one for **Mali** (Niger river basin), and another for **Kenya** (Mara river basin). The water accounting models are written in Python and version controlled to GitHub (e.g. [WAPORWA notebooks (Mali)](https://github.com/wateraccounting/WAPORWA)).
+
+The results of the WA+ balances consist in time-series of constructed hydrological variables -- the time steps can vary (dekadal, monthly, seasonal, yearly steps). The series are either gridded (NetCDF) or aggregated over an entire zone of interest (CSV output files). The modeled variables are further enriched to construct visual balances (or "Sheets") that represent key water use and management indicators over time.
+
+The WA+ modeling approach can vary slightly across use cases (different temporal extent, number of sub-basins, different flow units, different mix of input layers and output variables). To the extent possible this ETL intends to produce a generalized data model.
+
+The steps outlined below serve as a blueprint for a generic [data_etl()](../reference/data_etl.html) method included in this package (refer to the method's documentation for more details, esp. how to ingest additional result sets). The objective is to generate a data cube suitable for online analytics.
+
+
+```{r init, message=FALSE}
+
+# Load this development package
+devtools::load_all(".")
+
+library(rmarkdown)
+library(ggplot2)
+library(thematic)
+thematic_on(bg="#f2f1f1", fg=pal[["black"]], accent=pal[["blue"]], 
+  font="Roboto Condensed", qualitative=unique(unname(pal)))
+
+# Location of model output datasets
+dir <- getOption("wa.data")
+```
+
+
+# Basin-level Aggregates (CSV files)
+
+We start below by inspecting all basin-level variables contained in the modeled CSV files.
+
+```{r, fig.cap="Kenya - List of output files"}
+
+# List all output CSV
+data <- list(
+  ken = file.path(dir, "./ken/hydroloop_results/csv"),
+  mli = file.path(dir, "/mli/csv_km3")
+) %>%
+  lapply(list.files, pattern="*.csv", recursive=TRUE, full.names=TRUE) %>%
+  lapply(data.table) %>%
+  rbindlist(idcol="iso3", use.names=TRUE, fill=TRUE) %>%
+  setnames("V1", "path")
+
+# Extract timestamps and sheet codes from file names
+data[, `:=`(
+  file = basename(path)
+)][, `:=`(
+  year = str_extract(file, "_[0-9]{4}") %>% str_sub(2,5) %>% as.integer(),
+  month = str_extract(file, "[0-9]{4}_[0-9]{1,2}") %>% str_sub(6,7) %>% as.integer(),
+  sheet = str_extract(tolower(file), "sheet[0-9]{1}") 
+)] %>% setorder(iso3, sheet, year, month, na.last=TRUE)
+
+# Append flow units (typically km3 or MCM, will need to be specified manually)
+data[, unit := fcase(
+  iso3=="mli", "km3",
+  iso3=="ken", "km3"
+)]
+
+```
+
+As mentioned above we have 8 yearly water balances for Mali (Sheet #1 variables), 15 yearly balances for Kenya (across `r data[iso3=="ken" & is.na(month), uniqueN(sheet)]` sheets), as well as monthly and seasonal breakdowns. 
+
+```{r, fig.cap="Mali - List of output files"}
+data[iso3=="mli", .(iso3, file, sheet, year, month)] %>% 
+  paged_table()
+```
+
+```{r, fig.cap="Kenya - List of yearly output files"}
+data[iso3=="ken" & !is.na(year) & is.na(month), .(iso3, file, sheet, year)] %>% 
+  paged_table()
+```
+
+```{r, fig.cap="Kenya - List of monthly output files"}
+data[iso3=="ken" & !is.na(month), .(iso3, file, sheet, year, month)] %>% 
+  paged_table()
+```
+
+The Kenya analysis also includes yearly, seasonal, and monthly time-series for an additional 57 variables.
+
+```{r, fig.cap="Kenya - List of monthly output files"}
+data[iso3=="ken" & is.na(year) & is.na(month), .(iso3, file, sheet)] %>% 
+  paged_table()
+```
+
+
+## Variable Inspection
+
+We also need to validate naming conventions and units for all output variables, so we continue by inspecting individual files starting with Mali.
+
+### Sheet #1
+
+```{r}
+
+f <- data[iso3=="mli"]
+
+mli <- lapply(1:nrow(f), function(x) fread(f[x, path])[, `:=`(
+  iso3 = f[x, iso3],
+  sheet = f[x, sheet],
+  year = f[x, year]
+)]) %>% rbindlist()
+
+setnames(mli, tolower(names(mli)))
+mli %>% paged_table(options=list(max.print=300))
+
+```
+
+Output for Sheet #1 include `r mli[year==min(year), uniqueN(paste(class, subclass, variable))]` unique variables categorized into `class` and `subclass`. The naming is consistent across years.
+
+```{r, fig.asp=.7}
+
+th <- function(...) theme(
+  legend.position = "none",
+  panel.spacing.y = unit(0, "lines"),
+  strip.text.y = element_text(size=7, angle=0, hjust=0),
+  strip.background = element_blank(),
+  axis.text.y = element_blank(),
+  axis.title.y = element_blank(),
+  axis.ticks.y = element_blank(),
+  panel.border = element_blank(),
+  panel.grid = element_blank(),
+  panel.background = element_blank(),
+  ...)
+
+mli %>% 
+  ggplot() +
+  geom_line(aes(year, value, color=paste(class, subclass))) +
+  facet_grid(paste(class, subclass, variable)~., scales="free_y") +
+  th() +
+  labs(x=NULL, y=NULL) +
+  ggtitle("WA+ Sheet 1 Variables - Mali, 2009 to 2016")
+
+```
+
+
+Similarly we look at Kenya's monthly time-series. First at Sheet #1 variables:
+
+```{r}
+
+f <- data[iso3=="ken" & !is.na(month) & !is.na(year) & sheet=="sheet1"]
+ken_1 <- lapply(1:nrow(f), function(x) fread(f[x, path])[, `:=`(
+  iso3 = f[x, iso3],
+  sheet = f[x, sheet],
+  year = f[x, year],
+  month = f[x, month]
+)]) %>% rbindlist()
+
+setnames(ken_1, tolower(names(ken_1)))
+ken_1 %>% paged_table(options=list(max.print=300))
+
+```
+
+```{r, fig.asp=.7}
+ken_1 %>% 
+  ggplot() +
+  geom_line(aes(as.Date(paste(year, month, 1), "%Y %m %d"), value, color=subclass)) +
+  facet_grid(paste(class, subclass, variable)~., scales="free_y") +
+  th() +
+  labs(x=NULL, y=NULL) +
+  ggtitle("WA+ Sheet 1 Variables - Kenya, 2003 to 2017")
+```
+
+### Sheet #2
+
+Then we extract Sheet #2 variables (this is a breakdown of evapotranspiration by land use classes):
+
+```{r}
+
+f <- data[iso3=="ken" & !is.na(month) & !is.na(year) & sheet=="sheet2"]
+ken_2 <- lapply(1:nrow(f), function(x) fread(f[x, path])[, `:=`(
+  iso3 = f[x, iso3],
+  sheet = f[x, sheet],
+  year = f[x, year],
+  month = f[x, month]
+)]) %>% rbindlist()
+
+setnames(ken_2, tolower(names(ken_2)))
+ken_2 %>% paged_table(options=list(max.print=300))
+
+```
+
+Each sheet uses a different data structure, but they can be normalized into a "long" format:
+
+```{r}
+
+# Normalize
+ken_2 <- melt(ken_2, id.vars=c("land_use", "class", "iso3", "sheet", "year", "month"),
+  variable.factor=FALSE)
+# Standardize category names
+setnames(ken_2, c("land_use", "class"), c("class", "subclass"))
+setorder(ken_2, class, subclass, variable, year, month)
+
+```
+
+We only plot variables for the first land use class for illustration purposes:
+
+```{r, fig.asp=.9}
+ken_2[class %in% ken_2[, unique(class)][1]] %>% 
+  ggplot() +
+  geom_line(aes(as.Date(paste(year, month, 1), "%Y %m %d"), value, color=subclass)) +
+  facet_grid(paste(class, subclass, variable)~., scales="free_y") +
+  th() +
+  labs(x=NULL, y=NULL) +
+  ggtitle("WA+ Sheet 2 Variables - Kenya, 2003 to 2017")
+```
+
+### Sheet #3
+
+Similarly we inspect results for Sheet #3 "Agriculture Services". In the Kenya analysis, variables for Sheet #3 to Sheet #6 are available as yearly, seasonal, and/or monthly time-series (across multiple CSV files).
+
+We (arbitrarily) gather all the seasonal time-series[^fn1]:
+
+[^fn1]: What is the difference between files tagged with "35.0" and "54.0" (e.g. `sheet3_35.0_et_depth_season.csv` and `sheet3_54.0_et_depth_season.csv`)?
+
+```{r}
+
+f <- data[iso3=="ken" & sheet=="sheet3" & 
+    str_detect(file, "season") & str_detect(file, "54.0")]
+ken_3 <- lapply(1:nrow(f), function(x) fread(f[x, path])[, `:=`(
+  iso3 = f[x, iso3],
+  sheet = f[x, sheet],
+  year = f[x, year],
+  month = f[x, month],
+  variable = str_replace(f[x, file], "sheet3_54.0_", "") %>% str_replace("_season.csv", "")
+)]) %>% rbindlist()
+
+ken_3[, `:=`(
+  # Drop counter column
+  V1 = NULL,
+  # Ensure end of season is last day of month (for consistency with other sheets)
+  end_dates = end_dates - 1
+)][, `:=`(
+  # Encode year/month columns using end of season
+  year = year(end_dates),
+  month = month(end_dates)
+)]
+
+setnames(ken_3, "Seasonal", "value")
+setnames(ken_3, c("start_dates", "end_dates"), c("date_start", "date_end"))
+setorder(ken_3, variable, year, month)
+ken_3 %>% paged_table(options=list(max.print=300))
+
+```
+
+Plotting the entire series (6 variables):
+
+```{r, fig.asp=.5}
+ken_3 %>% 
+  ggplot() +
+  geom_line(aes(as.Date(paste(year, month, 1), "%Y %m %d"), value, color=variable)) +
+  facet_grid(variable~., scales="free_y") +
+  th() +
+  labs(x=NULL, y=NULL) +
+  ggtitle("WA+ Sheet 3 Variables - Kenya, 2003 to 2017 (seasonal)")
+```
+
+
+We gather all Sheet #1 to Sheet #3 variables above into a long table format.
+
+```{r}
+
+cube <- rbind(mli, ken_1, ken_2, ken_3, fill=TRUE)
+setcolorder(cube, 
+  c("iso3", "sheet", "class", "subclass", "variable", 
+    "year", "month", "date_start", "date_end"))
+
+```
+
+For consistency's sake, we encode `date_start` and `date_end` in all sheets (incl. yearly and monthly variables):
+
+```{r}
+
+cube[is.na(date_start) & is.na(month), `:=`(
+  # yearly series: 1/1 to 12/31
+  date_start = as.IDate(paste(year, 1, 1), "%Y %m %d"),
+  date_end = as.IDate(paste(year, 12, 31), "%Y %m %d")
+)][is.na(date_start) & !is.na(month), `:=`(
+  # monthly series: 1/1 to 1/31
+  date_start = as.IDate(paste(year, month, 1), "%Y %m %d"),
+  date_end = ceiling_date(as.IDate(paste(year, month, 20), "%Y %m %d"), "months") - days(1)
+)]
+
+#saveRDS(cube, "./data-raw/rds/data.rds")
+
+```
+
+The generated data cube includes the following dimensions:
+
+`r paste("*", names(cube), collapse="\n")`
+
+
+## Data Dictionaries
+
+Another ETL step is required to map the variable codes used in the data files to their visual representation in the WA+ Sheets (SVG designs).
+
+```{r, out.width="33%", fig.width=3, fig.show="hold"}
+knitr::include_graphics(file.path("./fig", list.files("./vignettes/fig")))
+```
+
+This mapping is embedded in the WA+ `print_sheet` Python module, (example for [Sheet 1](https://github.com/wateraccounting/WAPORWA/blob/master/modules/WA/sheet1.py) in the WAPORWA repo). Importantly many SVG elements are **fields calculated** from output variables. We might need to replicate that logic in the dashboard to create dynamic visuals[^fn2].
+
+[^fn2]: This is not an ideal approach, as we'd rather avoid replicating any hydrological model logic in the dashboard code. TBD for a future version.
+
+### Sheet #1
+
+Field mappings are constructed in the table below.
+
+```{r}
+fread("./inst/csv/sheet_1_schema.csv") %>% paged_table()
+```
+
+Formulas for calculated fields are replicated here.
+
+```{r}
+
+
+
+
+
+```
+
+We proceed similarly for Sheet #2 and Sheet #3 mappings.
+
+### Sheet #2
+
+### Sheet #3
+
+
+# Gridded Variables (netCDF files)
+
+Gridded variables can be used for mapping and/or to calculate sub-basin (or administrative-level) indicators.
+
+Forthcoming...
+
+
+
+
+
+
+
 

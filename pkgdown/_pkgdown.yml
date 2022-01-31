@@ -67,24 +67,31 @@ navbar:
       aria-label: Twitter
 
 reference:
-- title: HTML Widgets
-  desc: >
-    These output formats enable **bookdown's** special
-    features like cross references in single `.Rmd` documents
-    instead of books. There are built with `rmarkdown::render()`.
-  contents:
-  - starts_with("plot")
-  - starts_with("hc")
-
-- title: Map Utilities
-  desc: >
-    These output formats enable **bookdown's** special
-    features like cross references in single `.Rmd` documents
-    instead of books. There are built with `rmarkdown::render()`.
-  contents:
-  - starts_with("map")
-
 - title: Data Model
   contents:
   - starts_with("data")
+
+- title: HTML Widgets
+  desc: >
+    Custom HTML and Highchart widgets to render WA+ variables and time-series.
+  contents:
+  - starts_with("bs")
+  - contains("accordion")
+  - contains("score")
+  - contains("plot")
+  - starts_with("hc")
+
+- title: Map Utilities
+  contents:
+  - starts_with("map")
+
+- title: Built-in datasets
+  contents:
+  - ISO3
+  - ZOI
+  - DATA
+  - LAYERS
+  - pal
+
+
 

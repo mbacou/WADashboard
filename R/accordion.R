@@ -67,15 +67,16 @@ accordionItem <- function(..., title,
 
 #' Update accordion
 #'
-#' Alias for [bs4Dash::updateAccordion()]
+#' Change the selected value of an accordion input on the client. Copied from
+#' [bs4Dash::updateAccordion()].
 #'
-#' @inheritParams bs4Dash::updateAccordion
+#' @inheritParams shiny::updateSelectInput
 #'
 #' @rdname accordion
 #' @importFrom shiny getDefaultReactiveDomain
-#' @importFrom bs4Dash updateAccordion
 #' @export
 #'
 #' @examples
-updateAccordion <- function(id, selected, session=getDefaultReactiveDomain())
-  updateAccordion(id=id, selected=selected, session=session)
+updateAccordion <- function(id, selected, session = getDefaultReactiveDomain()) {
+  session$sendInputMessage(id, selected)
+}

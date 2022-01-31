@@ -17,16 +17,19 @@ ZOI <- lapply(ISO3, function(x) lapply(x[c("admin", "water")], st_read))
 # WMS and Map Tile providers ----
 LAYERS <- read_json("./data-raw/json/LAYERS.json")
 
+# WA+ variables
+DATA <- readRDS("./data-raw/rds/data.rds")
+
 # NetCDF time-series
-nc <- rast(file.path(getOption("wa.data"), "mli", "nc", "p_monthly.nc"))
-zoi <- vect(ZOI[[1]]$admin)
-ext(nc) <- ext(zoi)
-nc <- flip(nc[[1]], direction="vert",
-  filename=file.path(getOption("wa.data"), "mli", "nc", "p_monthly_4326.nc"),
-  overwrite=TRUE)
-nc <- list(sources(nc))
+# nc <- rast(file.path(getOption("wa.data"), "mli", "nc", "p_monthly.nc"))
+# zoi <- vect(ZOI[[1]]$admin)
+# ext(nc) <- ext(zoi)
+# nc <- flip(nc[[1]], direction="vert",
+#   filename=file.path(getOption("wa.data"), "mli", "nc", "p_monthly_4326.nc"),
+#   overwrite=TRUE)
+# nc <- list(sources(nc))
 
 
 # Save package datasets ----
-usethis::use_data(ISO3, ZOI, LAYERS, pal, nc,
+usethis::use_data(ISO3, ZOI, LAYERS, DATA, pal,
   internal=TRUE, overwrite=TRUE)

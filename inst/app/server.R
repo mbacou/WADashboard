@@ -12,7 +12,6 @@ function(input, output, session) {
   s = reactiveValues(
     iso3 = init$iso3,
     date = init$date,
-    year = year(init$date),
     var = list(var="var_incremental_etnat", color="green")
   )
 
@@ -24,31 +23,38 @@ function(input, output, session) {
     data[iso3==s$iso3]
   )
 
-  # Sheet 1
+  dtf = reactive(
+    dt()[date_end==s$date]
+  )
+
+  # Sheet 1 ----
   output$d3_sheet1 = renderD3({
-    r2d3(dt()[sheet=="sheet1" & year==s$year], script="./www/js/sheet_1.js")
+    r2d3(dtf()[sheet=="sheet1"], script="./www/js/sheet_1.js")
   })
 
   output$d3_sheet2 = renderD3({
-    r2d3(dt()[sheet=="sheet2" & year==s$year], script="./www/js/sheet_2.js")
+    r2d3(dtf()[sheet=="sheet2"], script="./www/js/sheet_2.js")
   })
 
   output$d3_sheet3 = renderD3({
-    r2d3(dt()[sheet=="sheet3" & year(year)==s$year], script="./www/js/sheet_3.js")
+    r2d3(dtf()[sheet=="sheet3"], script="./www/js/sheet_3.js")
   })
 
   output$tb_basin = renderTable(
     hover=T, spacing="xs", colnames=F, align="lr", width="100%",
     melt(as.data.table(ISO3[[s$iso3]])[, `:=`(
+      `authorities` = sprintf(
+        '%s <a href="%s"><i class="fa fa-external-link fa-fw"></i></a>', authorities, url),
       `area` = sprintf("%s ha", comma(area)),
       `population` = sprintf("%s", comma(`population`)),
       `annual rainfall` = sprintf("%s mm", comma(`annual rainfall`)),
       `annual ET` = sprintf("%s mm", comma(`annual ET`)),
       `irrigated area` = sprintf("%s ha", comma(`irrigated area`)),
       `hydro power` = sprintf("%s GWh/year", comma(`hydro power`))
-    )], id.vars=1)[!variable %in% c("admin", "water"), .(
+    )], id.vars=1)[!variable %in% c("admin", "water", "source", "url", "unit"), .(
       variable = sprintf('<span class="text-info">%s</span>', str_to_title(variable)),
-      value)]
+      value
+    )]
   )
 
   output$ui_score_prod = renderUI({
@@ -77,6 +83,15 @@ function(input, output, session) {
     ) %>% tagList()
   })
 
+  observeEvent(input$txtISO3, {
+    s$iso3 = tolower(input$txtISO3)
+  })
+
+  observeEvent(input$txtDate, {
+    # Always last day of selected month
+    s$date = ceiling_date(ym(input$txtDate), "months") - days(1)
+  })
+
   observeEvent(input$btnScore, {
     updateNavbarPage(session, "navPage", selected="Scorecard")
   })
@@ -85,24 +100,19 @@ function(input, output, session) {
     updateNavbarPage(session, "navPage", selected="About WA+")
   })
 
-  observeEvent(input$txtISO3, {
-    s$iso3 = tolower(input$txtISO3)
-  })
-
-  observeEvent(input$numYear, {
-    s$year = ym(input$numYear)
-  })
-
   # Map
   output$map = renderLeaflet(map_init(init$iso3))
 
-  # Update map ----
+  # Filters ----
   observeEvent(s$iso3, {
+    # Update map
     leafletProxy("map") %>% map_update(s$iso3)
-    updateSliderTextInput(session, "numYear", NULL,
-      data[iso3==s$iso3 & sheet=="sheet1"][
-        order(year), format(unique(year), "%Y %b")],
-      selected=data[, format(max(year), "%Y %b")])
+
+    # Update time slider
+    dt <- dt()[sheet=="sheet1"]
+    updateSliderTextInput(session, "txtDate", NULL,
+      dt[order(date_end), format(unique(date_end), "%Y %b")],
+      selected=dt[, format(max(date_end), "%Y %b")])
   })
 
   # Toggle map layers ----
@@ -132,7 +142,7 @@ function(input, output, session) {
   observeEvent(input$bar_clicked, {
     e = input$bar_clicked
     updateTextAreaInput(inputId="objSelected",
-      value=paste(s$year, e$var, ": ", comma(as.numeric(e$value), accuracy=0.01)))
+      value=paste(s$date, e$var, ": ", comma(as.numeric(e$value), accuracy=0.01)))
     s$var = e
   })
 

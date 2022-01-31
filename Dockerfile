@@ -34,13 +34,13 @@ RUN \
 RUN \
   R -e "devtools::install_github('mbacou/${APP}', dependencies=TRUE, upgrade='default')"
 
-# Purge sample Shiny apps
-RUN rm -R /srv/shiny-server/*
+# Remove boilerplate
+RUN rm -rf /srv/shiny-server/
 
 # Add app directory into Shiny server root
 RUN mkdir /srv/shiny-server/${APP}
 RUN mkdir /srv/shiny-server/${APP}/docs
-COPY ./.Renviron /srv/shiny-server/${APP}/
+COPY ./.Renviron.deploy /srv/shiny-server/${APP}/.Renviron
 COPY ./app.R /srv/shiny-server/${APP}/
 COPY ./restart.txt /srv/shiny-server/${APP}/
 RUN chown -R shiny:shiny /srv/shiny-server/

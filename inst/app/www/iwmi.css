@@ -7,14 +7,14 @@
   font-family: "DM Serif Text";
 }
 ul.nav.navbar-nav>li>a {
-  border-bottom: 2px solid transparent;
+  border-bottom: 3px solid transparent;
 }
 ul.nav.navbar-nav>li>a.active {
-  border-bottom: 2px solid var(--warning);
+  border-bottom: 3px solid var(--warning);
 }
 ul.nav.navbar-nav>li>a:hover {
   color: var(--dark);
-  border-bottom: 2px solid rgba(194, 194, 194, 0.6);
+  border-bottom: 3px solid rgba(194, 194, 194,.6);
   background-color: rgba(232,231,231,.3);
 }
 .navbar:not(.navbar-expand):not(.navbar-expand-sm):not(.navbar-expand-md):not(.navbar-expand-lg):not(.navbar-expand-xl)>.container-fluid {
@@ -61,7 +61,7 @@ ul.nav.navbar-nav>li>a:hover {
 .irs--shiny .irs-single {
   top: -5px;
   padding: 0;
-  font-size: .9rem;
+  font-size: 15px;
   color: var(--dark);
   background-color: unset;
 }
@@ -76,12 +76,12 @@ ul.nav.navbar-nav>li>a:hover {
   padding: 10px;
 }
 .small-box .icon {
-  color: rgba(17,17,17, .15);
+  color: rgba(17,17,17,.15);
   z-index: 0;
 }
 .small-box>.small-box-footer {
-  background-color: rgba(17,17,17, .1);
-  color: rgba(255,255,255, .8);
+  background-color: rgba(17,17,17,.1);
+  color: rgba(255,255,255,.8);
   display: block;
   padding: 3px 0;
   position: relative;
@@ -96,19 +96,22 @@ ul.nav.navbar-nav>li>a:hover {
   top: 20px;
 }
 .small-box .icon>i {
-  font-size: 90px;
   position: absolute;
-  right: 15px;
+  font-size: 90px;
   top: 15px;
+  right: 15px;
   transition: transform .3s linear;
 }
 
 .waved {
-  background: linear-gradient(180deg, rgba(232,231,231,1) 0%, rgba(242,241,241,1) 45%, rgba(255,255,255,1) 100%);
+  background: linear-gradient(180deg,
+  rgba(232,231,231,1) 0%, rgba(242,241,241,1) 45%, rgba(255,255,255,1) 100%);
 }
 .waved2 {
-  background: linear-gradient(180deg, rgba(255,255,255,.3) 0%, rgba(255,255,255,.9) 50%, rgba(255,255,255,0) 100%);
+  background: linear-gradient(180deg,
+  rgba(255,255,255,.3) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,0) 100%);
 }
 .waved3 {
-  background: linear-gradient(180deg, rgba(255,255,255,1) 6%, rgba(255,255,255,0) 100%);
+  background: linear-gradient(180deg,
+  rgba(255,255,255,1) 6%, rgba(255,255,255,0) 100%);
 }

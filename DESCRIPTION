@@ -1,5 +1,5 @@
 Package: WADashboard
-Version: 0.0.8
+Version: 0.0.9
 Title: IWMI Water Accounting+ Visualization Dashboard
 Description: This package includes all dependencies to run WA+ visualization dashboard 
   either locally inside RStudio or containerized.
@@ -20,7 +20,6 @@ NeedsCompilation: no
 Imports:
   bslib (>= 0.3.1),
   data.table,
-  fresh (>= 0.2.0),
   highcharter (>= 0.9.4),
   leaflet (>= 2.0.4),
   leaflet.extras (>= 1.0.0),
