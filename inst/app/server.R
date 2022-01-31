@@ -15,10 +15,6 @@ function(input, output, session) {
     var = list(var="var_incremental_etnat", color="green")
   )
 
-  layers = reactive(
-    c(input$chkLayer_1, input$chkLayer_2, input$chkLayer_3)
-  )
-
   dt = reactive(
     data[iso3==s$iso3]
   )
@@ -27,7 +23,36 @@ function(input, output, session) {
     dt()[date_end==s$date]
   )
 
-  # Sheet 1 ----
+  # Observers ----
+  observeEvent(input$txtISO3, {
+    s$iso3 = tolower(input$txtISO3)
+  })
+
+  observeEvent(input$txtDate, {
+    # Always last day of selected month
+    s$date = ceiling_date(ym(input$txtDate), "months") - days(1)
+  })
+
+  observeEvent(s$iso3, {
+    # Update map
+    leafletProxy("map") %>% map_update(s$iso3)
+    # Update time slider
+    dt <- dt()[sheet=="sheet1"]
+    updateSliderTextInput(session, "txtDate", NULL,
+      dt[order(date_end), format(unique(date_end), "%Y %b")],
+      selected=dt[, format(max(date_end), "%Y %b")])
+  })
+
+  observeEvent(input$btnScore, {
+    updateNavbarPage(session, "navPage", selected="Scorecard")
+  })
+
+  observeEvent(input$btnRefresh, {
+    updateNavbarPage(session, "navPage", selected="About WA+")
+  })
+
+
+  # WA+ sheets ----
   output$d3_sheet1 = renderD3({
     r2d3(dtf()[sheet=="sheet1"], script="./www/js/sheet_1.js")
   })
@@ -40,6 +65,15 @@ function(input, output, session) {
     r2d3(dtf()[sheet=="sheet3"], script="./www/js/sheet_3.js")
   })
 
+  observeEvent(input$bar_clicked, {
+    e = input$bar_clicked
+    updateTextAreaInput(inputId="objSelected",
+      value=paste(s$date, e$var, ": ", comma(as.numeric(e$value), accuracy=0.01)))
+    s$var = e
+  })
+
+
+  # Key facts ----
   output$tb_basin = renderTable(
     hover=T, spacing="xs", colnames=F, align="lr", width="100%",
     melt(as.data.table(ISO3[[s$iso3]])[, `:=`(
@@ -57,6 +91,33 @@ function(input, output, session) {
     )]
   )
 
+  # Map ----
+  output$map = renderLeaflet(map_init(init$iso3))
+
+  layers = reactive(
+    c(input$chkLayer_1, input$chkLayer_2, input$chkLayer_3)
+  )
+
+  # Toggle map layers
+  observeEvent(layers(), {
+    leafletProxy("map") %>% map_toggle(layers())
+  })
+
+  output$uiLegend = renderUI(
+    if(length(layers())>0) lapply(layers(), function(x)
+      tagList(h5(class="text-info", x), img(class="img-responsive",
+        src=sprintf(LAYERS[["FAO"]]$legend, LAYERS[["FAO"]]$layers[[x]]))
+      )) else p(class="mt-2 text-muted", "No layer selected.")
+  )
+
+  output$uiInfo = renderUI(
+    if(length(layers())>0) lapply(layers(), function(x)
+      tagList(h5(class="text-info", x), p("")
+      )) else p(class="mt-2 text-muted", "No layer selected.")
+  )
+
+
+  # Cards ----
   output$ui_score_prod = renderUI({
     dt = fread("
     variable, value, status, max
@@ -83,67 +144,11 @@ function(input, output, session) {
     ) %>% tagList()
   })
 
-  observeEvent(input$txtISO3, {
-    s$iso3 = tolower(input$txtISO3)
-  })
-
-  observeEvent(input$txtDate, {
-    # Always last day of selected month
-    s$date = ceiling_date(ym(input$txtDate), "months") - days(1)
-  })
-
-  observeEvent(input$btnScore, {
-    updateNavbarPage(session, "navPage", selected="Scorecard")
-  })
-
-  observeEvent(input$btnRefresh, {
-    updateNavbarPage(session, "navPage", selected="About WA+")
-  })
-
-  # Map
-  output$map = renderLeaflet(map_init(init$iso3))
-
-  # Filters ----
-  observeEvent(s$iso3, {
-    # Update map
-    leafletProxy("map") %>% map_update(s$iso3)
-
-    # Update time slider
-    dt <- dt()[sheet=="sheet1"]
-    updateSliderTextInput(session, "txtDate", NULL,
-      dt[order(date_end), format(unique(date_end), "%Y %b")],
-      selected=dt[, format(max(date_end), "%Y %b")])
-  })
-
-  # Toggle map layers ----
-  observeEvent(layers(), {
-    leafletProxy("map") %>% map_toggle(layers())
-  })
-
-  output$uiLegend = renderUI(
-    if(length(layers())>0) lapply(layers(), function(x)
-      tagList(h5(class="text-info", x), img(class="img-responsive",
-        src=sprintf(LAYERS[["FAO"]]$legend, LAYERS[["FAO"]]$layers[[x]]))
-      )) else p(class="mt-2 text-muted", "No layer selected.")
-  )
-
-  output$uiInfo = renderUI(
-    if(length(layers())>0) lapply(layers(), function(x)
-      tagList(h5(class="text-info", x), p("")
-      )) else p(class="mt-2 text-muted", "No layer selected.")
-  )
 
   # Plots ----
   output$plot_ts = renderHighchart({
     req(s$var$var)
     plot_ts(dt()[id==s$var$var], s$var$color)
-  })
-
-  observeEvent(input$bar_clicked, {
-    e = input$bar_clicked
-    updateTextAreaInput(inputId="objSelected",
-      value=paste(s$date, e$var, ": ", comma(as.numeric(e$value), accuracy=0.01)))
-    s$var = e
   })
 
 }
