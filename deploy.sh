@@ -11,7 +11,7 @@ VNUM2=${VERSION[1]}
 VNUM2=$((VNUM2+1))
 TAG="$VNUM1.$VNUM2.0"
 
-git tag -a "$TAG" -m "Release v$TAG"
+git tag "v$TAG" -m "Release v$TAG"
 git commit -am "Release v$TAG" && git push
 
 aws ecr get-login-password --region af-south-1 | docker login --username AWS --password-stdin 643578423538.dkr.ecr.af-south-1.amazonaws.com
