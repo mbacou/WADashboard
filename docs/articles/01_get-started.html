@@ -37,7 +37,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">WADashboard</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.0.8</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -109,23 +109,21 @@
 <li>
 <code>/data-raw</code>: configuration files</li>
 <li>
-<code>/data</code>: built-in package datasets (see <a href="02_data-etl.html">Data ETL</a> for more details)</li>
-<li>
 <code>/inst</code>: client and server scripts and web assets for the Shiny application</li>
 <li>
 <code>/R</code>: all custom R functions (see <a href="../reference/">Reference</a>)</li>
 <li>
 <code>/docs</code>: rendered HTML documentation (this website)</li>
 </ul>
-<p>Inside RStudio IDE the application can be previewed in a browser with <code>source("app.R")</code>.</p>
+<p>The application can be previewed in a browser with <code>source("app.R")</code>.</p>
 <p>Shell scripts are provided to automate common tasks:</p>
 <ul>
 <li>
-<code>/build.sh</code>: rebuild and install the package</li>
+<code>build.sh</code>: rebuild and install the package</li>
 <li>
-<code>/pkgdown.sh</code>: rebuild HTML package documentation (uses <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> framework)</li>
+<code>pkgdown.sh</code>: rebuild HTML package documentation (uses <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> framework)</li>
 <li>
-<code>/deploy.sh</code>: commit release to Github, rebuild Docker image, and deploy image to AWS ECR</li>
+<code>deploy.sh</code>: commit release to Github, rebuild Docker image, and deploy image to AWS ECR</li>
 </ul>
 </div>
 <div class="section level2">

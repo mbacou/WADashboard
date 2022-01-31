@@ -1,6 +1,6 @@
 # WADashboard (development version)
 
-### v0.0.9
+### v0.1.1
 
 * Added sustainability and variability indicators
 * Added 2 vignettes

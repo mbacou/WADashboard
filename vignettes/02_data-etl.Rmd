@@ -320,7 +320,8 @@ This mapping is embedded in the WA+ `print_sheet` Python module, (example for [S
 Field mappings are constructed in the table below.
 
 ```{r}
-fread("./inst/csv/sheet_1_schema.csv") %>% paged_table()
+fread(system.file("./csv/sheet_1_schema.csv", package="WADashboard")) %>% 
+  paged_table()
 ```
 
 Formulas for calculated fields are replicated here.
