@@ -2,3 +2,4 @@
 shared/
 .vscode/
 man/
+.Renviron

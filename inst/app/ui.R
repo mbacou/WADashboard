@@ -35,49 +35,9 @@ footer <- fluidRow(class="bg-dark align-items-center",
       br(), "Version",
       as.character(packageVersion("WADashboard")[1]),
       "(", a(class="text-white",
-        href="https://github.com/mbacou/WADashboard", "what's new"), ")"
+        href="https://mbacou.github.io/WADashboard/news/", "what's new"), ")"
     )
   )
-)
-
-# Scorecards ----
-tab_11 <- tagList(
-  h3(class="text-info", "Water Productivity"),
-  p("[placeholder]", br(), "
-        Which scoring dimensions and key indicators / measures to highlight in this section?
-        "),
-  fluidRow(
-    scoreBox("Score 1", "Good",
-      icon=icon("faucet"), footer="Indicator 1", width=6, color="success"),
-    scoreBox("Score 2", "Poor",
-      icon=icon("check-double"), footer="Indicator 2", width=6, color="warning")
-  ),
-  p(),
-  uiOutput("ui_score_prod", inline=F)
-)
-
-tab_12 <- tagList(
-  h3(class="text-info", "Sustainability Score"),
-  p("[placeholder]", br(), "
-        Which scoring dimensions and key indicators / measures to highlight in this section?
-        "),
-  fluidRow(
-    scoreBox("Score 1", "Good",
-      icon=icon("tint"), footer="Indicator 1", width=6, color="success"),
-    scoreBox("Score 2", "Poor",
-      icon=icon("check-double"), footer="Indicator 2", width=6, color="danger")
-  ),
-  p(),
-  uiOutput("ui_score_sust", inline=F),
-  div(class="text-right",
-    actionButton("btnScore", "Learn More", width="6rem", class="my-3")
-  )
-)
-
-tab_13 <- tagList(
-  h3(class="text-info", "Basin Profile"),
-  p("Key basin characteristics."),
-  div(class="table-responsive waved2", tableOutput("tb_basin"))
 )
 
 # Filters ----
@@ -176,6 +136,48 @@ map <- fluidRow(id="divMap", class="w-100 no-gutters collapse show",
     )
   )
 )
+
+
+# Scorecards ----
+tab_11 <- tagList(
+  h3(class="text-info", "Water Productivity"),
+  p("[placeholder]", br(), "
+        Which scoring dimensions and key indicators / measures to highlight in this section?
+        "),
+  fluidRow(
+    scoreBox("Score 1", "Good",
+      icon=icon("faucet"), footer="Indicator 1", width=6, color="success"),
+    scoreBox("Score 2", "Poor",
+      icon=icon("check-double"), footer="Indicator 2", width=6, color="warning")
+  ),
+  p(),
+  uiOutput("ui_score_prod", inline=F)
+)
+
+tab_12 <- tagList(
+  h3(class="text-info", "Sustainability Score"),
+  p("[placeholder]", br(), "
+        Which scoring dimensions and key indicators / measures to highlight in this section?
+        "),
+  fluidRow(
+    scoreBox("Score 1", "Good",
+      icon=icon("tint"), footer="Indicator 1", width=6, color="success"),
+    scoreBox("Score 2", "Poor",
+      icon=icon("check-double"), footer="Indicator 2", width=6, color="danger")
+  ),
+  p(),
+  uiOutput("ui_score_sust", inline=F),
+  div(class="text-right",
+    actionButton("btnScore", "Learn More", width="6rem", class="my-3")
+  )
+)
+
+tab_13 <- tagList(
+  h3(class="text-info", "Basin Profile"),
+  p("Key basin characteristics."),
+  div(class="table-responsive waved2", tableOutput("tb_basin"))
+)
+
 
 # Overview ----
 overview <- fluidRow(
