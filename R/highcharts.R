@@ -666,3 +666,38 @@ plot_idx_mosaic <- function(
 
   return(p)
 }
+
+
+#' Plot bullet charts
+#'
+#' @param data input data
+#' @inheritParams hc_themed
+#' @inheritDotParams hc_themed
+#'
+#' @examples
+#'
+#' @export
+plot_bullet <- function(data) {
+
+  dt <- cntr_filtered()[!status_cntr %like% "refund", .(
+    date_end = max(date_end, na.rm=T),
+    planted = 100*sum(status_cntr %in% l_status[2:12])/.N,
+    triggered = 100*sum(status_cntr %in% l_status[c(5, 7:10)])/.N,
+    expired = 100*sum(status_cntr %in% l_status[6:12])/.N
+  )]
+
+  hchart(dt, type="bullet", hcaes(y=expired, target=triggered)) %>%
+    hc_chart(inverted=FALSE, margin=c(40, 8, 40, 10)) %>%
+    hc_xAxis(tickLength=0) %>%
+    hc_yAxis(min=0, max=100, gridLineWidth=0, labels=list(format="{value}%"),
+      plotBands=list(
+        list(from=0, to=dt$planted, color=cols[["gray-lte"]], name="planted"),
+        list(from=dt$planted, to=100, color=alpha(cols[["gray-lte"]], .5), name="all")
+      )) %>%
+    hc_tooltip(pointFormat=
+        "<strong>{point.y:.0f}% expired</strong><br/>{point.target:.0f}% triggered") %>%
+    hc_title(text=
+        sprintf("Last contract expires on <strong>%s</strong>", dt$date_end)) %>%
+    hc_themed(...)
+
+}

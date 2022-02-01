@@ -1,6 +1,6 @@
 #' Custom Bootstrap theme
 #'
-#' A modified BS4 theme based on IWMI branding guidelines.
+#' A modified Bootstrap 4 theme based on IWMI branding guidelines.
 #'
 #' @inheritParams bslib::bs_theme
 #' @param font_size base font size in pixel
@@ -71,23 +71,23 @@ bs_themed <- function(
     maroon = pal[["maroon"]],
     red = pal[["red"]],
 
-    `light` = pal[["light"]],
-    `dark` = pal[["black"]],
+    light = pal[["light"]],
+    dark = pal[["black"]],
 
     `enable-rounded` = rounded,
     `enable-gradients` = gradients,
 
     `navbar-padding-x` = 0,
     `navbar-padding-y` = 0,
-    `navbar-nav-link-padding-x` = "1rem",
-    `navbar-toggler-font-size` = ".9rem",
+    `navbar-nav-link-padding-x` = "1.0rem",
+    `navbar-toggler-font-size` = "0.9rem",
 
     `h1-font-size` = "1.8rem",
     `h2-font-size` = "1.6rem",
     `h3-font-size` = "1.4rem",
     `h4-font-size` = "1.2rem",
-    `h5-font-size` = "1rem",
-    `h6-font-size` = ".9rem",
+    `h5-font-size` = "1.0rem",
+    `h6-font-size` = "0.9rem",
     `small-font-size` = "87.5%",
 
     `line-height-base` = 20/font_size,
@@ -97,9 +97,8 @@ bs_themed <- function(
     `min-contrast-ratio` = 2.5
 
   ) %>%
-
     bs_add_variables(
-      .where = "declarations",
+      .where =  "declarations",
 
       `navbar-brand-height` = "$nav-link-height",
 
@@ -115,13 +114,14 @@ bs_themed <- function(
       `gray-800` = "darken($light, 48%)",
       `gray-900` = "darken($light, 56%)",
 
-      `input-focus-bg` = "$white",
+      `link-color` = "$blue",
       `nav-pills-link-active-bg` = "$blue",
+      `input-focus-bg` = "$white",
       `input-disabled-bg` = "$white",
 
+      `component-active-bg` = "$body-bg",
       `dropdown-border-color` = "$border-color",
       `dropdown-inner-border-radius` = 0,
-      `component-active-bg` = "$body-bg",
       `dropdown-link-active-bg` = "$body-bg",
       `dropdown-link-hover-bg` = "$body-bg",
       `custom-select-bg` = "$input-bg",
@@ -133,8 +133,7 @@ bs_themed <- function(
       `card-title-font-size` = "1rem",
       `card-spacer-y` = ".5rem",
       `card-bg` = "transparent",
-      `card-cap-bg` = "transparent",
-      `link-color` = "$blue"
+      `card-cap-bg` = "transparent"
     )
 }
 

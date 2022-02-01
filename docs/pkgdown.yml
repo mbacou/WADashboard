@@ -1,8 +1,10 @@
 pandoc: 2.14.0.3
-pkgdown: 1.6.1
+pkgdown: 2.0.2
 pkgdown_sha: ~
-articles: {}
-last_built: 2021-12-09T21:47Z
+articles:
+  01_get-started: 01_get-started.html
+  02_data-etl: 02_data-etl.html
+last_built: 2022-01-31T23:30Z
 urls:
   reference: https://github.mbacou.io/WADashboard/reference
   article: https://github.mbacou.io/WADashboard/articles

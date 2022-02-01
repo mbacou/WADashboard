@@ -6,7 +6,7 @@
 #####################################################################################
 
 # Footer ----
-footer <- fluidRow(class="bg-dark align-items-center",
+footer <- fluidRow(class="bg-dark",
   column(8,
     fluidRow(
       div(class="mx-3 pt-3 pb-1",
@@ -84,9 +84,10 @@ filters <- fluidRow(class="mt-3 pt-5 align-items-end waved3",
 slider <- fluidRow(class="w-100 no-gutters",
   column(12, class="waved border-bottom border-top px-4 pt-2 pb-0",
     div(class="float-left", p("Basin Timeline")),
-    sliderTextInput("numYear", NULL,
-      data[iso3==init$iso3 & sheet=="sheet1"][order(year), format(unique(year), "%Y %b")],
-      selected=data[, format(max(year), "%Y %b")],
+    sliderTextInput("txtDate", NULL,
+      data[iso3==init$iso3 & sheet=="sheet1"
+      ][order(date_end), format(unique(date_end), "%Y %b")],
+      selected=format(init$date, "%Y %b"),
       width="98%", grid=TRUE, hide_min_max=TRUE)
   )
 )

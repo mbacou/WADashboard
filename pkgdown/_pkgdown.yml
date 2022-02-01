@@ -1,15 +1,97 @@
 url: https://github.mbacou.io/WADashboard
 
 template:
+  bootstrap: 5
+  bslib:
+    bg: "#f2f1f1"
+    fg: "#333333"
+    primary: "#5088C6"
+    secondary: "#FFFFFF"
+    enable-rounded: false
+
   opengraph:
     image:
       src: inst/app/www/fig/iwmi_logo_w.svg
-      alt: "Water Accounting+"
+      alt: Water Accounting+
     twitter:
-      site: "@iwmi"
+      creator: "@iwmi"
       card: summary_large_image
+
+development:
+  mode: auto
+
+authors:
+  "Melanie Bacou":
+    href: https://linkedin.com/in/mbacou/
+  "Lisa-Maria Rebelo":
+    href: https://www.linkedin.com/in/lisa-maria-rebelo/
+  "William Rex":
+    href: https://www.linkedin.com/in/william-rex-36ba301/
+  "Naga Velpuri":
+    href: https://www.linkedin.com/in/naga-manohar-velpuri-879a8726/
 
 home:
   strip_header: false
+  links:
+  - text: Water Accounting+
+    href: http://wateraccounting.org/
+  - text: IWMI
+    href: http://iwmi.cgiar.org/
+  - text: FAO WaPOR
+    href: https://www.fao.org/in-action/remote-sensing-for-water-productivity/en/
+
+navbar:
+  bg: secondary
+  type: light
+  title: ~
+  structure:
+    left:  [intro, articles, reference, news]
+    right: [github, twitter]
+  components:
+    home: ~
+    articles:
+      text: Technical Guides
+      href: articles/index.html
+    reference:
+      text: Reference
+      href: reference/index.html
+    news:
+      text: News
+      href: news/index.html
+    github:
+      icon: fab fa-github fa-lg
+      href: https://github.com/mbacou/WADashboard
+    twitter:
+      icon: fa-twitter
+      href: https://twitter.com/IWMI_
+      aria-label: Twitter
+
+reference:
+- title: Data Model
+  contents:
+  - starts_with("data")
+
+- title: HTML Widgets
+  desc: >
+    Custom HTML and Highchart widgets to render WA+ variables and time-series.
+  contents:
+  - starts_with("bs")
+  - contains("accordion")
+  - contains("score")
+  - contains("plot")
+  - starts_with("hc")
+
+- title: Map Utilities
+  contents:
+  - starts_with("map")
+
+- title: Built-in datasets
+  contents:
+  - ISO3
+  - ZOI
+  - DATA
+  - LAYERS
+  - pal
+
 
 

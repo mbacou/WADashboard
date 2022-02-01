@@ -17,17 +17,13 @@ library(bslib)
 library(data.table)
 if(!interactive()) library(WADashboard) else devtools::load_all(".")
 
-#root <- getOption("wa.data")
-root <- system.file("csv", package="WADashboard")
+pkg <- system.file(package="WADashboard")
 
-#load(file.path(root, "data.RData"))
-data <- file.path(root, "data_sheet.csv") %>% fread()
-schema <- file.path(root, "sheet_1_schema.csv") %>% fread()
+data <- DATA
+schema <- file.path(pkg, "./csv/sheet_1_schema.csv") %>% fread()
 
-setnames(data, tolower(names(data)))
 setnames(schema, tolower(names(schema)))
-data[, year := as.Date(paste0(year, "-01-01"))
-][schema, on=.(class, subclass, variable), id := i.id]
+data[schema, on=.(class, subclass, variable), id := i.id]
 
 # Init
 init = list(
