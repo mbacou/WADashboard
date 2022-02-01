@@ -58,6 +58,9 @@ RUN /rocker_scripts/install_pandoc.sh
 COPY ./rstudio-server.json /home/rstudio/.local/share/rstudio/
 RUN chown -R rstudio:rstudio /home/rstudio
 
+# Ensure rstudio group users can install packages in the shared library
+RUN usermod -aG sudo rstudio
+
 EXPOSE 8787
 
 CMD ["/init"]
