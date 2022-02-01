@@ -293,7 +293,7 @@ function() {
     theme = bs_themed(),
     window_title = "IWMI | Water Accounting+",
     title = tagList(
-      span(class="h3 text-primary", "WATER Accounting+"),
+      span(class="h3 text-primary", "WA+ Dashboard"),
       span(class="mx-4 text-warning", "DRAFT")
     ),
     bg = alpha("white", .9),

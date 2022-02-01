@@ -1,4 +1,4 @@
-The purpose of the **Agricultural Services** accounting sheet is to:
+The purpose of the **Agricultural Services Sheet** is to:
 
 - Assess agricultural yields for food, feed, timber and fish products 
 - Compute the related water productivity (kg/m³) and the gap to demonstrate loss of returns in

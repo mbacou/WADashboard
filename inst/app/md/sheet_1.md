@@ -1,4 +1,4 @@
-The **Resource Base** sheet provides an overview on over‑exploitation, unmanageable,
+The **Resource Base Sheet** provides an overview on over‑exploitation, unmanageable,
 manageable, exploitable, reserved, utilized and utilizable flows at river basin scale.
 In particular it is used to:
 
