@@ -121,9 +121,10 @@ function(input, output, session) {
   output$ui_score_prod = renderUI({
     dt = fread("
     variable, value, status, max
-    Agr. Water Productivity, 12, warning, 60
-    Utilizable Flow, 79, success, 120
-    Blue water availability, 30, danger, 110
+    Net Inflow, 12, warning, 60
+    Depleted Water, 79, success, 120
+    Anthropogenic Uses, 30, danger, 110
+    Available for Allocation, 4, danger, 20
       ")
     lapply(1:nrow(dt), function(x) dt[x,
       progressBar(paste0("pbg-", x), value, total=max,
@@ -132,16 +133,7 @@ function(input, output, session) {
   })
 
   output$ui_score_sust = renderUI({
-    dt = fread("
-    variable, value, status, max
-    Green water availability, 12, warning, 60
-    Sustaining Rainfall, 79, success, 120
-    Storage Change, 20, danger, 100
-      ")
-    lapply(1:nrow(dt), function(x) dt[x,
-      progressBar(paste0("pbg-", x), value, total=max,
-        title=span(class="pt-3", variable), status=status, display_pct=T)]
-    ) %>% tagList()
+    p("[10-year trend radar chart]")
   })
 
 
