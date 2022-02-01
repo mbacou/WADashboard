@@ -16,7 +16,27 @@ The dashboard uses output from IWMI WA+ hydrological models, with the main code 
 
 Two hydrological basin are provided in the initial release, the **lower Niger River** in Mali and **Mara River** in Kenya. There are differences between the two use cases, in terms of data availability and temporal scope (e.g. in Mali only a subset of the entire WAPORWA model was obtained), meaning the level of details available through the dashboard will vary according to each river basin.
 
+# Usage
 
+The easiest to get started is to install this package from the development version on GitHub at an R console:
+
+```r
+if (!require("devtools")) install.packages("devtools")
+devtools::install_github("mbacou/WADashboard")
+```
+
+And then preview the dashboard in your browser with:
+
+```r
+if (!require("shiny")) install.packages("shiny")
+shiny::shinyAppDir(system.file("app", package="WADashboard"))
+```
+
+If you choose to clone this repo instead, the application can be previewed in an R console with:
+
+```r
+source("./app.R")
+```
 
 # Repository Structure
 
