@@ -24,7 +24,14 @@ if (!require("devtools")) install.packages("devtools")
 devtools::install_github("mbacou/WADashboard")
 ```
 
-The web application can be previewed in the RStudio IDE with:
+And then preview the dashboard in your browser with:
+
+```r
+if (!require("shiny")) install.packages("shiny")
+shiny::shinyAppDir(system.file("app", package="WADashboard"))
+```
+
+If you choose to clone this repo instead, the application can be previewed with:
 
 ```r
 source("./app.R")

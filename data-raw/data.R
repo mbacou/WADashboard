@@ -3,21 +3,21 @@ require(jsonlite)
 require(sf)
 require(terra)
 
-# IMWI color palette (from GIMP palette format) ----
+# IMWI color palette (uses GIMP palette format)
 tmp <- fread("./data-raw/json/palette.gpl", skip=4, header=F)
 pal <- grDevices::rgb(tmp[, .(V1, V2, V3)], maxColorValue=255)
 names(pal) <- tmp[, V4]
 
-# Basin ISO3 codes and metadata
-ISO3 <- read_json("./data-raw/json/ISO3.json")
+# Unique basin ISO3 codes and metadata
+ISO3 <- read_json("./data-raw/json/Iso3.json")
 
-# Basin boundaries (clipped) ----
+# Basin and stream features (clipped)
 ZOI <- lapply(ISO3, function(x) lapply(x[c("admin", "water")], st_read))
 
-# WMS and Map Tile providers ----
+# WMS and Map Tile providers
 LAYERS <- read_json("./data-raw/json/LAYERS.json")
 
-# WA+ variables
+# WA+ data cube
 DATA <- readRDS("./data-raw/rds/data.rds")
 
 # NetCDF time-series
@@ -30,6 +30,6 @@ DATA <- readRDS("./data-raw/rds/data.rds")
 # nc <- list(sources(nc))
 
 
-# Save package datasets ----
+# Save built-in package datasets ----
 usethis::use_data(ISO3, ZOI, LAYERS, DATA, pal,
   internal=TRUE, overwrite=TRUE)

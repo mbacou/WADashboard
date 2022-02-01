@@ -7,89 +7,47 @@
 
 # Footer ----
 footer <- fluidRow(class="bg-dark",
-  column(8,
-    fluidRow(
-      div(class="mx-3 pt-3 pb-1",
-        a(href="https://iwmi.cgiar.org/",
-          img(height="50px", src="./fig/iwmi_logo_w.svg"))
-      ),
-      div(class="mx-3 pt-2 pb-2",
-        a(href="https://cgiar.org/",
-          img(height="60px", src="./fig/cgiar_w.png"))
-      ),
-      div(class="mx-3 pt-3",
-        a(href="https://fao.org/",
-          img(height="50px", src="./fig/fao_logo_w.svg"))
-      ),
-      div(class="mx-3 pt-3",
-        a(href="https://en.unesco.org/wwap/",
-          img(height="50px", src="./fig/wwap_w.png"))
-      )
-    )
-  ),
-  column(4, class="pt-3 text-md-right",
+  column(6, p(class="mt-4", "
+    The WA+ framework is developed by the UNESCO-IHE, Delft in partnership with the
+    International Water Management Institute, the Food and Agriculture Organization
+    of the United Nations, and the World Water Assessment Program."),
     p(a(class="text-white", "Terms of use",
       href="https://www.iwmi.cgiar.org/about/legal-information/"), br(),
       HTML("&copy; IWMI"),
-      paste(year(Sys.Date()), "All rights reserved", sep=". "),
+      paste(year(Sys.Date()), "All rights reserved.", sep=". "),
       br(), "Version",
       as.character(packageVersion("WADashboard")[1]),
       "(", a(class="text-white",
-        href="https://github.com/mbacou/WADashboard", "what's new"), ")"
+        href="https://mbacou.github.io/WADashboard/news/", "what's new"), ")"
+    )
+  ),
+  column(5, offset=1,
+    p(class="my-3 mr-3 text-md-right",
+      a(href="https://iwmi.cgiar.org/",
+        img(class="m-2", height="50px", src="./fig/iwmi_logo_w.svg")),
+      a(href="https://cgiar.org/",
+        img(class="m-2", height="60px", src="./fig/cgiar_w.png")),
+      br(),
+      a(href="https://fao.org/",
+        img(class="m-2", height="50px", src="./fig/fao_logo_w.svg")),
+      a(href="https://en.unesco.org/wwap/",
+        img(class="m-2", height="50px", src="./fig/wwap_w.png"))
     )
   )
-)
-
-# Scorecards ----
-tab_11 <- tagList(
-  h3(class="text-info", "Water Productivity"),
-  p("[placeholder]", br(), "
-        Which scoring dimensions and key indicators / measures to highlight in this section?
-        "),
-  fluidRow(
-    scoreBox("Score 1", "Good",
-      icon=icon("faucet"), footer="Indicator 1", width=6, color="success"),
-    scoreBox("Score 2", "Poor",
-      icon=icon("check-double"), footer="Indicator 2", width=6, color="warning")
-  ),
-  p(),
-  uiOutput("ui_score_prod", inline=F)
-)
-
-tab_12 <- tagList(
-  h3(class="text-info", "Sustainability Score"),
-  p("[placeholder]", br(), "
-        Which scoring dimensions and key indicators / measures to highlight in this section?
-        "),
-  fluidRow(
-    scoreBox("Score 1", "Good",
-      icon=icon("tint"), footer="Indicator 1", width=6, color="success"),
-    scoreBox("Score 2", "Poor",
-      icon=icon("check-double"), footer="Indicator 2", width=6, color="danger")
-  ),
-  p(),
-  uiOutput("ui_score_sust", inline=F),
-  div(class="text-right",
-    actionButton("btnScore", "Learn More", width="6rem", class="my-3")
-  )
-)
-
-tab_13 <- tagList(
-  h3(class="text-info", "Basin Profile"),
-  p("Key basin characteristics."),
-  div(class="table-responsive waved2", tableOutput("tb_basin"))
 )
 
 # Filters ----
 filters <- fluidRow(class="mt-3 pt-5 align-items-end waved3",
   column(9,
-    p(class="text-muted",
-      "This dashboard compiles results from the",
-      a(class="text-gray-dark", href="https://wateraccounting.org/", target="wa",
-        "Water Accounting+"),
-      "method based on global-scale public-domain datasets. WA+
-      objective is to achieve equitable and transparent water governance for
-      all water consumers and to ensure a sustainable water balance.")
+    p(span(class="h4", "From Water Accounting+ to Better Water Resource Management"),
+      br(), span(class="text-muted",
+        "This dashboard compiles results from the",
+        a(class="text-gray-dark", href="https://wateraccounting.org/", target="wa",
+          "Water Accounting+"),
+        "method based on global-scale public-domain datasets. WA+ objective is to
+        achieve equitable and transparent water governance for all water consumers
+        and to ensure a sustainable water balance.")
+    )
   ),
   column(5,
     pickerInput("txtISO3",
@@ -128,7 +86,7 @@ slider <- fluidRow(class="w-100 no-gutters",
       data[iso3==init$iso3 & sheet=="sheet1"
       ][order(date_end), format(unique(date_end), "%Y %b")],
       selected=format(init$date, "%Y %b"),
-      width="98%", grid=TRUE, hide_min_max=TRUE)
+      width="99%", grid=TRUE, hide_min_max=TRUE)
   )
 )
 
@@ -166,7 +124,7 @@ map <- fluidRow(id="divMap", class="w-100 no-gutters collapse show",
         )
       ),
       nav(title="Legend", icon=icon("palette"),
-        column(12, class="mt-2 pb-2 bg-white",
+        column(12, class="mt-2 bg-white",
           style="height:18.4rem; overflow:auto;",
           uiOutput("uiLegend"))
       ),
@@ -177,6 +135,45 @@ map <- fluidRow(id="divMap", class="w-100 no-gutters collapse show",
     )
   )
 )
+
+
+# Scorecards ----
+tab_11 <- tagList(
+  h3(class="text-info", "Sustainability Score"),
+  p("Impact of climate, infrastructure, and past management on long-term basin
+    sustainability."),
+  fluidRow(
+    scoreBox("Adequate level reached", "7/10 years",
+      icon=icon("tint"), footer="Environmental Water", width=6, color="success"),
+    scoreBox("Fraction of water available downstream", "10%",
+      icon=icon("faucet"), footer="Downstream Uses", width=6, color="warning")
+  ),
+  p(),
+  uiOutput("ui_score_prod", inline=F),
+  br()
+)
+
+tab_12 <- tagList(
+  h3(class="text-info", "Basin Variability"),
+  p("Trends in storage changes"), br(),
+  fluidRow(
+    scoreBox("Average gain/loss", "+3% /year",
+      icon=icon("check-double"), footer="Net Inflow", width=6, color="success"),
+    scoreBox("Average gain/loss", "+5% /year",
+      icon=icon("tint-slash"), footer="Depleted Water", width=6, color="danger")
+  ),
+  p(),
+  uiOutput("ui_score_sust", inline=F),
+  div(class="text-right",
+    actionButton("btnScore", "Learn More", width="6rem", class="my-3")
+  )
+)
+
+tab_13 <- tagList(
+  h3(class="text-info", "Key Facts"),
+  div(class="table-responsive waved2", tableOutput("tb_basin"))
+)
+
 
 # Overview ----
 overview <- fluidRow(
@@ -189,7 +186,7 @@ overview <- fluidRow(
 timeline <- fluidRow(class="bg-white",
   column(8,
     h4(class="text-info", icon=icon("tint"), "Recharge and Abstraction"),
-    p("[basin timeline and anomalies]"),
+    p("[Time-series and anomalies]"),
     highchartOutput("hcTimeline")
   ),
   column(4, p("more"))
@@ -199,18 +196,7 @@ timeline <- fluidRow(class="bg-white",
 sheet_1 <- nav("Resource Base", icon=icon("th"),
   fluidRow(class="bg-white",
     column(4,
-      p(),
-      markdown("
-      The **Resource Base** sheet provides an overview on over‑exploitation,
-      unmanageable, manageable, exploitable, reserved, utilized and utilizable
-      flows at river basin scale. It is used to:
-
-      - Discern between landscape ET (from rainfall) and incremental ET (from natural
-      and manmade withdrawals)
-      - Assess commitments to environment and legal agreements
-      - Quantify atmospheric water recycling
-      - Understand water scarcity during dry years.
-        ")
+      includeMarkdown("./md/sheet_1.md")
     ),
     column(8,
       d3Output("d3_sheet1", width="100%"),
@@ -223,18 +209,7 @@ sheet_1 <- nav("Resource Base", icon=icon("th"),
 sheet_2 <- nav("Evapotranspiration", icon=icon("envira"),
   fluidRow(class="bg-white",
     column(4,
-      p(),
-      markdown("
-      The purpose of the **Evapotranspiration** is to:
-
-      - Quantify water consumption for all land use classes throughout the entire
-      water basin
-      - Describe the anthropogenic impact on ET and concepts of ET management to
-      reduce total water consumption from withdrawals and inundations
-      - Understand the impact of land use planning on consumptive use
-      - Relate water consumption to intended processes (beneficial vs.
-        non-beneficial ET).
-        ")
+      includeMarkdown("./md/sheet_2.md")
     ),
     column(8,
       d3Output("d3_sheet2", width="100%")
@@ -246,16 +221,7 @@ sheet_2 <- nav("Evapotranspiration", icon=icon("envira"),
 sheet_3 <- nav("Agricultural Services", icon=icon("faucet"),
   fluidRow(class="bg-white",
     column(4,
-      p(),
-      markdown("
-      The purpose of the **Agricultural Services** is to:
-
-      - Assess agricultural yields for food, feed, timber and fish products
-      - Compute the related water productivity (kg/m³) and the gap to demonstrate
-      loss of returns in volume or value terms
-      - Decide on future rainfed and irrigated cropping systems
-      - Identify opportunities for saving water in agriculture.
-        ")
+      includeMarkdown("./md/sheet_3.md")
     ),
     column(8,
       d3Output("d3_sheet3", width="100%")
@@ -316,14 +282,9 @@ page_4 <- fluidRow(
 )
 
 # Page 5 ----
-page_5 <- fluidRow(style="min-height:30rem",
+page_5 <- fluidRow(
   column(12,
-    h4(class="text-info", "About WA+"),
-    p("Units"),
-    p("Land use categories"),
-    p("Model structure"),
-    p("Data Catalog")
-  )
+    includeMarkdown("./md/about.md"))
 )
 
 function() {
@@ -332,7 +293,7 @@ function() {
     theme = bs_themed(),
     window_title = "IWMI | Water Accounting+",
     title = tagList(
-      span(class="h3 text-primary", "WATER Accounting+"),
+      span(class="h3 text-primary", "WA+ Dashboard"),
       span(class="mx-4 text-warning", "DRAFT")
     ),
     bg = alpha("white", .9),

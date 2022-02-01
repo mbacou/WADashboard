@@ -21,7 +21,7 @@ scoreBox <- function(
   elevation = NULL
 )  valueBox(
   value,
-  subtitle,
+  HTML('<span class="h2">', subtitle, '</span>'),
   icon,
   color,
   width,

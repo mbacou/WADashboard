@@ -2,3 +2,5 @@
 shared/
 .vscode/
 man/
+.Renviron
+.Rhistory
