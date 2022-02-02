@@ -1,5 +1,5 @@
 ---
-title: Data ETL
+title: Data ETL (CSV Ouput Files)
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Data ETL}
@@ -14,7 +14,7 @@ pre { background-color: #ffffff; }
 .pagedtable-header-name { overflow: unset; }
 ```
 
-This vignette documents the steps to ingest model output files (in CSV and NetCDF format) for use in the dashboard.
+This vignette documents the steps to ingest model output files (in CSV format) for use in the dashboard. The next [vignette](./03_data-etl-netcdf.html) describes the approach used to ingest gridded NetCDF output files.
 
 This ETL was validated against two analyses received from IWMI scientists, one for **Mali** (Niger river basin), and another for **Kenya** (Mara river basin). The water accounting models are written in Python and the code repositories are on GitHub (e.g. [WAPORWA notebooks](https://github.com/wateraccounting/WAPORWA) for the Mali analysis).
 
@@ -32,8 +32,23 @@ devtools::load_all(".")
 library(rmarkdown)
 library(ggplot2)
 library(thematic)
+
+# Plot defaults
 thematic_on(bg="#f2f1f1", fg=pal[["black"]], accent=pal[["blue"]], 
   font="Roboto Condensed", qualitative=unique(unname(pal)))
+
+th <- function(...) theme(
+  legend.position = "none",
+  panel.spacing.y = unit(0, "lines"),
+  strip.text.y = element_text(size=7, angle=0, hjust=0),
+  strip.background = element_blank(),
+  axis.text.y = element_blank(),
+  axis.title.y = element_blank(),
+  axis.ticks.y = element_blank(),
+  panel.border = element_blank(),
+  panel.grid = element_blank(),
+  panel.background = element_blank(),
+  ...)
 ```
 
 ```{r}
@@ -41,8 +56,7 @@ thematic_on(bg="#f2f1f1", fg=pal[["black"]], accent=pal[["blue"]],
 dir <- getOption("wa.data")
 ```
 
-
-# Basin-level Aggregates (CSV files)
+# File and Variable Inventory
 
 We start below by inventorying all basin-level variables contained in the modeled CSV files.
 
@@ -83,7 +97,7 @@ data[iso3=="mli", .(iso3, file, sheet, year, month)] %>%
 ```
 
 ```{r, fig.cap="Kenya - List of yearly output files"}
-data[iso3=="ken" & !is.na(year) & is.na(month), .(iso3, file, sheet, year)] %>% 
+data[iso3=="ken" & !is.na(year) & is.na(month), .(iso3, file, sheet, year, month)] %>% 
   paged_table()
 ```
 
@@ -95,16 +109,16 @@ data[iso3=="ken" & !is.na(month), .(iso3, file, sheet, year, month)] %>%
 The Kenya analysis also includes yearly, seasonal, and monthly time-series for an additional 57 variables:
 
 ```{r, fig.cap="Kenya - List of monthly output files"}
-data[iso3=="ken" & is.na(year) & is.na(month), .(iso3, file, sheet)] %>% 
+data[iso3=="ken" & is.na(year) & is.na(month), .(iso3, file, sheet, year, month)] %>% 
   paged_table()
 ```
 
 
-## Variable Inspection
+# Variable Inspection
 
 We also need to validate naming conventions and units for all output variables, so we continue by inspecting individual files starting with Mali.
 
-### Sheet #1
+## Sheet #1
 
 ```{r}
 
@@ -124,19 +138,6 @@ mli %>% paged_table(options=list(max.print=300))
 Output for Sheet #1 include `r mli[year==min(year), uniqueN(paste(class, subclass, variable))]` unique variables categorized into `class` and `subclass`. The naming is consistent across years.
 
 ```{r, fig.asp=.7}
-
-th <- function(...) theme(
-  legend.position = "none",
-  panel.spacing.y = unit(0, "lines"),
-  strip.text.y = element_text(size=7, angle=0, hjust=0),
-  strip.background = element_blank(),
-  axis.text.y = element_blank(),
-  axis.title.y = element_blank(),
-  axis.ticks.y = element_blank(),
-  panel.border = element_blank(),
-  panel.grid = element_blank(),
-  panel.background = element_blank(),
-  ...)
 
 mli %>% 
   ggplot() +
@@ -176,7 +177,7 @@ ken_1 %>%
   ggtitle("WA+ Sheet 1 Variables - Kenya, 2003 to 2017")
 ```
 
-### Sheet #2
+## Sheet #2
 
 Then we extract Sheet #2 variables (this is a breakdown of evapotranspiration by land use classes):
 
@@ -220,16 +221,15 @@ ken_2[class %in% ken_2[, unique(class)][1]] %>%
   ggtitle("WA+ Sheet 2 Variables - Kenya, 2003 to 2017")
 ```
 
-### Sheet #3
+## Sheet #3
 
 Similarly we inspect results for Sheet #3 "Agriculture Services". In the Kenya analysis, variables for Sheet #3 to Sheet #6 are available as yearly, seasonal, and/or monthly time-series (across multiple CSV files).
 
-We (arbitrarily) gather all the seasonal time-series[^fn1]:
+We (arbitrarily) gather all the seasonal time-series[^fn1] below:
 
 [^fn1]: What is the difference between files tagged with "35.0" and "54.0" (e.g. `sheet3_35.0_et_depth_season.csv` and `sheet3_54.0_et_depth_season.csv`)?
 
 ```{r}
-
 f <- data[iso3=="ken" & sheet=="sheet3" & 
     str_detect(file, "season") & str_detect(file, "54.0")]
 ken_3 <- lapply(1:nrow(f), function(x) fread(f[x, path])[, `:=`(
@@ -251,8 +251,10 @@ ken_3[, `:=`(
   month = month(end_dates)
 )]
 
-setnames(ken_3, "Seasonal", "value")
-setnames(ken_3, c("start_dates", "end_dates"), c("date_start", "date_end"))
+setnames(ken_3, 
+  c("Seasonal", "start_dates", "end_dates"), c("value", "date_start", "date_end"))
+setcolorder(ken_3, 
+  c("iso3", "sheet", "variable", "date_start", "date_end", "year", "month", "value"))
 setorder(ken_3, variable, year, month)
 ken_3 %>% paged_table(options=list(max.print=300))
 
@@ -271,7 +273,7 @@ ken_3 %>%
 ```
 
 
-We gather all Sheet #1 to Sheet #3 variables above into a long table format.
+Finally we gather all Sheet #1 to Sheet #3 variables above into a long table format (data cube).
 
 ```{r}
 
@@ -305,7 +307,7 @@ The generated data cube includes the following dimensions:
 `r paste("*", names(cube), collapse="\n")`
 
 
-## Data Dictionaries
+# Data Dictionaries
 
 Another ETL step is required to map the variable codes used in the data files to their visual representation in the WA+ Sheets (SVG designs).
 
@@ -317,7 +319,7 @@ This mapping is embedded in the WA+ `print_sheet` Python module, (example for [S
 
 [^fn2]: This is not an ideal approach, as we'd rather avoid replicating any hydrological model logic in the dashboard code. TBD for a future version.
 
-### Sheet #1
+## Sheet #1
 
 Field mappings are constructed in the table below.
 
@@ -338,21 +340,10 @@ Formulas for calculated fields are replicated here.
 
 We proceed similarly for Sheet #2 and Sheet #3 mappings.
 
-### Sheet #2
+## Sheet #2
 
-### Sheet #3
-
-
-# Gridded Variables (netCDF files)
-
-Gridded variables can be used for mapping and/or to calculate sub-basin (or administrative-level) indicators.
-
-Forthcoming...
+## Sheet #3
 
 
-
-
-
-
-
+In the next [vignette](./03_data-etl-netcdf.html) we outline an approach to ingest all gridded NetCDF output files.
 

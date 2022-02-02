@@ -10,7 +10,13 @@
     <loc>https://github.mbacou.io/WADashboard/articles/01_get-started.html</loc>
   </url>
   <url>
+    <loc>https://github.mbacou.io/WADashboard/articles/02_data-etl-csv.html</loc>
+  </url>
+  <url>
     <loc>https://github.mbacou.io/WADashboard/articles/02_data-etl.html</loc>
+  </url>
+  <url>
+    <loc>https://github.mbacou.io/WADashboard/articles/03_data-etl-netcdf.html</loc>
   </url>
   <url>
     <loc>https://github.mbacou.io/WADashboard/articles/index.html</loc>
