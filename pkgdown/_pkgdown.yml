@@ -73,7 +73,7 @@ reference:
 
 - title: HTML Widgets
   desc: >
-    Custom HTML and Highchart widgets to render WA+ variables and time-series.
+    Custom HTML and Highcharts widgets to render WA+ variables and time-series.
   contents:
   - starts_with("bs")
   - contains("accordion")

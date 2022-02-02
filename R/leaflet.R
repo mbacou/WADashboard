@@ -10,7 +10,7 @@ mapboxDependencies <- function() {
   )
 }
 
-#' Initialize map
+#' Initialize Leafet map and 3rd-party spatiotemporal layers
 #'
 #' Load basin boundaries with default configuration.
 #'
