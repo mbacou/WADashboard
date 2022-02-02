@@ -11,7 +11,7 @@ template:
 
   opengraph:
     image:
-      src: inst/app/www/fig/iwmi_logo_w.svg
+      src: iwmi_logo_w.svg
       alt: Water Accounting+
     twitter:
       creator: "@iwmi"

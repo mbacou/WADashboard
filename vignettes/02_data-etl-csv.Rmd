@@ -7,13 +7,6 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{css, echo=FALSE}
-pre { background-color: #ffffff; }
-.pagedtable-wrapper { border: unset; }
-.pagedtable-not-empty .pagedtable-footer { border-top: unset; }
-.pagedtable-header-name { overflow: unset; }
-```
-
 This vignette documents the steps to ingest model output files (in CSV format) for use in the dashboard. The next [vignette](./03_data-etl-netcdf.html) describes the approach used to ingest gridded NetCDF output files.
 
 This ETL was validated against two analyses received from IWMI scientists, one for **Mali** (Niger river basin), and another for **Kenya** (Mara river basin). The water accounting models are written in Python and the code repositories are on GitHub (e.g. [WAPORWA notebooks](https://github.com/wateraccounting/WAPORWA) for the Mali analysis).

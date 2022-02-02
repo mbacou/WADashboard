@@ -7,13 +7,6 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{css, echo=FALSE}
-pre { background-color: #ffffff; }
-.pagedtable-wrapper { border: unset; }
-.pagedtable-not-empty .pagedtable-footer { border-top: unset; }
-.pagedtable-header-name { overflow: unset; }
-```
-
 # Overview
 
 This repository contains server and client codes for a Water Accounting+ visualization dashboard. All codes and assets are provided as a standard R package. The dashboard application itself is written in R and uses the open-source [R/Shiny](https://shiny.rstudio.com/) framework.
@@ -41,7 +34,7 @@ shiny::shinyAppDir(system.file("app", package="WADashboard"))
 If you choose to clone this repo instead, the application can be previewed at an R console with:
 
 ```r
-source("./app.R")
+shiny::runApp()
 ```
 
 # Repository Structure

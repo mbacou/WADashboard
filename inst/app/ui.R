@@ -24,7 +24,7 @@ footer <- fluidRow(class="bg-dark",
   column(5, offset=1,
     p(class="my-3 mr-3 text-md-right",
       a(href="https://iwmi.cgiar.org/",
-        img(class="m-2", height="50px", src="./fig/iwmi_logo_w.svg")),
+        img(class="m-2", height="60px", src="./fig/iwmi_logo_w.svg")),
       a(href="https://cgiar.org/",
         img(class="m-2", height="60px", src="./fig/cgiar_w.png")),
       br(),
@@ -301,8 +301,8 @@ function() {
     fluid = TRUE,
     header = tagList(
       tags$head(
-        tags$link(rel="stylesheet", type="text/css", href="iwmi.css"),
-        tags$link(rel="shortcut icon", href="favicon.ico")
+        tags$link(rel="stylesheet", type="text/css", href="extra.css"),
+        tags$link(rel="shortcut icon", href="fig/favicon.ico")
       ),
       column(12, filters), map, slider),
     footer = column(12, footer),

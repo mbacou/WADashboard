@@ -1,4 +1,4 @@
 shinyAppDir(system.file("app", package="WADashboard"),
   options=list(
-    shiny.minified = TRUE
+    port = 80, shiny.minified = TRUE
   ))

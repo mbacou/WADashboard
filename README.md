@@ -1,3 +1,4 @@
+
 # Visualization Dashboard for WA+ Water Accounts
 
 Development package for a [R/Shiny](https://shiny.rstudio.com/) data visualization tool
@@ -34,7 +35,7 @@ shiny::shinyAppDir(system.file("app", package="WADashboard"))
 If you choose to clone this repo instead, the application can be previewed with:
 
 ```r
-source("./app.R")
+shiny::runApp()
 ```
 
 ## Documentation

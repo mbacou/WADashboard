@@ -16,7 +16,7 @@
 #' @return Modified Bootstrap 4 theme
 #' @export
 #' @examples
-#' if (interactive()) bs_theme_preview(bs_themed())
+#' if(interactive()) bs_theme_preview(bs_themed())
 #'
 bs_themed <- function(
   base_font = "'national-web-regular'",

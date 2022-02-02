@@ -17,9 +17,10 @@
 <link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Data ETL (CSV Ouput Files)">
+<!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
+<meta property="og:title" content="Data ETL (CSV Ouput Files)">
 <meta property="og:description" content="WADashboard">
-<meta property="og:image" content="https://github.mbacou.io/WADashboard/inst/app/www/fig/iwmi_logo_w.svg">
+<meta property="og:image" content="https://github.mbacou.io/WADashboard/iwmi_logo_w.svg">
 <meta property="og:image:alt" content="Water Accounting+">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:creator" content="@iwmi">
@@ -94,12 +95,6 @@
 
     
     
-<style type="text/css">
-pre { background-color: #ffffff; }
-.pagedtable-wrapper { border: unset; }
-.pagedtable-not-empty .pagedtable-footer { border-top: unset; }
-.pagedtable-header-name { overflow: unset; }
-</style>
 <p>This vignette documents the steps to ingest model output files (in CSV format) for use in the dashboard. The next <a href="./03_data-etl-netcdf.html">vignette</a> describes the approach used to ingest gridded NetCDF output files.</p>
 <p>This ETL was validated against two analyses received from IWMI scientists, one for <strong>Mali</strong> (Niger river basin), and another for <strong>Kenya</strong> (Mara river basin). The water accounting models are written in Python and the code repositories are on GitHub (e.g. <a href="https://github.com/wateraccounting/WAPORWA" class="external-link">WAPORWA notebooks</a> for the Mali analysis).</p>
 <p>The results of the WA+ balances consist in time-series of constructed hydrological variables – the time steps can vary (dekadal, monthly, seasonal, yearly steps). The series are either gridded (NetCDF) or aggregated over an entire zone of interest (CSV output files). The modeled variables are further enriched to construct visual balances (or “Sheets”) that represent key water availability, use and management indicators over time.</p>
@@ -204,7 +199,7 @@ pre { background-color: #ffffff; }
   <span class="fu">th</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">labs</span><span class="op">(</span>x<span class="op">=</span><span class="cn">NULL</span>, y<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"WA+ Sheet 1 Variables - Mali, 2009 to 2016"</span><span class="op">)</span></code></pre></div>
-<p><img src="02_data-etl-csv_files/figure-html/unnamed-chunk-9-1.png" width="700"></p>
+<p><img src="02_data-etl-csv_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>
 <p>Similarly we look at Kenya’s monthly time-series. First at Sheet #1 variables:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">f</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span><span class="va">iso3</span><span class="op">==</span><span class="st">"ken"</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">month</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">year</span><span class="op">)</span> <span class="op">&amp;</span> <span class="va">sheet</span><span class="op">==</span><span class="st">"sheet1"</span><span class="op">]</span>
@@ -230,7 +225,7 @@ pre { background-color: #ffffff; }
   <span class="fu">th</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">labs</span><span class="op">(</span>x<span class="op">=</span><span class="cn">NULL</span>, y<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"WA+ Sheet 1 Variables - Kenya, 2003 to 2017"</span><span class="op">)</span></code></pre></div>
-<p><img src="02_data-etl-csv_files/figure-html/unnamed-chunk-11-1.png" width="700"></p>
+<p><img src="02_data-etl-csv_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
 </div>
 <div class="section level3">
 <h3 id="sheet-2">Sheet #2<a class="anchor" aria-label="anchor" href="#sheet-2"></a>
@@ -269,7 +264,7 @@ pre { background-color: #ffffff; }
   <span class="fu">th</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">labs</span><span class="op">(</span>x<span class="op">=</span><span class="cn">NULL</span>, y<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"WA+ Sheet 2 Variables - Kenya, 2003 to 2017"</span><span class="op">)</span></code></pre></div>
-<p><img src="02_data-etl-csv_files/figure-html/unnamed-chunk-14-1.png" width="700"></p>
+<p><img src="02_data-etl-csv_files/figure-html/unnamed-chunk-13-1.png" width="700"></p>
 </div>
 <div class="section level3">
 <h3 id="sheet-3">Sheet #3<a class="anchor" aria-label="anchor" href="#sheet-3"></a>
@@ -319,7 +314,7 @@ pre { background-color: #ffffff; }
   <span class="fu">labs</span><span class="op">(</span>x<span class="op">=</span><span class="cn">NULL</span>, y<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"WA+ Sheet 3 Variables - Kenya, 2003 to 2017 (seasonal)"</span><span class="op">)</span></code></pre></div>
 <pre><code><span class="co">## Warning: Removed 24 row(s) containing missing values (geom_path).</span></code></pre>
-<p><img src="02_data-etl-csv_files/figure-html/unnamed-chunk-16-1.png" width="700"></p>
+<p><img src="02_data-etl-csv_files/figure-html/unnamed-chunk-15-1.png" width="700"></p>
 <p>Finally we gather all Sheet #1 to Sheet #3 variables above into a long table format (data cube).</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">cube</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">mli</span>, <span class="va">ken_1</span>, <span class="va">ken_2</span>, <span class="va">ken_3</span>, fill<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
