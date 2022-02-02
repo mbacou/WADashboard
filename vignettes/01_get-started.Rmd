@@ -62,8 +62,8 @@ Shell scripts are provided to automate common tasks:
     - `WA_ROOT` pointing to Shiny server root location (default to `/srv/shiny-server/WADashboard` but you might want to deploy to a different location).
     - `WA_LIB` pointing to the location of a local R library (default to Linux shared library `/usr/local/lib/R/site-library`)  
 
-2. Edit 2 configuration files:
-    - [List of river basins](https://github.com/mbacou/WADashboard/blob/main/data-raw/json/iso3.json)
+2. Edit 2 configuration files:  
+    - [List of river basins](https://github.com/mbacou/WADashboard/blob/main/data-raw/json/ISO3.json)  
     - [Catalog of contextual geospatial layers](https://github.com/mbacou/WADashboard/blob/main/data-raw/json/LAYERS.json)  
     
 3. Rebuild the R package and reinstall by executing `./build.sh`.

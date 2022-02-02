@@ -9,7 +9,7 @@ pal <- grDevices::rgb(tmp[, .(V1, V2, V3)], maxColorValue=255)
 names(pal) <- tmp[, V4]
 
 # Unique basin ISO3 codes and metadata
-ISO3 <- read_json("./data-raw/json/Iso3.json")
+ISO3 <- read_json("./data-raw/json/ISO3.json")
 
 # Basin and stream features (clipped)
 ZOI <- lapply(ISO3, function(x) lapply(x[c("admin", "water")], st_read))

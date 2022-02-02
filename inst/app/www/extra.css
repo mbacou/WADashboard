@@ -103,6 +103,13 @@ ul.nav.navbar-nav>li>a:hover {
   right: 15px;
   transition: transform .3s linear;
 }
+.accordion>.card>.card-header, .accordion>.well>.card-header {
+  margin-bottom: unset;
+  border: none;
+}
+.accordion .card-header a:hover {
+  text-decoration: none;
+}
 
 .waved {
   background: linear-gradient(180deg,

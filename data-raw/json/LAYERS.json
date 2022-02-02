@@ -12,6 +12,7 @@
     "label": "FAO WaPOR GeoServer",
     "url": "https://io.apps.fao.org/geoserver/wms?",
     "legend": "https://io.apps.fao.org/geoserver/wms?request=GetLegendGraphic&format=image/png&layer=%s",
+    "info": "Description",
     "attr": "FAO WaPOR",
     "layers": {
       "Natural Earth": "RICCAR:gray_hr_sr_w_3",
@@ -19,12 +20,21 @@
 
       "Hydrological Basins": "AQUAMAPS:hydrobasins_africa",
       "Major Rivers": "AQUAMAPS:rivers_africa",
-      "Land Cover 30m": "WAPOR_2:l3_odn_lcc_d",
-      "Monthly Precipitation 5km": "WAPOR_2:l1_pcp_m",
-      "Actual ET": "WAPOR_2:l3_odn_aeti_d",
-      "Incremental ET": "WATER:niger_etincr",
-      "Drought Intensity": "ASIS:di_d",
-      "Monthly Precipitation Anomaly": "NMME:fmpa"
+      "Total Population": "WPOP:wpop_t",
+
+      "Precipitation (annual) 5km": "WAPOR_2:l1_pcp_a",
+      "Precipitation Anomaly (monthly)": "NMME:fmpa",
+      "Evaporation (dekadal) 250m": "WAPOR_2:l1_e_d",
+      "Evapotranspiration (dekadal) 250m": "C3S:agera5_et0_d",
+      "Actual ET (annual) 100m": "WAPOR_2:l2_aeti_a",
+      "Incremental ET - Niger (monthly) 100m": "WATER:niger_etincr",
+      "Incremental ET - Nile (monthly) 100m": "WATER:niger_etincr",
+      "Drought Intensity (dekadal)": "ASIS:di_d",
+      "Agricultural Stress Index (dekadal)": "ASIS:asi_d",
+
+      "Land Cover (annual) 100m": "WAPOR_2:l2_lcc_a",
+      "Land Use - Niger (annual) 100m": "WATER:niger_lus",
+      "Land Use - Nile (annual) 100m": "WATER:nile_lus"
     }
   },
   "MAPTILER": {

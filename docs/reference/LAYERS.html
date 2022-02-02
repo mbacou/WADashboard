@@ -18,7 +18,7 @@ tiles, WMS, GeoJSON, KML, etc.). Only vector tiles are not supported currently."
     
     <a class="navbar-brand me-2" href="../index.html">WADashboard</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -97,6 +97,9 @@ Atlas, FAO WaPOR, Google Earth Engine, etc.).</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $legend</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "https://io.apps.fao.org/geoserver/wms?request=GetLegendGraphic&amp;format=image/png&amp;layer=%s"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $info</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Description"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $attr</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "FAO WaPOR"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -113,23 +116,44 @@ Atlas, FAO WaPOR, Google Earth Engine, etc.).</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $layers$`Major Rivers`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "AQUAMAPS:rivers_africa"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $layers$`Land Cover 30m`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "WAPOR_2:l3_odn_lcc_d"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $layers$`Total Population`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "WPOP:wpop_t"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $layers$`Monthly Precipitation 5km`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "WAPOR_2:l1_pcp_m"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $layers$`Precipitation (annual) 5km`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "WAPOR_2:l1_pcp_a"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $layers$`Actual ET`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "WAPOR_2:l3_odn_aeti_d"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $layers$`Precipitation Anomaly (monthly)`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "NMME:fmpa"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $layers$`Incremental ET`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $layers$`Evaporation (dekadal) 250m`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "WAPOR_2:l1_e_d"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $layers$`Evapotranspiration (dekadal) 250m`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "C3S:agera5_et0_d"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $layers$`Actual ET (annual) 100m`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "WAPOR_2:l2_aeti_a"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $layers$`Incremental ET - Niger (monthly) 100m`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "WATER:niger_etincr"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $layers$`Drought Intensity`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $layers$`Incremental ET - Nile (monthly) 100m`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "WATER:niger_etincr"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $layers$`Drought Intensity (dekadal)`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "ASIS:di_d"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $layers$`Monthly Precipitation Anomaly`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "NMME:fmpa"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $layers$`Agricultural Stress Index (dekadal)`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "ASIS:asi_d"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $layers$`Land Cover (annual) 100m`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "WAPOR_2:l2_lcc_a"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $layers$`Land Use - Niger (annual) 100m`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "WATER:niger_lus"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $layers$`Land Use - Nile (annual) 100m`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "WATER:nile_lus"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"></span>

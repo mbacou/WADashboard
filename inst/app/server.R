@@ -12,7 +12,8 @@ function(input, output, session) {
   s = reactiveValues(
     iso3 = init$iso3,
     date = init$date,
-    var = list(var="var_incremental_etnat", color="green")
+    var = list(var="var_incremental_etnat", color="green"),
+    layers = NA
   )
 
   dt = reactive(
@@ -94,25 +95,26 @@ function(input, output, session) {
   # Map ----
   output$map = renderLeaflet(map_init(init$iso3))
 
-  layers = reactive(
-    c(input$chkLayer_1, input$chkLayer_2, input$chkLayer_3)
-  )
+  observe({
+    s$layers = c(input$chkLayer_1, input$chkLayer_2, input$chkLayer_3)
+  })
 
   # Toggle map layers
-  observeEvent(layers(), {
-    leafletProxy("map") %>% map_toggle(layers())
+  observeEvent(s$layers, {
+    leafletProxy("map") %>% map_toggle(s$layers)
   })
 
   output$uiLegend = renderUI(
-    if(length(layers())>0) lapply(layers(), function(x)
+    if(length(s$layers) > 0) lapply(s$layers, function(x)
       tagList(h5(class="text-info", x), img(class="img-responsive",
         src=sprintf(LAYERS[["FAO"]]$legend, LAYERS[["FAO"]]$layers[[x]]))
       )) else p(class="mt-2 text-muted", "No layer selected.")
   )
 
   output$uiInfo = renderUI(
-    if(length(layers())>0) lapply(layers(), function(x)
-      tagList(h5(class="text-info", x), p("")
+    if(length(s$layers) > 0) lapply(s$layers, function(x)
+      tagList(h5(class="text-info", x),
+        LAYERS[["FAO"]]$info
       )) else p(class="mt-2 text-muted", "No layer selected.")
   )
 

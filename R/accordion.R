@@ -33,14 +33,16 @@ accordion <- function(..., id, width = 12) {
 #' version of [bs4Dash::accordionItem()].
 #'
 #' @inheritParams bs4Dash::bs4AccordionItem
+#' @param icon optional icon
 #' @param class additional classes to apply to the parent card element
 #' @param bg background color
 #'
 #' @rdname accordion
-#' @importFrom shiny div
+#' @importFrom shiny a div icon
 #' @export
-accordionItem <- function(..., title,
-  status=NULL, collapsed=TRUE, solidHeader=TRUE, class=NULL, bg=NULL) {
+accordionItem <- function(...,
+  title=NULL, icon=NULL, status=NULL,
+  collapsed=TRUE, solidHeader=TRUE, class=NULL, bg=NULL) {
 
   cl = "card"
   if(!is.null(status)) cl = paste(cl, status, sep="-")
@@ -52,13 +54,12 @@ accordionItem <- function(..., title,
 
   div(class=cl,
     # box header
-    div(class="card-header waved3 px-3 pt-1 pb-2",
-      div(class="w-100",
-        a(class="d-block w-100", href="#",
-          `data-toggle`="collapse", `aria-expanded`=if(collapsed) "false" else "true",
-          class=if(collapsed) "collapsed",
-          title)
-      )
+    div(class="card-header waved3 px-3 pt-2 pb-1",
+      span(
+        a(class=if(collapsed) "collapsed" else "",
+          href="#", `data-toggle`="collapse",
+          `aria-expanded`=if(collapsed) "false" else "true",
+          span(class="text-muted mr-2", icon), title))
     ),
     div(class=cl_body, ...)
   )

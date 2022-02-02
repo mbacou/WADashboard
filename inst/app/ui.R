@@ -92,32 +92,36 @@ slider <- fluidRow(class="w-100 no-gutters",
 
 # Map ----
 map <- fluidRow(id="divMap", class="w-100 no-gutters collapse show",
-  column(8, style="min-height:21rem; height:30vh;",
+  column(8, style="height:21rem;",
     leafletOutput("map", width="100%", height="100%")
   ),
   column(4, class="waved2",
     navs_pill(
       nav(title="Layers", icon=icon("layer-group"),
         fluidRow(class="no-gutters",
-          column(12, class="py-2",
+          column(12, class="pt-2",
+            style="height:18.9rem; overflow:auto;",
             accordion(id="accLayers",
               accordionItem(
-                title=span(icon(class="mr-3 text-muted", "caret-right"), "Basin Features"),
+                title="Basin Features",
+                icon=icon("caret-right"),
                 class="border-0", bg="white", collapsed=FALSE,
                 checkboxGroupInput("chkLayer_1", NULL, width="100%",
-                  choices=names(LAYERS[[2]]$layers[3:4]))
+                  choices=names(LAYERS[[2]]$layers[3:5]))
               ),
               accordionItem(
-                title=span(icon(class="mr-3 text-muted", "caret-right"), "Land Cover"),
+                title="Land Cover",
+                icon=icon("caret-right"),
                 class="border-0", bg="white", collapsed=TRUE,
                 checkboxGroupInput("chkLayer_2", NULL, width="100%",
-                  choices=names(LAYERS[[2]]$layers[5]))
+                  choices=names(LAYERS[[2]]$layers[15:17]))
               ),
               accordionItem(
-                title=span(icon(class="mr-3 text-muted", "caret-right"), "Hydrology"),
+                title="Hydrology",
+                icon=icon("caret-right"),
                 class="border-0", bg="white", collapsed=TRUE,
                 checkboxGroupInput("chkLayer_3", NULL, width="100%",
-                  choices=names(LAYERS[[2]]$layers[6:10]))
+                  choices=names(LAYERS[[2]]$layers[6:14]))
               )
             )
           )
@@ -130,6 +134,7 @@ map <- fluidRow(id="divMap", class="w-100 no-gutters collapse show",
       ),
       nav(title="Info", icon=icon("info-circle"),
         column(12, class="mt-2 pb-2",
+          style="height:18.4rem; overflow:auto;",
           uiOutput("uiInfo"))
       )
     )
