@@ -2,7 +2,7 @@
 title: Data ETL (CSV Ouput Files)
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Data ETL}
+  %\VignetteIndexEntry{Data ETL (CSV files)}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

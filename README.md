@@ -21,8 +21,8 @@ geographically connected to any river basin.
 You can install this package from the development version on GitHub:
 
 ```r
-if (!require("devtools")) install.packages("devtools")
-devtools::install_github("mbacou/WADashboard")
+if (!require("remotes")) install.packages("remotes")
+remotes::install_github("mbacou/WADashboard")
 ```
 
 And then preview the dashboard in your browser with:

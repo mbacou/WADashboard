@@ -2,7 +2,7 @@
 title: Data ETL (NetCDF Output Files)
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Data ETL}
+  %\VignetteIndexEntry{Data ETL (netCDF files)}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

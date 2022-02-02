@@ -2,8 +2,6 @@ FROM rocker/shiny:4.1.2
 ARG DEBIAN_FRONTEND=noninteractive
 ARG APP=WADashboard
 
-USER root
-
 # Shared library
 ENV WA_LIB="/usr/local/lib/R/site-library"
 # Local or mounted data storage endpoint
@@ -12,7 +10,7 @@ RUN mkdir $WA_DATA
 
 # Base
 RUN \
-  apt update && apt install -y \
+  apt update && apt install -y --no-install-recommends \
   software-properties-common dirmngr apt-transport-https lsb-release ca-certificates \
   libgit2-dev make curl git wget sudo \
   libcurl4-openssl-dev libssl-dev libpng-dev \
@@ -28,8 +26,7 @@ RUN \
   R -e "install.packages(c('remotes', 'gtools', 'TTR', \
   'sf', 'terra', 'data.table', 'bslib', 'r2d3', 'lubridate', 'scales', \
   'leaflet.extras', 'fresh', 'shinybusy', 'shinyWidgets', 'bs4Dash', \
-  'stringr', 'highcharter', 'rmarkdown' \
-  ), \
+  'stringr', 'highcharter'), \
   repos='https://packagemanager.rstudio.com/all/2022-02-01+Y3JhbiwyOjQ1MjYyMTU7NDU1MjVERTc')"
 
 # Install application R package from Github

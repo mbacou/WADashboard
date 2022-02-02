@@ -20,8 +20,8 @@ Two hydrological basin are provided in the initial release, the **lower Niger Ri
 The easiest to get started is to install this package from the development version on GitHub at an R console:
 
 ```r
-if (!require("devtools")) install.packages("devtools")
-devtools::install_github("mbacou/WADashboard")
+if (!require("remotes")) install.packages("remotes")
+remotes::install_github("mbacou/WADashboard")
 ```
 
 And then preview the dashboard in your browser with:
