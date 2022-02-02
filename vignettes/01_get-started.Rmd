@@ -74,7 +74,7 @@ If you append a new river basin, make sure you can successfully ETL its data wit
 
 # Application Deployment
 
-A Docker [image file](https://github.com/mbacou/WADashboard/Dockerfile) is provided for deployment to AWS ECS (Fargate). This image includes Shiny Server Community Edition and (for development only) RStudio Server Preview.
+A Docker [image file](https://github.com/mbacou/WADashboard/blob/main/Dockerfile) is provided for deployment to AWS ECS (Fargate). This image includes Shiny Server Community Edition and (for development only) RStudio Server Preview.
 
 You can build and test this image locally with:
 
@@ -84,7 +84,7 @@ docker build -t wadashboard .
 docker run --name wadashboard PASSWORD={pwd} -p 80:3838 -p 8787:8787 wadashboard
 ```
 
-Once you've established that this container runs locally, it can be deployed to AWS ECS (see [./deploy.sh](https://github.com/mbacou/WADashboard/deploy.sh) for an automated deployment script):
+Once you've established that this container runs locally, it can be deployed to AWS ECS (see [./deploy.sh](https://github.com/mbacou/WADashboard/blob/main/deploy.sh) for an automated deployment script):
 
 ```sh
 # Authenticate your local Docker client

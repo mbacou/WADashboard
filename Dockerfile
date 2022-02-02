@@ -4,6 +4,8 @@ ARG APP=WADashboard
 
 USER root
 
+# Shared library
+ENV WA_LIB="/usr/local/lib/R/site-library"
 # Local or mounted data storage endpoint
 ENV WA_DATA="/data"
 RUN mkdir $WA_DATA
@@ -58,8 +60,11 @@ RUN /rocker_scripts/install_pandoc.sh
 COPY ./rstudio-server.json /home/rstudio/.local/share/rstudio/
 RUN chown -R rstudio:rstudio /home/rstudio
 
-# Ensure rstudio group users can install packages in the shared library
-RUN usermod -aG sudo rstudio
+# Ensure rstudio user can install packages in the shared library
+RUN chown -R rstudio:rstudio $WA_LIB
+RUN chmod -R g+rw $WA_LIB
+# Ensure rstudio user can publish to Shiny server root
+RUN usermod -aG shiny rstudio
 
 EXPOSE 8787
 
