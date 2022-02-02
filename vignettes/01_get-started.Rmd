@@ -59,7 +59,7 @@ Shell scripts are provided to automate common tasks:
 
 - `./build.sh`: rebuild and install the package
 - `./pkgdown.sh`: rebuild HTML package documentation (uses [pkgdown](https://pkgdown.r-lib.org/) framework)
-- `./deploy.sh <tag>`: commit tagged release to Github, rebuild Docker image, and deploy image to AWS ECR (you need [AWS cli](https://aws.amazon.com/cli/) to deploy and a valid AWS access key to deploy at the command line)
+- `./deploy.sh <tag>`: commit tagged release to Github, rebuild Docker image, and deploy image to AWS ECR (you need [AWS cli](https://aws.amazon.com/cli/) and a valid AWS access key to deploy to AWS cloud at the command line)
 
 
 # Configuration
@@ -75,7 +75,7 @@ Shell scripts are provided to automate common tasks:
     
 3. Rebuild the R package and reinstall by executing `./build.sh`.
 
-If you append a new river basin, make sure you can successfully ETL its data with `datat_etl("my_basin")` before rebuilding the package.
+If you append a new river basin, make sure you can successfully ETL its data with `datat_etl("new_basin_code")` before rebuilding the package.
 
 
 # Application Deployment
