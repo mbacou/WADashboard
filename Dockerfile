@@ -23,29 +23,33 @@ RUN \
 # Clean up
 RUN apt autoremove -y
 
-# Install R dependencies from Package Manager snapshots as of 2022.01.03
+# Install R dependencies from Package Manager snapshots as of 2022.02.01
 RUN \
-  R -e "install.packages(c('devtools', 'gtools', 'TTR', \
+  R -e "install.packages(c('remotes', 'gtools', 'TTR', \
   'sf', 'terra', 'data.table', 'bslib', 'r2d3', 'lubridate', 'scales', \
   'leaflet.extras', 'fresh', 'shinybusy', 'shinyWidgets', 'bs4Dash', \
   'stringr', 'highcharter', 'rmarkdown' \
   ), \
-  repos='https://packagemanager.rstudio.com/all/2022-01-03+Y3JhbiwyOjQ1MjYyMTU7NTY4Qjk1ODA')"
+  repos='https://packagemanager.rstudio.com/all/2022-02-01+Y3JhbiwyOjQ1MjYyMTU7NDU1MjVERTc')"
 
 # Install application R package from Github
 RUN \
-  R -e "devtools::install_github('mbacou/${APP}', dependencies=TRUE, upgrade='default')"
+  R -e "remotes::install_github('mbacou/${APP}', \
+  dependencies=TRUE, upgrade='default', build_manual=TRUE, build_vignettes=TRUE)"
 
 # Remove boilerplate
 RUN rm -rf /srv/shiny-server/
 
+# Serve Shiny server on port 80
+COPY ./shiny-server.conf /etc/shiny-server/
+
 # Add app directory into Shiny server root
-RUN mkdir /srv/shiny-server/${APP}
-RUN mkdir /srv/shiny-server/${APP}/docs
-COPY ./.Renviron.deploy /srv/shiny-server/${APP}/.Renviron
+COPY ./.Renviron.deploy /home/shiny/.Renviron
+RUN mkdir -p /srv/shiny-server/${APP}/docs
 COPY ./app.R /srv/shiny-server/${APP}/
 COPY ./restart.txt /srv/shiny-server/${APP}/
-RUN chown -R shiny:shiny /srv/shiny-server/
+RUN chown -R shiny:shiny /srv/shiny-server
+RUN chown -R shiny:shiny /home/shiny
 
 # Install RStudio (optional, for development only)
 ENV S6_VERSION=v2.1.0.2
@@ -57,15 +61,13 @@ RUN /rocker_scripts/install_rstudio.sh
 RUN /rocker_scripts/install_pandoc.sh
 
 # Custom RStudio IDE settings (optional)
-COPY ./rstudio-server.json /home/rstudio/.local/share/rstudio/
+COPY ./.Renviron.deploy /home/rstudio/.Renviron
 RUN chown -R rstudio:rstudio /home/rstudio
 
-# Ensure rstudio user can install packages in the shared library
-RUN chown -R rstudio:rstudio $WA_LIB
-RUN chmod -R g+rw $WA_LIB
 # Ensure rstudio user can publish to Shiny server root
 RUN usermod -aG shiny rstudio
 
+EXPOSE 80
 EXPOSE 8787
 
 CMD ["/init"]
