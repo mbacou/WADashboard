@@ -1,5 +1,7 @@
 ---
-title: Data ETL (NetCDF Output Files)
+title: "Data ETL (NetCDF Output Files)"
+author: "BACOU, Melanie"
+date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Data ETL (netCDF files)}

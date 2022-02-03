@@ -1,5 +1,6 @@
+<img class="float-right img-thumbnail ml-3" src="wa.png"/>
 
-# Visualization Dashboard for WA+ Water Accounts
+# Visualization Dashboard for WA+ Water Accounts 
 
 Development package for a [R/Shiny](https://shiny.rstudio.com/) data visualization tool
 for [Water Accounting+](https://www.wateraccounting.org/) hydrological models.

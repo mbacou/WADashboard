@@ -7,14 +7,16 @@
 
 # Footer ----
 footer <- fluidRow(class="bg-dark",
-  column(6, p(class="mt-4", "
-    The WA+ framework is developed by the UNESCO-IHE, Delft in partnership with the
+  column(6,
+    p(class="mt-3", span(class="lead text-warning", "ABOUT"), br(),
+      "The WA+ framework is developed by the UNESCO-IHE, Delft in partnership with the
     International Water Management Institute, the Food and Agriculture Organization
     of the United Nations, and the World Water Assessment Program."),
-    p(a(class="text-white", "Terms of use",
-      href="https://www.iwmi.cgiar.org/about/legal-information/"), br(),
+    p(
       HTML("&copy; IWMI"),
       paste(year(Sys.Date()), "All rights reserved.", sep=". "),
+      a(class="text-white", "Terms of use.",
+        href="https://www.iwmi.cgiar.org/about/legal-information/"),
       br(), "Version",
       as.character(packageVersion("WADashboard")[1]),
       "(", a(class="text-white",
@@ -22,11 +24,11 @@ footer <- fluidRow(class="bg-dark",
     )
   ),
   column(5, offset=1,
-    p(class="my-3 mr-3 text-md-right",
+    p(class="mt-3 mr-3 text-md-right",
       a(href="https://iwmi.cgiar.org/",
-        img(class="m-2", height="60px", src="./fig/iwmi_logo_w.svg")),
-      a(href="https://cgiar.org/",
-        img(class="m-2", height="60px", src="./fig/cgiar_w.png")),
+        img(class="m-2", height="66px", src="./fig/iwmi_w.png")),
+      a(href="https://www.un-ihe.org/",
+        img(class="m-2", height="64px", src="./fig/ihe_logo.png")),
       br(),
       a(href="https://fao.org/",
         img(class="m-2", height="50px", src="./fig/fao_logo_w.svg")),
@@ -36,8 +38,8 @@ footer <- fluidRow(class="bg-dark",
   )
 )
 
-# Filters ----
-filters <- fluidRow(class="pt-5 align-items-end waved3",
+# Header ----
+header <- fluidRow(class="pt-5 align-items-end waved3",
   column(8,
     h3(class="text-primary", "Water Accounting+ for", br(),
       em("better"), "water resource management."),
@@ -96,8 +98,8 @@ map <- fluidRow(id="divMap", class="w-100 no-gutters collapse show",
     navs_pill(
       nav(title="Layers", icon=icon("layer-group"),
         fluidRow(class="no-gutters",
-          column(12, class="pt-2",
-            style="height:18.9rem; overflow:auto;",
+          column(12,
+            style="height:18.4rem; overflow:auto;",
             accordion(id="accLayers",
               accordionItem(
                 title="Basin Features",
@@ -125,12 +127,12 @@ map <- fluidRow(id="divMap", class="w-100 no-gutters collapse show",
         )
       ),
       nav(title="Legend", icon=icon("palette"),
-        column(12, class="mt-2 bg-white",
+        column(12, class="bg-white",
           style="height:18.4rem; overflow:auto;",
           uiOutput("uiLegend"))
       ),
       nav(title="Info", icon=icon("info-circle"),
-        column(12, class="mt-2 pb-2 bg-white",
+        column(12, class="pb-2 bg-white",
           style="height:18.4rem; overflow:auto;",
           uiOutput("uiInfo"))
       )
@@ -289,6 +291,8 @@ page_5 <- fluidRow(
     includeMarkdown("./md/about.md"))
 )
 
+
+# Master Layout ----
 function() {
   page_navbar(
     id = "navPage",
@@ -306,14 +310,14 @@ function() {
         tags$link(rel="stylesheet", type="text/css", href="extra.css"),
         tags$link(rel="shortcut icon", href="fig/favicon.ico")
       ),
-      column(12, filters), map, slider),
+      column(12, header), map, slider),
     footer = column(12, footer),
-    selected = "Overview",
     nav_spacer(),
     nav("Overview", page_1, icon=icon("home")),
     nav("Water Cycle", page_2, icon=icon("sync")),
     nav("Water Accounts", page_3, icon=icon("th")),
     #nav("My Area", page_4, icon=icon("user-cog")),
-    nav("About WA+", page_5, icon=icon("info-circle"))
+    nav("About WA+", page_5, icon=icon("info-circle")),
+    selected = "Overview"
   )
 }

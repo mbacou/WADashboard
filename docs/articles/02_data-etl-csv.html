@@ -87,7 +87,9 @@
 <script src="02_data-etl-csv_files/pagedtable-1.1/js/pagedtable.js"></script><div class="row">
   <main id="main"><div class="page-header">
       <img src="" class="logo" alt=""><h1>Data ETL (CSV Ouput Files)</h1>
+                        <h4 data-toc-skip class="author">BACOU, Melanie</h4>
             
+            <h4 data-toc-skip class="date">2022-02-03</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/mbacou/WADashboard/blob/HEAD/vignettes/02_data-etl-csv.Rmd" class="external-link"><code>vignettes/02_data-etl-csv.Rmd</code></a></small>
       <div class="d-none name"><code>02_data-etl-csv.Rmd</code></div>
@@ -100,7 +102,7 @@
 .pagedtable-not-empty .pagedtable-footer { border-top: unset; }
 .pagedtable-header-name { overflow: unset; }
 </style>
-<p>This vignette documents the steps to ingest model output files (in CSV format) for use in the dashboard. The next <a href="./03_data-etl-netcdf.html">vignette</a> describes the approach used to ingest gridded NetCDF output files.</p>
+<p>This vignette documents the steps to ingest model output files (in CSV format) for use in the dashboard. The next <a href="./03_data-etl-netcdf.html">vignette</a> describes the approach used to ingest and post-process some of the gridded NetCDF output files.</p>
 <p>This ETL was validated against two analyses received from IWMI scientists, one for <strong>Mali</strong> (Niger river basin), and another for <strong>Kenya</strong> (Mara river basin). The water accounting models are written in Python and the code repositories are on GitHub (e.g. <a href="https://github.com/wateraccounting/WAPORWA" class="external-link">WAPORWA notebooks</a> for the Mali analysis).</p>
 <p>The results of the WA+ balances consist in time-series of constructed hydrological variables – the time steps can vary (dekadal, monthly, seasonal, yearly steps). The series are either gridded (NetCDF) or aggregated over an entire zone of interest (CSV output files). The modeled variables are further enriched to construct visual balances (or “accounting sheets”) that represent key water availability and water use indicators over time.</p>
 <p>The WA+ modeling approach can vary slightly across use cases (different temporal extent, number of sub-basins, different flow units, different mix of input layers and output variables). To the extent possible this ETL intends to produce a generalized data model.</p>
@@ -339,7 +341,7 @@
 <span class="op">)</span><span class="op">]</span>
 
 <span class="co">#saveRDS(cube, "./data-raw/rds/data.rds")</span></code></pre></div>
-<p>The generated data cube includes the following dimensions:</p>
+<p>At this point the generated data cube includes the following dimensions:</p>
 <ul>
 <li>iso3</li>
 <li>sheet</li>

@@ -1,5 +1,7 @@
 ---
-title: Data ETL (CSV Ouput Files)
+title: "Data ETL (CSV Ouput Files)"
+author: "BACOU, Melanie"
+date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Data ETL (CSV files)}
@@ -13,7 +15,7 @@ vignette: >
 .pagedtable-header-name { overflow: unset; }
 ```
 
-This vignette documents the steps to ingest model output files (in CSV format) for use in the dashboard. The next [vignette](./03_data-etl-netcdf.html) describes the approach used to ingest gridded NetCDF output files.
+This vignette documents the steps to ingest model output files (in CSV format) for use in the dashboard. The next [vignette](./03_data-etl-netcdf.html) describes the approach used to ingest and post-process some of the gridded NetCDF output files.
 
 This ETL was validated against two analyses received from IWMI scientists, one for **Mali** (Niger river basin), and another for **Kenya** (Mara river basin). The water accounting models are written in Python and the code repositories are on GitHub (e.g. [WAPORWA notebooks](https://github.com/wateraccounting/WAPORWA) for the Mali analysis).
 
@@ -301,7 +303,7 @@ cube[is.na(date_start) & is.na(month), `:=`(
 
 ```
 
-The generated data cube includes the following dimensions:
+At this point the generated data cube includes the following dimensions:
 
 `r paste("*", names(cube), collapse="\n")`
 
