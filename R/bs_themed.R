@@ -19,7 +19,7 @@
 #' if(interactive()) bs_theme_preview(bs_themed())
 #'
 bs_themed <- function(
-  base_font = "'national-web-regular'",
+  base_font = "'national-web-book'",
   heading_font = "'DM Serif Text'",
   font_size = 15,
   palette = pal,
@@ -90,6 +90,11 @@ bs_themed <- function(
     `h6-font-size` = "0.9rem",
     `small-font-size` = "87.5%",
 
+    `display1-size` = "2.0rem",
+    `display2-size` = "1.8rem",
+    `display3-size` = "1.6rem",
+    `display4-size` = "1.4rem",
+
     `line-height-base` = 20/font_size,
     `line-height-sm` = 20/font_size,
     `line-height-lg` = 20/font_size,
@@ -115,7 +120,7 @@ bs_themed <- function(
       `gray-900` = "darken($light, 56%)",
 
       `link-color` = "$blue",
-      `nav-pills-link-active-bg` = "$blue",
+      `nav-pills-link-active-bg` = "$primary",
       `input-focus-bg` = "$white",
       `input-disabled-bg` = "$white",
 

@@ -54,12 +54,11 @@ accordionItem <- function(...,
 
   div(class=cl,
     # box header
-    div(class="card-header waved3 px-3 pt-2 pb-1",
-      span(
-        a(class=if(collapsed) "collapsed" else "",
-          href="#", `data-toggle`="collapse",
-          `aria-expanded`=if(collapsed) "false" else "true",
-          span(class="text-muted mr-2", icon), title))
+    div(class="card-header bg-gray px-3", span(
+      a(class=if(collapsed) "collapsed" else "",
+        href="#", `data-toggle`="collapse",
+        `aria-expanded`=if(collapsed) "false" else "true",
+        span(class="text-muted mr-2", icon), title))
     ),
     div(class=cl_body, ...)
   )

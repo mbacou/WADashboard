@@ -32,7 +32,7 @@ RUN \
 # Install application R package from Github
 RUN \
   R -e "remotes::install_github('mbacou/${APP}', \
-  dependencies=TRUE, upgrade='default', build_manual=TRUE, build_vignettes=TRUE)"
+  dependencies=TRUE, upgrade='default', build_manual=TRUE, build_vignettes=FALSE)"
 
 # Remove boilerplate
 RUN rm -rf /srv/shiny-server/

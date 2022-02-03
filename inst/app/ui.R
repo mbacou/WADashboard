@@ -37,17 +37,14 @@ footer <- fluidRow(class="bg-dark",
 )
 
 # Filters ----
-filters <- fluidRow(class="mt-3 pt-5 align-items-end waved3",
-  column(9,
-    p(span(class="h4", "From Water Accounting+ to Better Water Resource Management"),
-      br(), span(class="text-muted",
-        "This dashboard compiles results from the",
-        a(class="text-gray-dark", href="https://wateraccounting.org/", target="wa",
-          "Water Accounting+"),
-        "method based on global-scale public-domain datasets. WA+ objective is to
+filters <- fluidRow(class="pt-5 align-items-end waved3",
+  column(8,
+    h3(class="text-primary", "Water Accounting+ for", br(),
+      em("better"), "water resource management."),
+    p(class="text-muted", "Results from the Water Accounting+
+        method based on global-scale public-domain datasets. WA+ objective is to
         achieve equitable and transparent water governance for all water consumers
         and to ensure a sustainable water balance.")
-    )
   ),
   column(5,
     pickerInput("txtISO3",
@@ -133,7 +130,7 @@ map <- fluidRow(id="divMap", class="w-100 no-gutters collapse show",
           uiOutput("uiLegend"))
       ),
       nav(title="Info", icon=icon("info-circle"),
-        column(12, class="mt-2 pb-2",
+        column(12, class="mt-2 pb-2 bg-white",
           style="height:18.4rem; overflow:auto;",
           uiOutput("uiInfo"))
       )
@@ -144,7 +141,7 @@ map <- fluidRow(id="divMap", class="w-100 no-gutters collapse show",
 
 # Scorecards ----
 tab_11 <- tagList(
-  h3(class="text-info", "Sustainability Score"),
+  h3(class="text-primary", "Sustainability Score"),
   p("Impact of climate, infrastructure, and past management on long-term basin
     sustainability."),
   fluidRow(
@@ -159,7 +156,7 @@ tab_11 <- tagList(
 )
 
 tab_12 <- tagList(
-  h3(class="text-info", "Basin Variability"),
+  h3(class="text-primary", "Basin Variability"),
   p("Trends in storage changes"), br(),
   fluidRow(
     scoreBox("Average gain/loss", "+3% /year",
@@ -175,7 +172,7 @@ tab_12 <- tagList(
 )
 
 tab_13 <- tagList(
-  h3(class="text-info", "Key Facts"),
+  h3(class="text-primary", "Key Facts"),
   div(class="table-responsive waved2", tableOutput("tb_basin"))
 )
 
@@ -298,10 +295,10 @@ function() {
     theme = bs_themed(),
     window_title = "IWMI | Water Accounting+",
     title = tagList(
-      span(class="h3 text-primary", "WA+ Dashboard"),
+      span(class="display-4 text-muted", "WA+ Dashboard"),
       span(class="mx-4 text-warning", "DRAFT")
     ),
-    bg = alpha("white", .9),
+    bg = alpha("white", .95),
     position = "fixed-top",
     fluid = TRUE,
     header = tagList(
@@ -313,10 +310,10 @@ function() {
     footer = column(12, footer),
     selected = "Overview",
     nav_spacer(),
-    nav("Overview", page_1),
-    nav("Water Cycle", page_2),
-    nav("Water Accounts", page_3),
-    nav("My Area", page_4),
-    nav("About WA+", page_5)
+    nav("Overview", page_1, icon=icon("home")),
+    nav("Water Cycle", page_2, icon=icon("sync")),
+    nav("Water Accounts", page_3, icon=icon("th")),
+    #nav("My Area", page_4, icon=icon("user-cog")),
+    nav("About WA+", page_5, icon=icon("info-circle"))
   )
 }

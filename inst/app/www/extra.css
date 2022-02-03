@@ -1,6 +1,6 @@
 @font-face {
-  src: url("./font/national-web-regular.woff");
-  font-family: "national-web-regular";
+  src: url("./font/national-web-book.woff");
+  font-family: "national-web-book";
 }
 @font-face {
   src: url("./font/dm-serif-text.woff2");
@@ -121,5 +121,5 @@ ul.nav.navbar-nav>li>a:hover {
 }
 .waved3 {
   background: linear-gradient(180deg,
-  rgba(255,255,255,1) 6%, rgba(255,255,255,0) 100%);
+  rgba(255,255,255,.8) 0%, rgba(255,255,255,0) 100%);
 }
