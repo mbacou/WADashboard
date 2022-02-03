@@ -1,4 +1,4 @@
-<img class="float-right img-thumbnail ml-3" src="wa.png"/>
+<img class="float-end img-thumbnail m-3" src="wa.png"/>
 
 # Visualization Dashboard for WA+ Water Accounts 
 

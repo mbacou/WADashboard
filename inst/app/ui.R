@@ -7,11 +7,16 @@
 
 # Footer ----
 footer <- fluidRow(class="bg-dark",
-  column(6,
+  column(7,
     p(class="mt-3", span(class="lead text-warning", "ABOUT"), br(),
-      "The WA+ framework is developed by the UNESCO-IHE, Delft in partnership with the
-    International Water Management Institute, the Food and Agriculture Organization
-    of the United Nations, and the World Water Assessment Program."),
+      "This dashboard publishes results from the Water Accounting+ method based
+      on global-scale public-domain datasets. WA+ objective is to achieve equitable
+      and transparent water governance for all water consumers and to ensure a
+      sustainable water balance."),
+    p("The WA+ framework is developed by the UNESCO-IHE,
+      Delft in partnership with the International Water Management Institute, the
+      Food and Agriculture Organization of the United Nations, and the World Water
+      Assessment Program."),
     p(
       HTML("&copy; IWMI"),
       paste(year(Sys.Date()), "All rights reserved.", sep=". "),
@@ -23,30 +28,26 @@ footer <- fluidRow(class="bg-dark",
         href="https://mbacou.github.io/WADashboard/news/", "what's new"), ")"
     )
   ),
-  column(5, offset=1,
+  column(4, offset=1,
     p(class="mt-3 mr-3 text-md-right",
       a(href="https://iwmi.cgiar.org/",
-        img(class="m-2", height="66px", src="./fig/iwmi_w.png")),
+        img(class="m-3", height="66px", src="./fig/iwmi_w.png")),
       a(href="https://www.un-ihe.org/",
-        img(class="m-2", height="64px", src="./fig/ihe_logo.png")),
+        img(class="m-3", height="64px", src="./fig/ihe_logo.png")),
       br(),
       a(href="https://fao.org/",
-        img(class="m-2", height="50px", src="./fig/fao_logo_w.svg")),
+        img(class="m-3", height="50px", src="./fig/fao_logo_w.svg")),
       a(href="https://en.unesco.org/wwap/",
-        img(class="m-2", height="50px", src="./fig/wwap_w.png"))
+        img(class="m-3", height="50px", src="./fig/wwap_w.png"))
     )
   )
 )
 
 # Header ----
-header <- fluidRow(class="pt-5 align-items-end waved3",
+header <- fluidRow(class="pt-5 align-items-end shadow",
   column(8,
-    h3(class="text-primary", "Water Accounting+ for", br(),
-      em("better"), "water resource management."),
-    p(class="text-muted", "Results from the Water Accounting+
-        method based on global-scale public-domain datasets. WA+ objective is to
-        achieve equitable and transparent water governance for all water consumers
-        and to ensure a sustainable water balance.")
+    h3(class="text-primary", "Water Accounting+ for",
+      em("better"), "water resource management.")
   ),
   column(5,
     pickerInput("txtISO3",
@@ -79,7 +80,7 @@ header <- fluidRow(class="pt-5 align-items-end waved3",
 
 # Slider ----
 slider <- fluidRow(class="w-100 no-gutters",
-  column(12, class="waved border-bottom border-top px-4 pt-2 pb-0",
+  column(12, class="waved border-top px-4 pt-2 pb-0",
     div(class="float-left", p("Basin Timeline")),
     sliderTextInput("txtDate", NULL,
       data[iso3==init$iso3 & sheet=="sheet1"
@@ -94,12 +95,12 @@ map <- fluidRow(id="divMap", class="w-100 no-gutters collapse show",
   column(8, style="height:21rem;",
     leafletOutput("map", width="100%", height="100%")
   ),
-  column(4, class="waved2",
+  column(4, class="waved3",
     navs_pill(
       nav(title="Layers", icon=icon("layer-group"),
         fluidRow(class="no-gutters",
           column(12,
-            style="height:18.4rem; overflow:auto;",
+            style="height:18.2rem; overflow:auto;",
             accordion(id="accLayers",
               accordionItem(
                 title="Basin Features",
@@ -128,12 +129,12 @@ map <- fluidRow(id="divMap", class="w-100 no-gutters collapse show",
       ),
       nav(title="Legend", icon=icon("palette"),
         column(12, class="bg-white",
-          style="height:18.4rem; overflow:auto;",
+          style="height:18.2rem; overflow:auto;",
           uiOutput("uiLegend"))
       ),
       nav(title="Info", icon=icon("info-circle"),
         column(12, class="pb-2 bg-white",
-          style="height:18.4rem; overflow:auto;",
+          style="height:18.2rem; overflow:auto;",
           uiOutput("uiInfo"))
       )
     )
@@ -235,12 +236,12 @@ sheet_3 <- nav("Agricultural Services", icon=icon("faucet"),
 
 
 # Page 1 ----
-page_1 <- fluidRow(style="display:block",
+page_1 <- fluidRow(class="border-top",
   column(12, overview, timeline)
 )
 
 # Page 2 ----
-page_2 <- fluidRow(style="min-height:40rem;",
+page_2 <- fluidRow(class="border-top",
   column(12,
     h4(class="text-primary", "Water Cycle"),
     p("[placeholder content for water flux dynamics]")
@@ -248,7 +249,7 @@ page_2 <- fluidRow(style="min-height:40rem;",
 )
 
 # Page 3 ----
-page_3 <- fluidRow(class="bg-white", style="display:block;",
+page_3 <- fluidRow(class="d-block bg-white",
   navs_bar(
     title = span(class="h4 text-primary", "Water Accounts"),
     bg = "transparent",
@@ -260,7 +261,7 @@ page_3 <- fluidRow(class="bg-white", style="display:block;",
 )
 
 # Page 4 ----
-page_4 <- fluidRow(
+page_4 <- fluidRow(class="border-top",
   column(6,
     h4(class="text-primary", "My Area"),
     p("[placeholder]", br(), "
@@ -286,13 +287,13 @@ page_4 <- fluidRow(
 )
 
 # Page 5 ----
-page_5 <- fluidRow(
+page_5 <- fluidRow(class="border-top",
   column(12,
     includeMarkdown("./md/about.md"))
 )
 
 
-# Master Layout ----
+# Layout ----
 function() {
   page_navbar(
     id = "navPage",
@@ -314,7 +315,7 @@ function() {
     footer = column(12, footer),
     nav_spacer(),
     nav("Overview", page_1, icon=icon("home")),
-    nav("Water Cycle", page_2, icon=icon("sync")),
+    nav("Water Cycle", page_2, icon=icon("repeat")),
     nav("Water Accounts", page_3, icon=icon("th")),
     #nav("My Area", page_4, icon=icon("user-cog")),
     nav("About WA+", page_5, icon=icon("info-circle")),

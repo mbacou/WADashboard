@@ -105,10 +105,8 @@ bs_themed <- function(
     bs_add_variables(
       .where =  "declarations",
 
-      `navbar-brand-height` = "$nav-link-height",
-
       `body-bg` = "lighten($light, 4%)",
-      `border-color` = "darken($light, 8%)",
+      `border-color` = "$light",
       `gray-100` = "lighten($light, 4%)",
       `gray-200` = "darken($light, 4%)",
       `gray-300` = "darken($light, 8%)", # border-color
@@ -118,6 +116,11 @@ bs_themed <- function(
       `gray-700` = "darken($light, 40%)",
       `gray-800` = "darken($light, 48%)",
       `gray-900` = "darken($light, 56%)",
+      `table-border-color` = "$light",
+
+      `box-shadow-sm` = "0 .125rem .25rem rgba($light, 0.35)",
+      `box-shadow` = "0 .5rem 2rem rgba($gray-300, 0.35), inset 0 -1px 0 rgba($light, 1)",
+      `box-shadow-lg` = "0 1rem 3rem rgba($gray-300, 0.65), inset 0 -1px 0 rgba($light, 1)",
 
       `link-color` = "$blue",
       `nav-pills-link-active-bg` = "$primary",
