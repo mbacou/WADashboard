@@ -187,7 +187,7 @@ overview <- fluidRow(
 # Timeline ----
 timeline <- fluidRow(class="bg-white",
   column(8,
-    h4(class="text-info", icon=icon("tint"), "Recharge and Abstraction"),
+    h4(class="text-primary", "Recharge and Abstraction"),
     p("[Time-series and anomalies]"),
     highchartOutput("hcTimeline")
   ),
@@ -240,7 +240,7 @@ page_1 <- fluidRow(style="display:block",
 # Page 2 ----
 page_2 <- fluidRow(style="min-height:40rem;",
   column(12,
-    h4(class="text-info", "Water Cycle"),
+    h4(class="text-primary", "Water Cycle"),
     p("[placeholder content for water flux dynamics]")
   )
 )
@@ -248,7 +248,7 @@ page_2 <- fluidRow(style="min-height:40rem;",
 # Page 3 ----
 page_3 <- fluidRow(class="bg-white", style="display:block;",
   navs_bar(
-    title = span(class="h4 text-info", "Water Accounts"),
+    title = span(class="h4 text-primary", "Water Accounts"),
     bg = "transparent",
     inverse = FALSE,
     footer=column(12,
@@ -260,7 +260,7 @@ page_3 <- fluidRow(class="bg-white", style="display:block;",
 # Page 4 ----
 page_4 <- fluidRow(
   column(6,
-    h4(class="text-info", "My Area"),
+    h4(class="text-primary", "My Area"),
     p("[placeholder]", br(), "
         Allow users to provide a custom area to summarize over and to select a list of
         indicators to include in a custom report.

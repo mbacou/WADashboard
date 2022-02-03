@@ -1,4 +1,4 @@
-<h4 class="text-info">About WA+</h4>
+<h4 class="text-primary">About WA+</h4>
 
 Units
 
