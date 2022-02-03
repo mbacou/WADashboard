@@ -7,7 +7,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{css}
+```{css, echo=FALSE}
 .pagedtable-wrapper { border: unset; }
 .pagedtable-not-empty .pagedtable-footer { border-top: unset; }
 .pagedtable-header-name { overflow: unset; }
@@ -17,11 +17,11 @@ This vignette documents the steps to ingest model output files (in CSV format) f
 
 This ETL was validated against two analyses received from IWMI scientists, one for **Mali** (Niger river basin), and another for **Kenya** (Mara river basin). The water accounting models are written in Python and the code repositories are on GitHub (e.g. [WAPORWA notebooks](https://github.com/wateraccounting/WAPORWA) for the Mali analysis).
 
-The results of the WA+ balances consist in time-series of constructed hydrological variables -- the time steps can vary (dekadal, monthly, seasonal, yearly steps). The series are either gridded (NetCDF) or aggregated over an entire zone of interest (CSV output files). The modeled variables are further enriched to construct visual balances (or "Sheets") that represent key water availability, use and management indicators over time.
+The results of the WA+ balances consist in time-series of constructed hydrological variables -- the time steps can vary (dekadal, monthly, seasonal, yearly steps). The series are either gridded (NetCDF) or aggregated over an entire zone of interest (CSV output files). The modeled variables are further enriched to construct visual balances (or "accounting sheets") that represent key water availability and water use indicators over time.
 
 The WA+ modeling approach can vary slightly across use cases (different temporal extent, number of sub-basins, different flow units, different mix of input layers and output variables). To the extent possible this ETL intends to produce a generalized data model.
 
-The steps outlined below serve as a blueprint for a generic [data_etl()](../reference/data_etl.html) method included in this package (refer to the method's documentation for more details, esp. how to ingest additional result sets). The objective is to generate a data cube suitable for online analytics.
+The steps outlined below serve as a blueprint for a generic [data_etl()](../reference/data_etl.html) method included in this package (refer to the method's documentation for more details, esp. how to ingest additional result sets). The objective is to generate a standardized data cube suitable for online analytics.
 
 
 ```{r init, echo=FALSE, message=FALSE}
@@ -51,7 +51,7 @@ th <- function(...) theme(
 ```
 
 ```{r}
-# Location of model output datasets
+# Location of WA+ output datasets
 dir <- getOption("wa.data")
 ```
 
@@ -306,7 +306,7 @@ The generated data cube includes the following dimensions:
 `r paste("*", names(cube), collapse="\n")`
 
 
-# Data Dictionaries
+# Calculated Measures
 
 Another ETL step is required to map the variable codes used in the data files to their visual representation in the WA+ Sheets (SVG designs).
 
@@ -314,7 +314,7 @@ Another ETL step is required to map the variable codes used in the data files to
 knitr::include_graphics(file.path("./fig", list.files("./vignettes/fig")))
 ```
 
-This mapping is embedded in the WA+ `print_sheet` Python module, (example for [Sheet 1](https://github.com/wateraccounting/WAPORWA/blob/master/modules/WA/sheet1.py) in the WAPORWA repo). Importantly many SVG elements are **fields calculated** from output variables. We might need to replicate that logic in the dashboard to create dynamic visuals[^fn2].
+This mapping is embedded in the WA+ `print_sheet` Python module, (example for [Sheet 1](https://github.com/wateraccounting/WAPORWA/blob/master/modules/WA/sheet1.py) in the WAPORWA repo). Importantly many SVG elements are **fields calculated** from output variables. We might need to replicate that logic as part of the ETL process[^fn2].
 
 [^fn2]: This is not an ideal approach, as we'd rather avoid replicating any hydrological model logic in the dashboard code. TBD for a future version.
 
@@ -342,6 +342,9 @@ We proceed similarly for Sheet #2 and Sheet #3 mappings.
 ## Sheet #2
 
 ## Sheet #3
+
+
+# Data Dictionnary
 
 
 In the next [vignette](./03_data-etl-netcdf.html) we outline an approach to ingest all gridded NetCDF output files.
