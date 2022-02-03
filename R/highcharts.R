@@ -511,9 +511,9 @@ plot_idx_density <- function(
     )]
 
     highchart() %>%
-      hc_add_series(density(x[, idx]), type="area", name=p, color=wc_period_cols[[p]]) %>%
+      hc_add_series(density(x[, idx]), type="area", name=p, color=wc_period_pal[[p]]) %>%
       hc_add_series(fit, type="line",
-        hcaes(x=x, y=y), color=wc_period_cols[[p]], name="fitted")  %>%
+        hcaes(x=x, y=y), color=wc_period_pal[[p]], name="fitted")  %>%
       hc_xAxis(plotLines = list(
         list(color=pal[["red"]], value=x[, mean(idx_hi)], width=1.2,
           label=list(text="severe", align="left")),
@@ -617,7 +617,7 @@ plot_tick <- function(
 
     highchart(height=rowheight) %>%
       hc_chart(zoomType="x") %>%
-      hc_add_series(dt, type="line", hcaes(x=value, y=100*pay), color=idx_cols[[t]],
+      hc_add_series(dt, type="line", hcaes(x=value, y=100*pay), color=idx_pal[[t]],
         name=sprintf("%s (%s)", toupper(t), p), width=1,
         marker=list(enabled=TRUE, radius=3),
         tooltip=list(pointFormat="Payout: <strong>{point.y:,.0f}%</strong>"))  %>%
@@ -671,33 +671,80 @@ plot_idx_mosaic <- function(
 #' Plot bullet charts
 #'
 #' @param data input data
-#' @inheritParams hc_themed
+#' @param horizontal boolean orientation
 #' @inheritDotParams hc_themed
 #'
 #' @examples
+#' data = DATA[iso3=="mli" & sheet=="sheet1"]
+#' plot_bullet(data)
 #'
 #' @export
-plot_bullet <- function(data) {
+plot_bullet <- function(data, horizontal=TRUE, ...) {
 
-  dt <- cntr_filtered()[!status_cntr %like% "refund", .(
-    date_end = max(date_end, na.rm=T),
-    planted = 100*sum(status_cntr %in% l_status[2:12])/.N,
-    triggered = 100*sum(status_cntr %in% l_status[c(5, 7:10)])/.N,
-    expired = 100*sum(status_cntr %in% l_status[6:12])/.N
-  )]
+  dt = data[, .(
+    value = mean(value, na.rm=T),
+    min = min(value, na.rm=T),
+    max = max(value, na.rm=T),
+    date = year[year==max(year, na.rm=T)]
+  ), by=.(variable)][value>0]
 
-  hchart(dt, type="bullet", hcaes(y=expired, target=triggered)) %>%
-    hc_chart(inverted=FALSE, margin=c(40, 8, 40, 10)) %>%
-    hc_xAxis(tickLength=0) %>%
-    hc_yAxis(min=0, max=100, gridLineWidth=0, labels=list(format="{value}%"),
+  hchart(dt, type="bullet",
+    hcaes(x=variable, y=max, target=value),
+    dataLabels=list(enabled=TRUE)) %>%
+    hc_chart(inverted=horizontal, margin=c(40, 8, 40, 10)) %>%
+    hc_yAxis(min=0, max=dt[, max(max, na.rm=T)],
+      gridLineWidth=0, labels=list(format="{value}"),
       plotBands=list(
-        list(from=0, to=dt$planted, color=cols[["gray-lte"]], name="planted"),
-        list(from=dt$planted, to=100, color=alpha(cols[["gray-lte"]], .5), name="all")
+        list(from=0, to=dt$min, color=pal[["light"]], name="min"),
+        list(from=dt$min, to=100, color=alpha(pal[["light"]], .5), name="all")
       )) %>%
-    hc_tooltip(pointFormat=
-        "<strong>{point.y:.0f}% expired</strong><br/>{point.target:.0f}% triggered") %>%
-    hc_title(text=
-        sprintf("Last contract expires on <strong>%s</strong>", dt$date_end)) %>%
+    hc_tooltip(pointFormat="{point.y:.0f} max<br/>{point.target:.0f} average") %>%
     hc_themed(...)
+}
+
+#' Plot waterfall charts
+#'
+#' @param data input data
+#' @inheritDotParams hc_themed
+#'
+#' @examples
+#' vars = c("Rainfall", "Utilized", "Protected", "Main riverstem")
+#' data = DATA[iso3=="mli" & sheet=="sheet1" & variable %in% vars
+#' ][, .(value=sum(value, na.rm=T)), by=.(year, variable)
+#' ][variable %in% vars[2:4], value := -value]
+#' plot_waterfall(data)
+#'
+#' @export
+plot_waterfall <- function(data, ...) {
+
+  dt = data[, .(
+    value = mean(value, na.rm=T),
+    min = min(value, na.rm=T),
+    max = max(value, na.rm=T)
+  ), by=.(variable)
+  ]
+
+  hchart(dt, type="waterfall",
+    hcaes(name=variable, y=value, color=variable),
+    dataLabels=list(enabled=T, format="{point.name}<br/>{point.value:.0f}"),
+    borderWidth=1, borderColor=pal[["light"]], pointPadding=0) %>%
+    hc_yAxis(gridLineWidth=0) %>%
+    hc_tooltip(pointFormat="{point.y:.0f} avg.<br/>{point.max:.0f} max") %>%
+    hc_themed(...)
+
+}
+
+#' Plot radar charts
+#'
+#' @param data input data
+#' @inheritDotParams hc_themed
+#'
+#' @examples
+#' data = DATA[iso3=="mli" & sheet=="sheet1"]
+#' plot_radar(data)
+#'
+#' @export
+plot_radar <- function(data, ...) {
+
 
 }

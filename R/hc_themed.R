@@ -18,7 +18,7 @@ hc_themed <- function(
   label = NULL,
   x = NULL,
   y = NULL,
-  base_font = getOption("wa.font"),
+  base_font = "'national-web-book'",
   axes = TRUE,
   exporting = TRUE,
   credits = FALSE,
@@ -27,7 +27,7 @@ hc_themed <- function(
   thm <- hc_theme(
 
     chart = list(
-      style = list(fontFamily=base_font),
+      #style = list(fontFamily=base_font),
       backgroundColor = "transparent"
     ),
     # Don't use semantic colors
@@ -85,8 +85,8 @@ hc_themed <- function(
         dataLabels = list(enabled=FALSE)
       ),
       bullet = list(
-        pointPadding = 0.25, borderWidth = 0,
-        targetOptions = list(width="200%", color=pal[["blue"]])
+        pointPadding = 0.25, borderWidth = 1,
+        targetOptions = list(width="200%", color=pal[["orange"]])
       ),
       boxplot = list(
         fillColor = alpha(pal[["black"]], .3),
