@@ -79,7 +79,8 @@ bs_themed <- function(
 
     `navbar-padding-x` = 0,
     `navbar-padding-y` = 0,
-    `navbar-nav-link-padding-x` = "1.0rem",
+    `nav-link-padding-y` = ".75rem",
+    `navbar-nav-link-padding-x` = ".75rem",
     `navbar-toggler-font-size` = "0.9rem",
 
     `h1-font-size` = "1.8rem",
@@ -118,9 +119,9 @@ bs_themed <- function(
       `gray-900` = "darken($light, 56%)",
       `table-border-color` = "$light",
 
-      `box-shadow-sm` = "0 .125rem .25rem rgba($light, 0.35)",
-      `box-shadow` = "0 .5rem 2rem rgba($gray-300, 0.35), inset 0 -1px 0 rgba($light, 1)",
-      `box-shadow-lg` = "0 1rem 3rem rgba($gray-300, 0.65), inset 0 -1px 0 rgba($light, 1)",
+      `box-shadow-sm` = "0 .125rem .25rem -1px rgba($gray-300, 0.45)",
+      `box-shadow` = "0 .5rem 2rem -1px rgba($gray-300, 0.50), inset 0 -1px 0 rgba($light, 1)",
+      `box-shadow-lg` = "0 1rem 3rem -1px rgba($gray-300, 0.50), inset 0 -1px 0 rgba($light, 1)",
 
       `link-color` = "$blue",
       `nav-pills-link-active-bg` = "$primary",

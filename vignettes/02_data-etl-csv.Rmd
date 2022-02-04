@@ -346,7 +346,7 @@ We proceed similarly for Sheet #2 and Sheet #3 mappings.
 ## Sheet #3
 
 
-# Data Dictionnary
+# Data Dictionary
 
 
 In the next [vignette](./03_data-etl-netcdf.html) we outline an approach to ingest all gridded NetCDF output files.

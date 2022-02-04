@@ -9,16 +9,11 @@ library(stringr)
 library(scales)
 library(lubridate)
 library(r2d3)
-library(highcharter)
-library(sf)
-library(leaflet.extras)
 library(shinyWidgets)
 library(bslib)
-library(data.table)
-if(!interactive()) library(WADashboard) else devtools::load_all(".")
+if(interactive()) devtools::load_all(".") else library(WADashboard)
 
 pkg <- system.file(package="WADashboard")
-
 data <- DATA
 schema <- file.path(pkg, "./csv/sheet_1_schema.csv") %>% fread()
 

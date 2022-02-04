@@ -9,10 +9,10 @@
 footer <- fluidRow(class="bg-dark",
   column(7,
     p(class="mt-3", span(class="lead text-warning", "ABOUT"), br(),
-      "This dashboard publishes results from the Water Accounting+ method based
-      on global-scale public-domain datasets. WA+ objective is to achieve equitable
-      and transparent water governance for all water consumers and to ensure a
-      sustainable water balance."),
+      "This dashboard summarizes results from the Water Accounting+ hydrological model
+      based on global-scale public-domain datasets. WA+ program objective is to
+      achieve equitable and transparent water governance for all water consumers and
+      to ensure a sustainable water balance."),
     p("The WA+ framework is developed by the UNESCO-IHE,
       Delft in partnership with the International Water Management Institute, the
       Food and Agriculture Organization of the United Nations, and the World Water
@@ -59,10 +59,9 @@ header <- fluidRow(class="pt-5 align-items-end shadow",
   column(7,
     fluidRow(class="no-gutters float-md-right align-items-end",
       div(class="col pb-3",
-        tags$label(class="text-info", "Last model run"), br(),
-        actionButton("btnRefresh",
-          span(strong(format(init$date, "%Y %b"))),
-          icon=icon("sync"), class="btn-outline-info btn-sm", width="9rem")
+        tags$label(class="text-info", "Model period"), br(),
+        actionButton("btnRefresh", "-",
+          class="btn-outline-info btn-sm", width="9rem")
       ),
       div(class="col pl-2",
         radioGroupButtons("txtUnit",
@@ -80,8 +79,8 @@ header <- fluidRow(class="pt-5 align-items-end shadow",
 
 # Slider ----
 slider <- fluidRow(class="w-100 no-gutters",
-  column(12, class="waved border-top px-4 pt-2 pb-0",
-    div(class="float-left", p("Basin Timeline")),
+  column(12, class="waved border-top border-bottom px-4 pt-2 pb-0",
+    div(class="float-left", "Basin Timeline"),
     sliderTextInput("txtDate", NULL,
       data[iso3==init$iso3 & sheet=="sheet1"
       ][order(date_end), format(unique(date_end), "%Y %b")],
@@ -144,6 +143,11 @@ map <- fluidRow(id="divMap", class="w-100 no-gutters collapse show",
 
 # Scorecards ----
 tab_11 <- tagList(
+  h3(class="text-primary", "Key Facts"),
+  div(class="table-responsive waved2", tableOutput("tb_basin"))
+)
+
+tab_12 <- tagList(
   h3(class="text-primary", "Sustainability Score"),
   p("Impact of climate, infrastructure, and past management on long-term basin
     sustainability."),
@@ -158,7 +162,7 @@ tab_11 <- tagList(
   br()
 )
 
-tab_12 <- tagList(
+tab_13 <- tagList(
   h3(class="text-primary", "Basin Variability"),
   p("Trends in storage changes"), br(),
   fluidRow(
@@ -174,17 +178,12 @@ tab_12 <- tagList(
   )
 )
 
-tab_13 <- tagList(
-  h3(class="text-primary", "Key Facts"),
-  div(class="table-responsive waved2", tableOutput("tb_basin"))
-)
-
 
 # Overview ----
 overview <- fluidRow(
-  column(4, tab_13),
   column(4, tab_11),
-  column(4, tab_12)
+  column(4, tab_12),
+  column(4, tab_13)
 )
 
 # Timeline ----
@@ -236,12 +235,12 @@ sheet_3 <- nav("Agricultural Services", icon=icon("faucet"),
 
 
 # Page 1 ----
-page_1 <- fluidRow(class="border-top",
+page_1 <- fluidRow(
   column(12, overview, timeline)
 )
 
 # Page 2 ----
-page_2 <- fluidRow(class="border-top",
+page_2 <- fluidRow(
   column(12,
     h4(class="text-primary", "Water Cycle"),
     p("[placeholder content for water flux dynamics]")
@@ -261,7 +260,7 @@ page_3 <- fluidRow(class="d-block bg-white",
 )
 
 # Page 4 ----
-page_4 <- fluidRow(class="border-top",
+page_4 <- fluidRow(
   column(6,
     h4(class="text-primary", "My Area"),
     p("[placeholder]", br(), "

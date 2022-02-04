@@ -8,26 +8,28 @@
 }
 
 .navbar {
-  box-shadow: 0 0.5rem 2rem rgba(232,231,231, 0.35), inset 0 -1px 0 var(--light);
+  box-shadow: 0 0.5rem 2rem -1px rgba(232,231,231, 0.5), inset 0 -1px 0 var(--light);
 }
-ul.nav.navbar-nav>li>a {
-  border-bottom: 3px solid transparent;
-}
-ul.nav.navbar-nav>li>a.active {
-  border-bottom: 3px solid var(--warning);
-}
-ul.nav.navbar-nav>li>a:hover {
+.nav-pills>li>a:hover {
   color: var(--dark);
-  border-bottom: 3px solid var(--gray);
   background-color: rgba(232,231,231, 0.5);
-}
-.navbar:not(.navbar-expand):not(.navbar-expand-sm):not(.navbar-expand-md):not(.navbar-expand-lg):not(.navbar-expand-xl)>.container-fluid {
-  padding: 0.5rem 1rem 0 1rem;
 }
 .nav-pills>li>a {
   margin: 0.5rem 0 0.5rem 0.5rem;
   padding: 0.25rem 1rem;
 }
+ul.nav.navbar-nav>li>a.active {
+  border-bottom: 3px solid var(--warning);
+}
+ul.nav.navbar-nav>li>a:hover{
+  color: var(--dark);
+  border-bottom: 3px solid var(--gray);
+  background-color: rgba(232,231,231, 0.5);
+}
+.navbar:not(.navbar-expand):not(.navbar-expand-sm):not(.navbar-expand-md):not(.navbar-expand-lg):not(.navbar-expand-xl)>.container-fluid {
+  padding: 0 1rem 0 1rem;
+}
+
 .bootstrap-select .dropdown-menu li a span.text {
   display: unset;
 }
@@ -123,7 +125,7 @@ ul.nav.navbar-nav>li>a:hover {
 }
 .waved2 {
   background: linear-gradient(180deg,
-  rgba(255,255,255, .5) 0%, rgba(255,255,255, 1) 50%, rgba(255,255,255, .4) 100%);
+  rgba(255,255,255, .6) 0%, rgba(255,255,255, 1) 50%, rgba(255,255,255, .5) 100%);
 }
 .waved3 {
   background: linear-gradient(180deg,

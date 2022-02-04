@@ -9,13 +9,13 @@ pal <- grDevices::rgb(tmp[, .(V1, V2, V3)], maxColorValue=255)
 names(pal) <- tmp[, V4]
 
 # Unique basin ISO3 codes and metadata
-ISO3 <- read_json("./data-raw/json/ISO3.json")
+ISO3 <- fromJSON("./data-raw/json/ISO3.json", flatten=TRUE)
 
 # Basin and stream features (clipped)
 ZOI <- lapply(ISO3, function(x) lapply(x[c("admin", "water")], st_read))
 
 # WMS and Map Tile providers
-LAYERS <- read_json("./data-raw/json/LAYERS.json")
+LAYERS <- fromJSON("./data-raw/json/LAYERS.json", flatten=TRUE)
 
 # WA+ data cube
 DATA <- readRDS("./data-raw/rds/data.rds")

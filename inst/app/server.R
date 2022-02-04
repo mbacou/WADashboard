@@ -42,6 +42,10 @@ function(input, output, session) {
     updateSliderTextInput(session, "txtDate", NULL,
       dt[order(date_end), format(unique(date_end), "%Y %b")],
       selected=dt[, format(max(date_end), "%Y %b")])
+    # Update timesteamp
+    updateActionButton(session, "btnRefresh",
+      label=sprintf('<strong>%s - %s</strong>',
+        dt()[, format(min(date_start), "%Y %b")], dt()[, format(max(date_end), "%Y %b")]))
   })
 
   observeEvent(input$btnScore, {
@@ -76,20 +80,27 @@ function(input, output, session) {
 
   # Key facts ----
   output$tb_basin = renderTable(
-    hover=T, spacing="xs", colnames=F, align="lr", width="100%",
-    melt(as.data.table(ISO3[[s$iso3]])[, `:=`(
-      `authorities` = sprintf(
-        '%s <a href="%s"><i class="fa fa-external-link fa-fw"></i></a>', authorities, url),
-      `area` = sprintf("%s ha", comma(area)),
-      `population` = sprintf("%s", comma(`population`)),
-      `annual rainfall` = sprintf("%s mm", comma(`annual rainfall`)),
-      `annual ET` = sprintf("%s mm", comma(`annual ET`)),
-      `irrigated area` = sprintf("%s ha", comma(`irrigated area`)),
-      `hydro power` = sprintf("%s GWh/year", comma(`hydro power`))
-    )], id.vars=1)[!variable %in% c("admin", "water", "source", "url", "unit"), .(
-      variable = sprintf('<span class="text-info">%s</span>', str_to_title(variable)),
-      value
-    )]
+    hover=T, spacing="xs", colnames=F, align="lr", width="100%", {
+      # Flatten list to data.table
+      dt = lapply(ISO3[[s$iso3]],
+        function(x) if(is.character(x)) paste(x, collapse=", ") else x) %>%
+        as.data.table()
+      # Format
+      dt[, `:=`(
+        `authorities` = sprintf(
+          '%s <a href="%s"><i class="fa fa-external-link fa-fw"></i></a>', authorities, url),
+        `area` = sprintf("%s ha", comma(area)),
+        `population` = sprintf("%s", comma(`population`)),
+        `annual rainfall` = sprintf("%s mm", comma(`annual rainfall`)),
+        `annual ET` = sprintf("%s mm", comma(`annual ET`)),
+        `irrigated area` = sprintf("%s ha", comma(`irrigated area`)),
+        `hydro power` = sprintf("%s GWh/year", comma(`hydro power`))
+      )]
+      melt(dt, id.vars=1)[!variable %in% c("country", "admin", "water", "source", "url", "unit"), .(
+        variable = sprintf('<span class="text-info">%s</span>', str_to_title(variable)),
+        value
+      )]
+    }
   )
 
   # Map ----
