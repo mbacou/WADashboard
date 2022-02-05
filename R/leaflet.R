@@ -53,8 +53,12 @@ map_init <- function(
       attribution=tileset$attr,
       group="Hybrid") %>%
 
-    addProviderTiles("OpenStreetMap.HOT", group="OSM HOT") %>%
-    addProviderTiles("Esri.WorldShadedRelief", group="ESRI shaded relief")
+    addTiles(
+      sprintf(tileset$url[[1]], tileset$layers[[3]], key),
+      attribution=tileset$attr,
+      group="Hillshade") %>%
+
+    addProviderTiles("OpenStreetMap.HOT", group="OSM HOT")
 
   # FAO WaPOR
   for(i in seq_along(fao$layers))
@@ -71,7 +75,7 @@ map_init <- function(
   m %>%
     hideGroup(names(fao$layers)) %>%
     addLayersControl(
-      baseGroups = c("Default", "Hybrid", "OSM HOT", "ESRI shaded relief"),
+      baseGroups = c("Default", "Hybrid", "OSM HOT", "Hillshade"),
       position = "bottomright"
     ) %>%
     addFullscreenControl(pseudoFullscreen=TRUE, position="topright") %>%

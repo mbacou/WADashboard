@@ -91,7 +91,7 @@ slider <- fluidRow(class="w-100 no-gutters",
 
 # Map ----
 map <- fluidRow(id="divMap", class="w-100 no-gutters collapse show",
-  column(8, style="height:21rem;",
+  column(8, style="height:20rem;",
     leafletOutput("map", width="100%", height="100%")
   ),
   column(4, class="waved3",
@@ -99,7 +99,7 @@ map <- fluidRow(id="divMap", class="w-100 no-gutters collapse show",
       nav(title="Layers", icon=icon("layer-group"),
         fluidRow(class="no-gutters",
           column(12,
-            style="height:18.2rem; overflow:auto;",
+            style="height:17.2rem; overflow:auto;",
             accordion(id="accLayers",
               accordionItem(
                 title="Basin Features",
@@ -128,12 +128,12 @@ map <- fluidRow(id="divMap", class="w-100 no-gutters collapse show",
       ),
       nav(title="Legend", icon=icon("palette"),
         column(12, class="bg-white",
-          style="height:18.2rem; overflow:auto;",
+          style="height:17.2rem; overflow:auto;",
           uiOutput("uiLegend"))
       ),
       nav(title="Info", icon=icon("info-circle"),
         column(12, class="pb-2 bg-white",
-          style="height:18.2rem; overflow:auto;",
+          style="height:17.2rem; overflow:auto;",
           uiOutput("uiInfo"))
       )
     )
