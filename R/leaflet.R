@@ -10,9 +10,12 @@ mapboxDependencies <- function() {
   )
 }
 
-#' Initialize Leafet map and 3rd-party spatiotemporal layers
+#' Initialize Leafet map with default basemaps
 #'
-#' Load basin boundaries with default configuration.
+#' Load basin boundaries with default configuration. Note that we could use custom
+#' vector tiles instead of raster basemaps with package
+#' [mapboxapi](https://walker-data.com/mapboxapi/) to build more informative
+#' hydrological layers.
 #'
 #' @param iso3 3-letter country code to center the map on (see [ISO3])
 #' @param key Maptiler API key
@@ -20,7 +23,6 @@ mapboxDependencies <- function() {
 #' @import leaflet
 #' @import leaflet.extras
 #' @importFrom sf st_bbox
-#' @importFrom lubridate days
 #' @return leaflet map widget with default layers
 #' @rdname map_init
 #' @export
@@ -35,9 +37,7 @@ map_init <- function(
 ) {
 
   iso3 = match.arg(iso3)
-  date = Sys.Date()
   tileset = LAYERS[["MAPTILER"]]
-  fao = LAYERS[["FAO"]]
   bbox = st_bbox(ZOI[[iso3]]$admin)
 
   m = leaflet() %>%
@@ -53,25 +53,15 @@ map_init <- function(
       attribution=tileset$attr,
       group="Hybrid") %>%
 
+    addTiles(
+      sprintf(tileset$url[[1]], tileset$layers[[3]], key),
+      attribution=tileset$attr,
+      group="Hillshade") %>%
+
     addProviderTiles("OpenStreetMap.HOT", group="OSM HOT") %>%
-    addProviderTiles("Esri.WorldShadedRelief", group="ESRI shaded relief")
 
-  # FAO WaPOR
-  for(i in seq_along(fao$layers))
-    m = addWMSTiles(m, fao$url[[1]],
-      layers = unname(fao$layers[[i]]),
-      attribution = fao$attr[[1]],
-      group = names(fao$layers)[i],
-      options = WMSTileOptions(
-        version="1.1.1", format="image/png", transparent=TRUE, opacity=.6,
-        time=sprintf("%s/%s", floor_date(date, "month"), ceiling_date(date, "month")-days(1))
-      )
-    )
-
-  m %>%
-    hideGroup(names(fao$layers)) %>%
     addLayersControl(
-      baseGroups = c("Default", "Hybrid", "OSM HOT", "ESRI shaded relief"),
+      baseGroups = c("Default", "Hybrid", "OSM HOT", "Hillshade"),
       position = "bottomright"
     ) %>%
     addFullscreenControl(pseudoFullscreen=TRUE, position="topright") %>%
@@ -80,6 +70,44 @@ map_init <- function(
 
     fitBounds(bbox[[1]], bbox[[2]], bbox[[3]], bbox[[4]])
 
+}
+
+
+#' Add external WMS tile layers
+#'
+#' @param map leaflet map to update
+#' @param provider name of WMS provider (see [LAYERS])
+#' @param date target date
+#' @import leaflet
+#' @importFrom lubridate days floor_date ceiling_date
+#'
+#' @return updated leaflet map
+#' @rdname map_init
+#' @export
+#'
+#' @examples
+map_addWMSProvider <- function(map, provider="FAO", date=Sys.Date()) {
+
+  date = as.Date(date)
+  provider = match.arg(provider, names(LAYERS))
+  provider = LAYERS[[provider]]
+
+  map %>% clearGroup(names(provider$layers))
+
+  for(i in seq_along(provider$layers)) {
+    d = if(names(provider$layers)[i] %like% "Land") Sys.Date() else date
+    map = addWMSTiles(map,
+      baseUrl = sprintf("%sTIME=%s", provider$url[[1]], format(d, "%Y-%m")),
+      layers = unname(provider$layers[[i]]),
+      attribution = provider$attr[[1]],
+      group = names(provider$layers)[i],
+      options = WMSTileOptions(
+        version="1.1.1", format="image/png", transparent=TRUE, opacity=.6)
+    )
+  }
+
+  map %>%
+    hideGroup(names(provider$layers))
 }
 
 
@@ -122,14 +150,17 @@ map_update <- function(map, iso3=names(ISO3)) {
 #' Used to toggle 3rd-party contextual layers.
 #'
 #' @param map leaflet map
+#' @param provider name of WMS provider (see [LAYERS])
 #' @param layers vector of layer names (see [LAYERS])
+#' @param date selected timestamp
 #'
 #' @return updated leaflet map
 #' @rdname map_init
 #' @export
-map_toggle <- function(map, layers=NULL) {
+map_toggle <- function(map, provider="FAO", layers=NULL) {
 
-  fao = LAYERS[["FAO"]]
+  provider = match.arg(provider, names(LAYERS))
+  provider = LAYERS[[provider]]
 
   # WASA data
   # map = leafem:::addGeoRaster(map, stars::read_stars(nc[[1]]$source),
@@ -142,6 +173,6 @@ map_toggle <- function(map, layers=NULL) {
 
   if(is.null(layers) || is.na(layers)) layers = ""
   map %>%
-    hideGroup(names(fao$layers)) %>%
+    hideGroup(names(provider$layers)) %>%
     showGroup(layers)
 }

@@ -56,17 +56,23 @@ header <- fluidRow(class="pt-5 align-items-end shadow",
       options=pickerOptions(style="btn-white"),
       choicesOpt=list(content=l_iso3()))
   ),
+  # Filters
   column(7,
     fluidRow(class="no-gutters float-md-right align-items-end",
       div(class="col pb-3",
-        tags$label(class="text-info", "Model period"), br(),
+        tags$label(class="text-info", "Timespan"), br(),
         actionButton("btnRefresh", "-",
-          class="btn-outline-info btn-sm", width="9rem")
+          class="btn-outline-info btn-sm", width="8rem")
+      ),
+      div(class="col pl-2",
+        radioGroupButtons("txtPeriod",
+          span(class="text-info", "Periodicity"), c("year", "season", "month"),
+          status="outline-info", justified=TRUE, size="sm")
       ),
       div(class="col pl-2",
         radioGroupButtons("txtUnit",
           span(class="text-info", "Flow units"), c("km³", "ft³", "MCM"),
-          status="outline-info", justified=TRUE, size="sm", width="9rem")
+          status="outline-info", justified=TRUE, size="sm", width="8rem")
       ),
       div(class="col pl-2 pb-3",
         actionButton("btnMap", NULL, icon=icon("globe"), class="btn-outline-info btn-sm",
@@ -78,8 +84,9 @@ header <- fluidRow(class="pt-5 align-items-end shadow",
 )
 
 # Slider ----
-slider <- fluidRow(class="w-100 no-gutters",
-  column(12, class="waved border-top border-bottom px-4 pt-2 pb-0",
+slider <- fluidRow(
+  class="w-100 no-gutters waved border-top border-bottom align-items-center",
+  column(12, class="px-4 pt-2 pb-0",
     div(class="float-left", "Basin Timeline"),
     sliderTextInput("txtDate", NULL,
       data[iso3==init$iso3 & sheet=="sheet1"
@@ -91,7 +98,7 @@ slider <- fluidRow(class="w-100 no-gutters",
 
 # Map ----
 map <- fluidRow(id="divMap", class="w-100 no-gutters collapse show",
-  column(8, style="height:21rem;",
+  column(8, style="height:20rem;",
     leafletOutput("map", width="100%", height="100%")
   ),
   column(4, class="waved3",
@@ -99,7 +106,7 @@ map <- fluidRow(id="divMap", class="w-100 no-gutters collapse show",
       nav(title="Layers", icon=icon("layer-group"),
         fluidRow(class="no-gutters",
           column(12,
-            style="height:18.2rem; overflow:auto;",
+            style="height:17.2rem; overflow:auto;",
             accordion(id="accLayers",
               accordionItem(
                 title="Basin Features",
@@ -128,12 +135,12 @@ map <- fluidRow(id="divMap", class="w-100 no-gutters collapse show",
       ),
       nav(title="Legend", icon=icon("palette"),
         column(12, class="bg-white",
-          style="height:18.2rem; overflow:auto;",
+          style="height:17.2rem; overflow:auto;",
           uiOutput("uiLegend"))
       ),
       nav(title="Info", icon=icon("info-circle"),
         column(12, class="pb-2 bg-white",
-          style="height:18.2rem; overflow:auto;",
+          style="height:17.2rem; overflow:auto;",
           uiOutput("uiInfo"))
       )
     )

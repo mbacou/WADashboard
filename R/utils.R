@@ -9,7 +9,7 @@ l_iso3 <- function() {
     tagList(
       img(class="px-2 float-right", src=sprintf("./svg/%s.svg", x), height="28rem"),
       span(class="lead", ISO3[[x]][["label"]]),
-      span(class="mx-2 text-warning", ISO3[[x]][["country"]])
+      span(class="mx-2 text-warning text-uppercase", ISO3[[x]][["country"]])
     )
   ))
 }

@@ -136,7 +136,7 @@ bs_themed <- function(
       `custom-select-bg` = "$input-bg",
       `custom-file-button-color` = "$input-color",
       `custom-file-button-bg` = "$input-bg",
-      `label-margin-bottom` = ".25rem",
+      `label-margin-bottom` = ".05rem",
 
       `progress-bg` = "$light",
       `card-title-font-size` = "1rem",

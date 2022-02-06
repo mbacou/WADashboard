@@ -39,11 +39,12 @@
   },
   "MAPTILER": {
     "label": "Maptiler raster basemaps",
-    "url": "//api.maptiler.com/maps/%s?key=%s",
+    "url": "//api.maptiler.com/%s?key=%s",
     "attr": "OSM",
     "layers": {
-      "default": "topo/{z}/{x}/{y}.png",
-      "hybrid": "hybrid/{z}/{x}/{y}.jpg"
+      "default": "maps/topo/{z}/{x}/{y}.png",
+      "hybrid": "maps/hybrid/{z}/{x}/{y}.jpg",
+      "hillshade": "tiles/hillshade/{z}/{x}/{y}.webp"
     }
   },
   "MAPTILERV": {

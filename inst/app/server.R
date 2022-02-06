@@ -9,6 +9,7 @@ function(input, output, session) {
 
   session$allowReconnect(TRUE)
 
+  # Global filters
   s = reactiveValues(
     iso3 = init$iso3,
     date = init$date,
@@ -16,13 +17,9 @@ function(input, output, session) {
     layers = NA
   )
 
-  dt = reactive(
-    data[iso3==s$iso3]
-  )
-
-  dtf = reactive(
-    dt()[date_end==s$date]
-  )
+  # Data cube slices
+  dt = reactive( data[iso3==s$iso3] )
+  dtf = reactive( dt()[date_end==s$date] )
 
   # Observers ----
   observeEvent(input$txtISO3, {
@@ -37,15 +34,21 @@ function(input, output, session) {
   observeEvent(s$iso3, {
     # Update map
     leafletProxy("map") %>% map_update(s$iso3)
+    # Update timestamp
+    updateActionButton(session, "btnRefresh",
+      label=sprintf("%s - %s",
+        dt()[, format(min(date_start), "%Y %b")], dt()[, format(max(date_end), "%Y %b")]))
+    # Update periodicity
+    updateRadioGroupButtons(session, "txtPeriod",
+      disabledChoices=dt()[sheet=="sheet1", setdiff(c("year", "season", "month"), unique(period))])
+  })
+
+  observeEvent(input$txtPeriod, {
     # Update time slider
     dt <- dt()[sheet=="sheet1"]
     updateSliderTextInput(session, "txtDate", NULL,
       dt[order(date_end), format(unique(date_end), "%Y %b")],
       selected=dt[, format(max(date_end), "%Y %b")])
-    # Update timesteamp
-    updateActionButton(session, "btnRefresh",
-      label=sprintf('<strong>%s - %s</strong>',
-        dt()[, format(min(date_start), "%Y %b")], dt()[, format(max(date_end), "%Y %b")]))
   })
 
   observeEvent(input$btnScore, {
@@ -104,15 +107,15 @@ function(input, output, session) {
   )
 
   # Map ----
-  output$map = renderLeaflet(map_init(init$iso3))
+  output$map = renderLeaflet( map_init(init$iso3) )
 
+  # Toggle map layers
   observe({
     s$layers = c(input$chkLayer_1, input$chkLayer_2, input$chkLayer_3)
   })
 
-  # Toggle map layers
-  observeEvent(s$layers, {
-    leafletProxy("map") %>% map_toggle(s$layers)
+  observeEvent(s$layers, ignoreInit=TRUE, {
+    leafletProxy("map") %>% map_toggle(provider="FAO", layers=s$layers)
   })
 
   output$uiLegend = renderUI(
@@ -128,6 +131,20 @@ function(input, output, session) {
         LAYERS[["FAO"]]$info
       )) else p(class="mt-2 text-muted", "No layer selected.")
   )
+
+  # Toggle layer timestamp
+  observeEvent(s$date, {
+    req(!is.na(s$layers))
+    leafletProxy("map") %>%
+      map_addWMSProvider(provider="FAO", date=s$date) %>%
+      map_toggle(provider="FAO", layers=s$layers)
+  })
+  observeEvent(s$layers, {
+    req(!is.na(s$layers))
+    leafletProxy("map") %>%
+      map_addWMSProvider(provider="FAO", date=s$date) %>%
+      map_toggle(provider="FAO", layers=s$layers)
+  })
 
 
   # Cards ----

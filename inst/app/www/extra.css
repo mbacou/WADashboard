@@ -47,7 +47,7 @@ ul.nav.navbar-nav>li>a:hover{
 
 .irs--shiny .irs-line, .irs--shiny .irs-bar {
   height: 2px;
-  background: var(--dark);
+  background: var(--gray);
   border-top: unset;
   border-bottom: unset;
 }
@@ -55,24 +55,26 @@ ul.nav.navbar-nav>li>a:hover{
   top: 16px;
   width: 6px;
   height: 21px;
-  border: 2px solid var(--red);
-  background: var(--red);
+  border: 3px solid var(--warning);
+  background: var(--warning);
   border-radius: 2px;
 }
 .irs--shiny .irs-handle:active, .irs--shiny .irs-handle:hover {
-  border-color: var(--orange);
-  background: var(--orange);
+  border-color: var(--gray);
+  background: var(--gray);
 }
 .irs--shiny .irs-single {
-  top: -5px;
-  padding: 0;
-  font-size: 15px;
-  color: var(--dark);
-  background-color: unset;
+  top: -2px;
+  margin-left: -38px;
+  padding: .1rem .35rem;
+  font-size: 13px;
+  color: var(--warning);
+  background-color: var(--white);
+  border: solid 1px var(--warning);
 }
 .irs--shiny .irs-grid-text {
-  font-size: 10px;
-  bottom: 8px;
+  font-size: 11px;
+  bottom: 6px;
 }
 
 .small-box {

@@ -15,7 +15,7 @@ library(leaflet.extras)
 library(shinyWidgets)
 library(bslib)
 library(data.table)
-if(!interactive()) library(WADashboard) else devtools::load_all(".")
+if(interactive()) devtools::load_all(".") else library(WADashboard)
 
 pkg <- system.file(package="WADashboard")
 data <- DATA
