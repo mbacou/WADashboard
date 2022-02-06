@@ -112,22 +112,25 @@ map <- fluidRow(id="divMap", class="w-100 no-gutters collapse show",
                 title="Basin Features",
                 icon=icon("caret-right"),
                 class="border-0", bg="white", collapsed=FALSE,
-                checkboxGroupInput("chkLayer_1", NULL, width="100%",
-                  choices=names(LAYERS[[2]]$layers[3:5]))
+                awesomeCheckboxGroup("chkLayer_1", NULL,
+                  choices=names(LAYERS[[2]]$layers[3:5]),
+                  status="info", width="100%")
               ),
               accordionItem(
                 title="Land Cover",
                 icon=icon("caret-right"),
                 class="border-0", bg="white", collapsed=TRUE,
-                checkboxGroupInput("chkLayer_2", NULL, width="100%",
-                  choices=names(LAYERS[[2]]$layers[15:17]))
+                awesomeCheckboxGroup("chkLayer_2", NULL,
+                  choices=names(LAYERS[[2]]$layers[15:17]),
+                  width="100%", status="info")
               ),
               accordionItem(
                 title="Hydrology",
                 icon=icon("caret-right"),
                 class="border-0", bg="white", collapsed=TRUE,
-                checkboxGroupInput("chkLayer_3", NULL, width="100%",
-                  choices=names(LAYERS[[2]]$layers[6:14]))
+                awesomeCheckboxGroup("chkLayer_3", NULL,
+                  choices=names(LAYERS[[2]]$layers[6:14]),
+                  width="100%", status="info")
               )
             )
           )

@@ -33,16 +33,12 @@ ul.nav.navbar-nav>li>a:hover{
 .bootstrap-select .dropdown-menu li a span.text {
   display: unset;
 }
-.shiny-input-checkboxgroup label ~ .shiny-options-group,
-.shiny-input-radiogroup label ~ .shiny-options-group {
+.shiny-input-checkboxgroup label ~ .shiny-options-group, .shiny-input-radiogroup label ~ .shiny-options-group {
   margin-top: unset;
 }
-.shiny-input-checkboxgroup .checkbox {
+.awesome-checkbox {
   padding: .25rem 2.4rem;
   border-top: 1px solid var(--light);
-}
-.shiny-input-checkboxgroup .checkbox label>input {
-  margin-top: .25rem;
 }
 
 .irs--shiny .irs-line, .irs--shiny .irs-bar {

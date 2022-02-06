@@ -107,7 +107,9 @@ function(input, output, session) {
   )
 
   # Map ----
-  output$map = renderLeaflet( map_init(init$iso3) )
+  output$map = renderLeaflet( map_init(init$iso3) %>%
+      map_addWMSProvider(provider="FAO", date=init$date)
+  )
 
   # Toggle map layers
   observe({
@@ -116,6 +118,14 @@ function(input, output, session) {
 
   observeEvent(s$layers, ignoreInit=TRUE, {
     leafletProxy("map") %>% map_toggle(provider="FAO", layers=s$layers)
+  })
+
+  # Toggle layer timestamp
+  observeEvent(s$date, {
+    req(length(s$layers) > 0)
+    leafletProxy("map") %>%
+      map_addWMSProvider(provider="FAO", date=s$date) %>%
+      map_toggle(provider="FAO", layers=s$layers)
   })
 
   output$uiLegend = renderUI(
@@ -131,20 +141,6 @@ function(input, output, session) {
         LAYERS[["FAO"]]$info
       )) else p(class="mt-2 text-muted", "No layer selected.")
   )
-
-  # Toggle layer timestamp
-  observeEvent(s$date, {
-    req(!is.na(s$layers))
-    leafletProxy("map") %>%
-      map_addWMSProvider(provider="FAO", date=s$date) %>%
-      map_toggle(provider="FAO", layers=s$layers)
-  })
-  observeEvent(s$layers, {
-    req(!is.na(s$layers))
-    leafletProxy("map") %>%
-      map_addWMSProvider(provider="FAO", date=s$date) %>%
-      map_toggle(provider="FAO", layers=s$layers)
-  })
 
 
   # Cards ----

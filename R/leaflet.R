@@ -171,8 +171,8 @@ map_toggle <- function(map, provider="FAO", layers=NULL) {
   #   )
   # )
 
-  if(is.null(layers) || is.na(layers)) layers = ""
+  if(!length(layers) > 0) layers = ""
   map %>%
-    hideGroup(names(provider$layers)) %>%
+    hideGroup(names(provider[["layers"]])) %>%
     showGroup(layers)
 }
