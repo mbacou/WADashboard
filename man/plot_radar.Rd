@@ -5,12 +5,14 @@
 \title{Plot radar charts}
 \usage{
 plot_radar(data, ...)
+
+plot_radar(data, ...)
 }
 \arguments{
 \item{data}{input data}
 
 \item{...}{
-  Arguments passed on to \code{\link[=hc_themed]{hc_themed}}
+  Arguments passed on to \code{\link[=hc_themed]{hc_themed}}, \code{\link[=hc_themed]{hc_themed}}
   \describe{
     \item{\code{hc}}{a highchart object}
     \item{\code{title}}{chart title}
@@ -24,8 +26,13 @@ plot_radar(data, ...)
 }
 \description{
 Plot radar charts
+
+Plot radar charts
 }
 \examples{
+data = DATA[iso3=="mli" & sheet=="sheet1"]
+plot_radar(data)
+
 data = DATA[iso3=="mli" & sheet=="sheet1"]
 plot_radar(data)
 
