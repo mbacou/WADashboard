@@ -748,3 +748,18 @@ plot_radar <- function(data, ...) {
 
 
 }
+
+#' Plot radar charts
+#'
+#' @param data input data
+#' @inheritDotParams hc_themed
+#'
+#' @examples
+#' data = DATA[iso3=="mli" & sheet=="sheet1"]
+#' plot_radar(data)
+#'
+#' @export
+plot_gauge <- function(data, ...) {
+
+
+}

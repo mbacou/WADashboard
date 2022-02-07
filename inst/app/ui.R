@@ -56,17 +56,23 @@ header <- fluidRow(class="pt-5 align-items-end shadow",
       options=pickerOptions(style="btn-white"),
       choicesOpt=list(content=l_iso3()))
   ),
+  # Filters
   column(7,
     fluidRow(class="no-gutters float-md-right align-items-end",
       div(class="col pb-3",
-        tags$label(class="text-info", "Model period"), br(),
+        tags$label(class="text-info", "Timespan"), br(),
         actionButton("btnRefresh", "-",
-          class="btn-outline-info btn-sm", width="9rem")
+          class="btn-outline-info btn-sm", width="8rem")
+      ),
+      div(class="col pl-2",
+        radioGroupButtons("txtPeriod",
+          span(class="text-info", "Periodicity"), c("year", "season", "month"),
+          status="outline-info", justified=TRUE, size="sm")
       ),
       div(class="col pl-2",
         radioGroupButtons("txtUnit",
           span(class="text-info", "Flow units"), c("km³", "ft³", "MCM"),
-          status="outline-info", justified=TRUE, size="sm", width="9rem")
+          status="outline-info", justified=TRUE, size="sm", width="8rem")
       ),
       div(class="col pl-2 pb-3",
         actionButton("btnMap", NULL, icon=icon("globe"), class="btn-outline-info btn-sm",
@@ -78,8 +84,9 @@ header <- fluidRow(class="pt-5 align-items-end shadow",
 )
 
 # Slider ----
-slider <- fluidRow(class="w-100 no-gutters",
-  column(12, class="waved border-top border-bottom px-4 pt-2 pb-0",
+slider <- fluidRow(
+  class="w-100 no-gutters waved border-top border-bottom align-items-center",
+  column(12, class="px-4 pt-2 pb-0",
     div(class="float-left", "Basin Timeline"),
     sliderTextInput("txtDate", NULL,
       data[iso3==init$iso3 & sheet=="sheet1"
@@ -105,22 +112,25 @@ map <- fluidRow(id="divMap", class="w-100 no-gutters collapse show",
                 title="Basin Features",
                 icon=icon("caret-right"),
                 class="border-0", bg="white", collapsed=FALSE,
-                checkboxGroupInput("chkLayer_1", NULL, width="100%",
-                  choices=names(LAYERS[[2]]$layers[3:5]))
+                awesomeCheckboxGroup("chkLayer_1", NULL,
+                  choices=names(LAYERS[[2]]$layers[3:5]),
+                  status="info", width="100%")
               ),
               accordionItem(
                 title="Land Cover",
                 icon=icon("caret-right"),
                 class="border-0", bg="white", collapsed=TRUE,
-                checkboxGroupInput("chkLayer_2", NULL, width="100%",
-                  choices=names(LAYERS[[2]]$layers[15:17]))
+                awesomeCheckboxGroup("chkLayer_2", NULL,
+                  choices=names(LAYERS[[2]]$layers[15:17]),
+                  width="100%", status="info")
               ),
               accordionItem(
                 title="Hydrology",
                 icon=icon("caret-right"),
                 class="border-0", bg="white", collapsed=TRUE,
-                checkboxGroupInput("chkLayer_3", NULL, width="100%",
-                  choices=names(LAYERS[[2]]$layers[6:14]))
+                awesomeCheckboxGroup("chkLayer_3", NULL,
+                  choices=names(LAYERS[[2]]$layers[6:14]),
+                  width="100%", status="info")
               )
             )
           )
@@ -314,7 +324,7 @@ function() {
     footer = column(12, footer),
     nav_spacer(),
     nav("Overview", page_1, icon=icon("home")),
-    nav("Water Cycle", page_2, icon=icon("repeat")),
+    nav("Water Cycle", page_2, icon=icon("redo")),
     nav("Water Accounts", page_3, icon=icon("th")),
     #nav("My Area", page_4, icon=icon("user-cog")),
     nav("About WA+", page_5, icon=icon("info-circle")),

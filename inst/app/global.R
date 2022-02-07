@@ -17,16 +17,12 @@ library(bslib)
 library(data.table)
 if(interactive()) devtools::load_all(".") else library(WADashboard)
 
-pkg <- system.file(package="WADashboard")
 data <- DATA
-schema <- file.path(pkg, "./csv/sheet_1_schema.csv") %>% fread()
-
-setnames(schema, tolower(names(schema)))
-data[schema, on=.(class, subclass, variable), id := i.id]
+meta <- META
 
 # Init
 init = list(
   iso3 = "mli",
   date = as.Date("2017-12-31"),
-  var = "var_inflow"
+  var = "inc_et"
 )

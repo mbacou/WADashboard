@@ -7,7 +7,7 @@
 #' @return
 #'
 #' @examples
-#' plot_ts(DATA[iso3=="mli" & sheet=="sheet1" & variable=="Rainfall"])
+#' plot_ts(DATA[iso3=="mli" & sheet=="sheet1" & id=="rainfall"])
 #'
 #' @export
 plot_ts <- function(dt, color=pal[1], unit="km³") {
@@ -17,7 +17,7 @@ plot_ts <- function(dt, color=pal[1], unit="km³") {
   highchart() %>%
     hc_chart(zoomType="x") %>%
     hc_add_series(dt, type="area",
-      hcaes(x=date_end, y=value), name=dt[1, variable],
+      hcaes(x=date_end, y=value), name=dt[1, id],
       color=color, fillColor=alpha(color, .2), marker=list(enabled=TRUE)) %>%
 
     hc_xAxis(type="datetime", dateTimeLabelFormats=list(month="%e %b")) %>%

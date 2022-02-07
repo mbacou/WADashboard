@@ -18,7 +18,16 @@ ZOI <- lapply(ISO3, function(x) lapply(x[c("admin", "water")], st_read))
 LAYERS <- fromJSON("./data-raw/json/LAYERS.json", flatten=TRUE)
 
 # WA+ data cube
-DATA <- readRDS("./data-raw/rds/data.rds")
+DATA <- list(
+  s1 = "./data-raw/rds/data_sheet_1.rds",
+  s2 = "./data-raw/rds/data_sheet_2.rds"
+) %>% lapply(readRDS) %>% lapply(melt, id.vars=1:7, variable.name="id") %>% rbindlist()
+
+# WA+ metadata
+META <- list(
+  s1 = "./data-raw/csv/sheet_1_schema.csv",
+  s2 = "./data-raw/csv/sheet_2_schema.csv"
+) %>% lapply(fread) %>% rbindlist(fill=TRUE)
 
 # NetCDF time-series
 # nc <- rast(file.path(getOption("wa.data"), "mli", "nc", "p_monthly.nc"))
@@ -31,5 +40,5 @@ DATA <- readRDS("./data-raw/rds/data.rds")
 
 
 # Save built-in package datasets ----
-usethis::use_data(ISO3, ZOI, LAYERS, DATA, pal,
+usethis::use_data(ISO3, ZOI, LAYERS, DATA, META, pal,
   internal=TRUE, overwrite=TRUE)
