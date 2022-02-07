@@ -759,7 +759,7 @@ plot_radar <- function(data, ...) {
 #' plot_radar(data)
 #'
 #' @export
-plot_radar <- function(data, ...) {
+plot_gauge <- function(data, ...) {
 
 
 }

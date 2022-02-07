@@ -324,7 +324,7 @@ function() {
     footer = column(12, footer),
     nav_spacer(),
     nav("Overview", page_1, icon=icon("home")),
-    nav("Water Cycle", page_2, icon=icon("repeat")),
+    nav("Water Cycle", page_2, icon=icon("redo")),
     nav("Water Accounts", page_3, icon=icon("th")),
     #nav("My Area", page_4, icon=icon("user-cog")),
     nav("About WA+", page_5, icon=icon("info-circle")),

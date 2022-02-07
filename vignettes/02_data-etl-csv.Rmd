@@ -15,7 +15,7 @@ vignette: >
 .pagedtable-header-name { overflow: unset; }
 ```
 
-This vignette documents the steps to ingest model output files (in CSV format) for use in the dashboard. The next [vignette](./03_data-etl-netcdf.html) describes the approach used to ingest and post-process some of the gridded NetCDF output files.
+This vignette documents the steps to ingest model output files (in CSV format) for use in the WA+ dashboard. The next [vignette](./03_data-etl-netcdf.html) describes the approach used to ingest and post-process some of the gridded NetCDF output files.
 
 This ETL was validated against two analyses received from IWMI scientists, one for **Mali** (Niger river basin), and another for **Kenya** (Mara river basin). The water accounting models are written in Python and the code repositories are on GitHub (e.g. [WAPORWA notebooks](https://github.com/wateraccounting/WAPORWA) for the Mali analysis).
 
@@ -23,7 +23,7 @@ The results of the WA+ balances consist in time-series of constructed hydrologic
 
 The WA+ modeling approach can vary slightly across use cases (different temporal extent, number of sub-basins, different flow units, different mix of input layers and output variables). To the extent possible this ETL intends to produce a generalized data model.
 
-The steps outlined below serve as a blueprint for a generic [data_etl()](../reference/data_etl.html) method included in this package (refer to the method's documentation for more details, esp. how to ingest additional result sets). The objective is to generate a standardized data cube suitable for online analytics.
+The steps outlined below serve as a blueprint for a generic [data_etl()](../reference/data_etl.html) method included in this package (refer to the method's documentation for more details, esp. how to ingest additional result sets). The objective is to generate a standardized data cube suitable for online analytics (and not limited to this dashboard).
 
 
 ```{r init, echo=FALSE, message=FALSE}
@@ -62,7 +62,6 @@ dir <- getOption("wa.data")
 We start below by inventorying all basin-level variables contained in the modeled CSV files.
 
 ```{r, fig.cap="Kenya - List of output files"}
-
 # List all output CSV
 data <- list(
   ken = file.path(dir, "./ken/hydroloop_results/csv"),
@@ -87,7 +86,6 @@ data[, unit := fcase(
   iso3=="mli", "km3",
   iso3=="ken", "km3"
 )]
-
 ```
 
 We have 8 yearly water balances for Mali (Sheet #1 variables), 15 yearly balances for Kenya (across `r data[iso3=="ken" & is.na(month), uniqueN(sheet)]` sheets), as well as monthly and seasonal breakdowns. 
@@ -117,7 +115,6 @@ data[iso3=="ken" & is.na(year) & is.na(month), .(iso3, file, sheet, year, month)
 Let's extract this periodicity (we name it `period`) based on file naming conventions (we ignore Sheets #4 to Sheets #6 for now):
 
 ```{r}
-
 data[, `:=`(
   period = fcase(
     is.na(year) & is.na(month) & str_detect(file, "monthly"), "month",
@@ -132,7 +129,6 @@ data[, `:=`(
 # Verify
 data[, .N, keyby=.(iso3, sheet, period)] %>%
   paged_table()
-
 ```
 
 Note that in the case of Kenya some of the monthly variables are duplicated (see below).
@@ -145,7 +141,6 @@ We also need to validate naming conventions and units for all output variables, 
 ## Sheet #1
 
 ```{r}
-
 f <- data[iso3=="mli"]
 mli <- lapply(1:nrow(f), function(x) fread(f[x, path])[, `:=`(
   iso3 = f[x, iso3],
@@ -156,13 +151,11 @@ mli <- lapply(1:nrow(f), function(x) fread(f[x, path])[, `:=`(
 
 setnames(mli, tolower(names(mli))) %>%
   paged_table(options=list(max.print=300))
-
 ```
 
 Output for Sheet #1 include `r mli[year==min(year), uniqueN(paste(class, subclass, variable))]` unique variables categorized into `class` and `subclass`. The naming is consistent across years.
 
 ```{r, fig.asp=.7}
-
 mli %>% 
   ggplot() +
   geom_line(aes(year, value, color=paste(class, subclass))) +
@@ -177,7 +170,6 @@ mli %>%
 Similarly we look at Kenya's monthly time-series. First at Sheet #1 variables:
 
 ```{r}
-
 f <- data[iso3=="ken" & period=="month" & sheet=="sheet1" & !is.na(year)]
 ken_1_m <- lapply(1:nrow(f), function(x) fread(f[x, path])[, `:=`(
   iso3 = f[x, iso3],
@@ -189,7 +181,6 @@ ken_1_m <- lapply(1:nrow(f), function(x) fread(f[x, path])[, `:=`(
 
 setnames(ken_1_m, tolower(names(ken_1_m))) %>% 
   paged_table(options=list(max.print=300))
-
 ```
 
 ```{r, fig.asp=.7}
@@ -205,7 +196,6 @@ ken_1_m %>%
 Similarly with the yearly time-series:
 
 ```{r}
-
 f <- data[iso3=="ken" & period=="year" & sheet=="sheet1" & !is.na(year)]
 ken_1_y <- lapply(1:nrow(f), function(x) fread(f[x, path])[, `:=`(
   iso3 = f[x, iso3],
@@ -217,7 +207,6 @@ ken_1_y <- lapply(1:nrow(f), function(x) fread(f[x, path])[, `:=`(
 
 setnames(ken_1_y, tolower(names(ken_1_y))) %>% 
   paged_table(options=list(max.print=300))
-
 ```
 
 ## Sheet #2
@@ -225,7 +214,6 @@ setnames(ken_1_y, tolower(names(ken_1_y))) %>%
 Then we extract Sheet #2 yearly and monthly variables (this is a breakdown of evapotranspiration by land use classes):
 
 ```{r}
-
 f <- data[iso3=="ken" & period %in% c("year", "month") & sheet=="sheet2" & !is.na(year)]
 ken_2 <- lapply(1:nrow(f), function(x) fread(f[x, path])[, `:=`(
   iso3 = f[x, iso3],
@@ -237,26 +225,23 @@ ken_2 <- lapply(1:nrow(f), function(x) fread(f[x, path])[, `:=`(
 
 setnames(ken_2, tolower(names(ken_2))) %>% 
   paged_table(options=list(max.print=300))
-
 ```
 
-Each sheet uses a different data structure, but they can be normalized into a "long" format:
+Sheet #2 uses a "wide" data structure, we first normalize it into a "long" format:
 
 ```{r}
-
 # Normalize
 ken_2 <- melt(ken_2, id.vars=c("land_use", "class", "iso3", "sheet", "year", "month", "period"),
   variable.factor=FALSE)
 # Standardize category names
 setnames(ken_2, c("land_use", "class"), c("class", "subclass"))
 setorder(ken_2, class, subclass, variable, year, month, period)
-
 ```
 
-We only plot variables for the first land use class for illustration purposes:
+There are `r ken_2[, .N, by=.(class, subclass, variable)][, .N]` unique variables in this sheet. We only plot variables for the first land use class for illustration purposes:
 
 ```{r, fig.asp=.9}
-ken_2[period=="month" & class %in% ken_2_m[, unique(class)][1]] %>% 
+ken_2[period=="month" & class %in% ken_2[, unique(class)][1]] %>% 
   ggplot() +
   geom_line(aes(as.Date(paste(year, month, 1), "%Y %m %d"), value, color=subclass)) +
   facet_grid(paste(class, subclass, variable)~., scales="free_y") +
@@ -359,48 +344,213 @@ At this point the generated data cube includes the following dimensions and meas
 Another ETL step is required to map the variable codes used in the data files to their visual representation in the WA+ Sheets (SVG designs).
 
 ```{r, out.width="33%", fig.width=3, fig.show="hold"}
-knitr::include_graphics(file.path("./fig", list.files("./vignettes/fig")))
+knitr::include_graphics(file.path("./fig", list.files("./fig")))
 ```
 
-This mapping is embedded in the WA+ `print_sheet` Python module, (example for [Sheet 1](https://github.com/wateraccounting/WAPORWA/blob/master/modules/WA/sheet1.py) in the WAPORWA repo). Importantly many SVG elements are **fields calculated** from output variables. We might need to replicate that logic as part of the ETL process[^fn3].
+This mapping is embedded in the WA+ `print_sheet` Python module, (e.g. [Sheet 1](https://github.com/wateraccounting/WAPORWA/blob/master/modules/WA/sheet1.py) in the WAPORWA repo). Importantly many SVG elements are **fields calculated** from output variables. We might need to replicate that logic as part of the ETL process[^fn3].
 
-[^fn3]: This is not an ideal approach, as we'd rather avoid replicating any hydrological model logic in the dashboard code. TBD for a future version.
+[^fn3]: This is not an ideal approach, we'd rather avoid replicating any hydrological model logic in the visualization layer, and instead export all modeled variables. TBD for a future version.
 
 ## Sheet #1
 
-Field mappings are constructed in shown table below.
+Field mappings and field formulas for Sheet #1 are constructed per the list shown below.
 
 ```{r}
-s1 <- fread(system.file("./csv/sheet_1_schema.csv", package="WADashboard")) %>% 
+s1 <- fread(system.file("./data-raw/csv/sheet_1_schema.csv", package="WADashboard"))
+s1[, .SD, .SDcols=-c(1,7)] %>% paged_table()
+```
+
+Apply mapping:
+
+```{r}
+# Check for NA in data cube
+cube[is.na(value), .N, by=.(iso3, sheet, year, month, variable)] %>% paged_table()
+```
+
+There are 24 variables with missing values in Sheet #3, we leave them as-is for now.
+
+```{r}
+# Add unique variable ID to data cube based on S1 mapping
+cube[s1, on=.(sheet, class, subclass, variable), id := i.id]
+
+# Verify
+cube[sheet=="sheet1", .N, keyby=.(class, subclass, variable, id)] %>%
   paged_table()
+
+# To wide format
+cube_1 <- dcast(cube[sheet=="sheet1"], sheet+iso3+period+date_start+date_end+year+month~id)
+
+# Calculate fields
+ids = s1[order(step)][(calculated), unique(id)]
+for(i in ids) cube_1[, (i) := s1[id==i, eval(parse(text=formula))]]
+
+# Verify that all Sheet #1 fields have been mapped
+s1[!id %in% names(cube_1), id]
+
+# Export
+# saveRDS(cube_1, "../data-raw/rds/data_sheet_1.rds")
 ```
 
-Formulas for calculated fields are compiled below.
-
-```{r}
-
-
-
-
-
-```
-
-We proceed similarly for Sheet #2 and Sheet #3 variable mappings and calculated fields.
+Note that placeholder `Q SW outlet` on Sheet #1 and `land_et` variable in the code need clarification.
 
 ## Sheet #2
 
+We proceed similarly for mapping fields in Sheet #2 and Sheet #3. Sheet #2 is a breakdown of ET and T into 280 use classes. Note that we don't have exact formulas to calculate aggregated measures on this sheet (but can be inferred from the SVG design).
+
 ```{r}
+cube_2 <- cube[sheet=="sheet2"][, id := NULL]
+# Wide format
+cube_2 <- dcast(cube_2, ...~variable)[, `:=`(
+  # Add constructed measures
+  evaporation = water + soil + interception,
+  et = water + soil + interception + transpiration,
+  beneficial = agriculture + environment + economy + energy + leisure
+)]
+# Long format
+cube_2 <- melt(cube_2, id.vars=1:9, variable.factor=FALSE)
+
+# We create unique IDs (needed to populate SVG design)
+s2 <- cube_2[, .N, by=.(class, subclass, variable)
+][, `:=`(
+  N = NULL,
+  sheet = "sheet2",
+  id = sprintf("%s_%s_%s",
+    fcase(
+      class=="MANAGED CONVENTIONAL", "malu",
+      class=="MANAGED NON_CONVENTIONAL", "malu",
+      class=="MODIFIED", "molu",
+      class=="PROTECTED", "plu",
+      class=="UTILIZED", "ulu"
+    ),
+    fcase(
+      subclass=="Industry", "industry",
+      subclass=="Irrigated crops", "crops",
+      subclass=="Managed water bodies", "waterbodies",
+      subclass=="Others", "others",
+      subclass=="Residential", "residential",
+      subclass=="Greenhouses", "greenhouses",
+      subclass=="Indoor domestic", "idomestic",
+      subclass=="Indoor industry", "iiindustry",
+      subclass=="Livestock and husbandry", "livestock",
+      subclass=="Power and energy", "powerandenergy",
+      subclass=="Forest plantations", "forest",
+      subclass=="Rainfed crops", "rainfed",
+      subclass=="Settlements", "settlements",
+      subclass=="Forest", "forest",
+      subclass=="Glaciers", "glaciers",
+      subclass=="Natural grasslands", "grasslands",
+      subclass=="Natural water bodies", "waterbodies",
+      subclass=="Shrubland", "shrubland",
+      subclass=="Wetlands", "wetlands"
+    ),
+    fcase(
+      variable=="agriculture", "agr",
+      variable=="economy", "eco",
+      variable=="energy", "ene",
+      variable=="environment", "env",
+      variable=="interception", "i",
+      variable=="leisure", "lei",
+      variable=="non_beneficial", "n",
+      variable=="soil", "s",
+      variable=="transpiration", "t",
+      variable=="water", "w",
+      variable=="beneficial", "b",
+      variable=="et", "et",
+      variable=="evaporation", "e"
+    ))
+)][, id := str_replace(id, "others", fcase(
+  # Fix duplicated "others" as in SVG
+  class=="MANAGED CONVENTIONAL", "others1",
+  class=="MANAGED NON_CONVENTIONAL", "others2",
+  default="others")
+)]
+
+# Verify ID uniqueness
+s2[, .N, by=id][N>1]
 ```
+
+Apply mapping:
+
+```{r}
+# Add unique variable ID to data cube based on S2 mapping
+cube_2[s2, on=.(sheet, class, subclass, variable), id := i.id]
+
+# Verify that all Sheet #2 fields have been mapped
+s2[!id %in% cube_2[, unique(id)], id]
+
+# Aggregate measure by flow type
+vars_1 <- cube_2[, .(value = sum(value, ba.rm=T)
+), by=.(sheet, iso3, year, month, period, date_start, date_end, variable)]
+
+# Aggregate measure by top 4 land use class
+vars_2 <- cube_2[variable %in% c("et", "transpiration"), .(value = sum(value, na.rm=T)
+), by=.(sheet, iso3, year, month, period, date_start, date_end, class, variable)]
+
+# Total ET
+vars_3 <- cube_2[variable %in% c("et"), .(value = sum(value, ba.rm=T)
+),by=.(sheet, iso3, year, month, period, date_start, date_end, variable)]
+
+# Make unique IDs
+vars_1 <- dcast(vars_1, sheet+iso3+period+date_start+date_end+year+month~variable)
+vars_3 <- dcast(vars_3, sheet+iso3+period+date_start+date_end+year+month~variable)
+vars_2[, `:=`(
+  id = sprintf("%s_%s",
+    fcase(
+      class=="MANAGED CONVENTIONAL", "malu",
+      class=="MANAGED NON_CONVENTIONAL", "malu",
+      class=="MODIFIED", "molu",
+      class=="PROTECTED", "plu",
+      class=="UTILIZED", "ulu"
+    ),
+    fcase(
+      variable=="et", "et",
+      variable=="transpiration", "t"
+    ))
+)]
+vars_2 <- dcast(vars_2, sheet+iso3+period+date_start+date_end+year+month~id, 
+  fun.aggregate=sum, na.rm=T)
+
+# Combine all into wide format
+cube_2 <- dcast(cube_2, sheet+iso3+period+date_start+date_end+year+month~id
+)[vars_1, on=.(sheet, iso3, period, date_start, date_end, year, month)
+][vars_2, on=.(sheet, iso3, period, date_start, date_end, year, month)
+][vars_3, on=.(sheet, iso3, period, date_start, date_end, year, month)]
+
+# Verify variable uniqueness
+anyDuplicated(names(cube_2))
+
+# Save final Sheet 2 schema
+setcolorder(s2, c("sheet", "id", "class", "subclass", "variable"))
+# fwrite(s2, "../data-raw/csv/sheet_2_schema.csv")
+
+# Export
+# saveRDS(cube_2, "../data-raw/rds/data_sheet_2.rds")
+```
+
+Below is a final variable catalog for Sheet #2.
+
+```{r}
+s2 <- fread(system.file("./data-raw/csv/sheet_2_schema.csv", package="WADashboard"))
+s2[, .SD, .SDcols=-c(1)] %>% paged_table()
+```
+
+And we plot some of the aggregate time-series for Kenya.
+
+```{r}
+
+```
+
 
 ## Sheet #3
 
+[forthcoming]
+
+
 ```{r}
+cube[sheet=="sheet3", .N, keyby=.(class, subclass, variable)] %>%
+  paged_table()
 ```
 
-
-# Data Dictionary
-
-Finally we add human-readable variable labels.
 
 
 In the next [vignette](./03_data-etl-netcdf.html) we outline an approach to ingest all gridded NetCDF output files.

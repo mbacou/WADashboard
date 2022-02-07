@@ -13,7 +13,7 @@ function(input, output, session) {
   s = reactiveValues(
     iso3 = init$iso3,
     date = init$date,
-    var = list(var="var_incremental_etnat", color="green"),
+    var = list(var=init$var, color="green"),
     layers = NA
   )
 
@@ -60,7 +60,7 @@ function(input, output, session) {
   })
 
 
-  # WA+ sheets ----
+  # Sheets ----
   output$d3_sheet1 = renderD3({
     r2d3(dtf()[sheet=="sheet1"], script="./www/js/sheet_1.js")
   })

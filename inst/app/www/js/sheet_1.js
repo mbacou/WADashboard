@@ -34,7 +34,7 @@ const obj = svg
 obj.selectAll("svg").remove();
 
 // Init external design
-d3.xml("./svg/sheet_1_edited.svg")
+d3.xml("./svg/sheet_1.svg")
   .then(d => {
   obj.node().append(d.documentElement);
 
