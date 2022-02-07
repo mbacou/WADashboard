@@ -174,8 +174,8 @@ tab_13 <- tagList(
 # Overview ----
 overview <- fluidRow(
   column(4, tab_11),
-  column(4, tab_12),
-  column(4, tab_13)
+  column(3, tab_12),
+  column(5, tab_13)
 )
 
 # Timeline ----
