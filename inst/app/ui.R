@@ -158,7 +158,7 @@ tab_11 <- tagList(
 )
 
 tab_12 <- tagList(
-  h3(class="text-primary", "Sustainability"),
+  h3(class="text-primary", "Water Availability"),
   highchartOutput("plot_gauge", height="340px")
 )
 
