@@ -11,7 +11,7 @@ hc_themed(
   label = NULL,
   x = NULL,
   y = NULL,
-  base_font = "'national-web-book'",
+  base_font = "national-web-book",
   axes = TRUE,
   exporting = TRUE,
   credits = FALSE,

@@ -18,7 +18,7 @@ hc_themed <- function(
   label = NULL,
   x = NULL,
   y = NULL,
-  base_font = "'national-web-book'",
+  base_font = "national-web-book",
   axes = TRUE,
   exporting = TRUE,
   credits = FALSE,
@@ -27,17 +27,17 @@ hc_themed <- function(
   thm <- hc_theme(
 
     chart = list(
-      #style = list(fontFamily=base_font),
+      style = list(fontFamily=base_font),
       backgroundColor = "transparent"
     ),
     # Don't use semantic colors
     colors = unname(pal[names(pal)!="red"]),
     title = list(
-      style = list(color=pal[["black"]], fontSize="16px"),
+      style = list(color=pal[["black"]], fontSize="18px"),
       align = "left"
     ),
     subtitle = list(
-      style = list(color=pal[["black"]], fontSize="13px"),
+      style = list(color=pal[["black"]], fontSize="15px"),
       align = "left"
     ),
     legend = list(
@@ -97,6 +97,10 @@ hc_themed <- function(
       heatmap = list(
         marker = list(enabled=TRUE, lineWidth=6, lineColor=pal[["light"]]),
         dataLabels = list(enabled=TRUE, pointFormat="{point.value:,.0f}")
+      ),
+      solidgauge = list(
+        dataLabels = list(enabled=TRUE, pointFormat="{series.nane}"),
+        stickyTracking=FALSE
       )
     ),
     exporting = list(

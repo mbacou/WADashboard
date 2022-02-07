@@ -158,31 +158,13 @@ tab_11 <- tagList(
 )
 
 tab_12 <- tagList(
-  h3(class="text-primary", "Sustainability Score"),
-  p("Impact of climate, infrastructure, and past management on long-term basin
-    sustainability."),
-  fluidRow(
-    scoreBox("Adequate level reached", "7/10 years",
-      icon=icon("tint"), footer="Environmental Water", width=6, color="success"),
-    scoreBox("Fraction of water available downstream", "10%",
-      icon=icon("faucet"), footer="Downstream Uses", width=6, color="warning")
-  ),
-  p(),
-  uiOutput("ui_score_prod", inline=F),
-  br()
+  h3(class="text-primary", "Sustainability"),
+  highchartOutput("plot_gauge", height="340px")
 )
 
 tab_13 <- tagList(
   h3(class="text-primary", "Basin Variability"),
-  p("Trends in storage changes"), br(),
-  fluidRow(
-    scoreBox("Average gain/loss", "+3% /year",
-      icon=icon("check-double"), footer="Net Inflow", width=6, color="success"),
-    scoreBox("Average gain/loss", "+5% /year",
-      icon=icon("tint-slash"), footer="Depleted Water", width=6, color="danger")
-  ),
-  p(),
-  uiOutput("ui_score_sust", inline=F),
+  highchartOutput("plot_radar", height="340px"),
   div(class="text-right",
     actionButton("btnScore", "Learn More", width="6rem", class="my-3")
   )
@@ -201,7 +183,7 @@ timeline <- fluidRow(class="bg-white",
   column(8,
     h4(class="text-primary", "Recharge and Abstraction"),
     p("[Time-series and anomalies]"),
-    highchartOutput("hcTimeline")
+    highchartOutput("plot_timeline")
   ),
   column(4, p("more"))
 )
