@@ -42,8 +42,8 @@ plot_radar <- function(iso3=names(ISO3), ...) {
       marker=list(enabled=TRUE, size=2)) %>%
 
     hc_xAxis(type="category",
-      labels=list(fontSize="16px",
-        format='<span class="font-weight-bold">{value}</span>')) %>%
+      labels=list(
+        style=list(fontSize="15px"))) %>%
 
     hc_yAxis(tickInterval=20,
       labels=list(format="{value} %"),
