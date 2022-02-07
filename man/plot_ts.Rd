@@ -16,6 +16,6 @@ plot_ts(dt, color = pal[1], unit = "km³")
 Plot variable time-series
 }
 \examples{
-plot_ts(DATA[iso3=="mli" & sheet=="sheet1" & variable=="Rainfall"])
+plot_ts(DATA[iso3=="mli" & sheet=="sheet1" & id=="rainfall"])
 
 }

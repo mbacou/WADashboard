@@ -169,4 +169,12 @@ function(input, output, session) {
     plot_ts(dt()[id==s$var$var], s$var$color)
   })
 
+  output$plot_gauge = renderHighchart({
+    plot_gauge(iso3="ken")
+  })
+
+  output$plot_radar = renderHighchart({
+    plot_radar(iso3=s$iso3)
+  })
+
 }
