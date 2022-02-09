@@ -38,20 +38,21 @@ Plot helper functions:
 
 plot_ts <- function(data, name=NA, unit=NA, yrange=NULL, ...) {
   
-  dt = copy(data)
+  dt = copy(dt)[order(date_end)]
   setnames(dt, "date_end", "date")
   
-  dt[order(date), `:=`(
+  dt[, `:=`(
     # Running mean
     ltn = cumsum(value)/1:.N
   ), by=.(iso3)]
   
-  # Infer period frequency (1=year, 2=season, 12=month, 36=dekad)
-  freq = dt[, .N, by=year(date)][1, .N]
+  # Infer periodicity (1=year, 2=season, 12=month, 36=dekad)
+  freq = dt[, .N, by=year(date)][1, N]
   
   tr = if(freq>1) {
     # Loess trend component
-    ts(dt[, value], frequency=1) %>% stl("periodic")[[1]][, "trend"] 
+    ts = ts(dt[, value], frequency=freq)
+    stl(ts, "periodic")[[1]][, "trend"] 
   } else {
     # Linear trend
     predict(lm(value~date, dt))
@@ -78,7 +79,8 @@ plot_ts <- function(data, name=NA, unit=NA, yrange=NULL, ...) {
     hc_add_dependency("modules/annotations.js") %>%
     hc_add_dependency("modules/stock.js") %>%
     hc_add_series(dt, type="line", name=name, hcaes(x=date, y=value),
-      color=pal[[1]], lineWidth=1) %>%
+      color=alpha(pal[[1]], switch(as.character(freq), `1`=.8, 1)), 
+      lineWidth=switch(as.character(freq), `1`=3, 1)) %>%
     hc_add_series(dt, type="line", name="LTN", hcaes(x=date, y=ltn),
       color=pal[[2]], lineWidth=2, marker=list(symbol="circle")) %>%
     hc_add_series(dt, type="line", name="Trend", hcaes(x=date, y=trend),
@@ -122,7 +124,7 @@ plot_profile <- function(data, unit=NA, yrange=NULL, ...) {
     ymax = value+sd
   )]
   
-  yrange = if(missing(yrange)) dt[, range(date, rm=T)] else yrange
+  yrange = if(missing(yrange)) dt[, range(value, rm=T)] else yrange
   
   # Monthly bands
   xBands = lapply(dt[, seq(as.Date(min(date)), as.Date(max(date)), by="month")], 
@@ -147,12 +149,16 @@ plot_profile <- function(data, unit=NA, yrange=NULL, ...) {
       color=alpha(pal[["orange"]], .9)) %>%
     
     hc_add_series(dt, type="line", hcaes(x=date, y=value), name="LTN",
-      color=pal[[2]], lineWidth=2, marker=list(enabled=TRUE)) %>%
+      color=pal[[2]], lineWidth=3, marker=list(enabled=TRUE)) %>%
     
     hc_tooltip(valueSuffix=unit) %>%
     hc_legend(enabled=TRUE, align="right") %>%
     hc_xAxis(type="datetime", dateTimeLabelFormats=list(month="%e %b"),
       plotBands=xBands) %>%
+    hc_yAxis(min=yrange[1], max=yrange[2]) %>%    
+    hc_rangeSelector(enabled=FALSE, inputEnabled=FALSE) %>%
+    hc_navigator(enabled=FALSE) %>%
+    hc_scrollbar(enabled=FALSE) %>%    
     hc_themed(...)
   
 }
@@ -188,7 +194,7 @@ tot_pop <- 1280000
 
 # Yearly
 dt <- data[id %in% c("consumed_water") & period=="year"]
-dt <- dcast(dt, ...~id)[, value := 1E6 * consumed_water / tot_pop]
+dt <- dcast(dt, ...~id)[, value := 1E9 * consumed_water / tot_pop]
 
 plot_ts(dt, name="Per Capita  Water Consumption", unit="m³",
   title="Mara Basin Closure", subtitle="Kenya 2003-2017 (m³)")
@@ -198,7 +204,7 @@ plot_ts(dt, name="Per Capita  Water Consumption", unit="m³",
 # Monthly profile
 
 dt <- data[id %in% c("consumed_water") & period=="month"]
-dt <- dcast(dt, ...~id)[, value := 1E6 * consumed_water / tot_pop]
+dt <- dcast(dt, ...~id)[, value := 1E9 * consumed_water / tot_pop]
 
 plot_profile(dt, unit="km³",
   title="Nara Basin Per Capita Water Consumption", subtitle="Kenya 2003-2017 (km³)")
@@ -258,13 +264,13 @@ plot_profile(dt, unit="%",
 
 (percentage of time (months in the time series) during which environmental flows are not met) – Manohar/Mansoor to advise calculation from CSV WA output).
 
-Note sure whether to use 0 (zero) as a threshold or a low value.
+<span class="bg-warning">Note sure whether to use 0 (zero) as a threshold or a low value (e.g. < 5%).</span>
 
 ```{r, layout="l-screen"}
 # Yearly time-series
 dt <- data[id %in% c("env_o", "nav_o", "com_o") & period=="month"]
 dt <- dcast(dt, ...~id)[, value := rowSums(cbind(env_o, nav_o, com_o), na.rm=T)
-    ][, value := 100 * sum(value <= 0.05, na.rm=T)/.N, by=year]
+][, value := 100 * sum(value <= 0.05, na.rm=T)/.N, by=year]
 
 plot_ts(dt, name="Insuffient Flow", unit="%",
   title="Mara Basin - Environmental Stress", subtitle="Kenya 2003-2017 (% of months in period)")
@@ -287,7 +293,7 @@ plot_profile(dt, unit="%",
 dt <- data[id %in% c("rainfall") & period=="month"]
 dt <- dcast(dt, ...~id)[, value := rainfall]
 
-plot_ts(dt, name="Precipitation", unit="km³",
+plot_ts(dt, name="Precipitation", unit="m³",
   title="Precipitation", subtitle="Kenya 2003-2017 (km³ / month)")
 ```
 
