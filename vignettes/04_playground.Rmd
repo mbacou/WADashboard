@@ -15,16 +15,21 @@ vignette: >
 .pagedtable-header-name { overflow: unset; }
 ```
 
-```{r}
+Collection of visuals for WA Dashboard.
+
+```{r, echo=FALSE, message=FALSE}
 library(rmarkdown)
 library(shiny)
 
 # Load this development package
 devtools::load_all(".")
-
-data <- DATA[iso3=="ken"]
-
 ```
+
+```{r}
+data <- DATA[iso3=="ken"]
+```
+
+Helper functions:
 
 ```{r}
 
@@ -37,7 +42,7 @@ plot_ts <- function(data, unit=NA, ...) {
   
   setnames(dt, "date_end", "date")
   
-  # Add trend decomposition
+  # Add trend decomposition by Loess
   ts = ts(dt[, value], start=c(dt[, min(year(date))], 1), frequency=12)
   tr = stl(ts, "periodic")
   dt[, trend := tr[[1]][, "trend"]]
@@ -75,17 +80,14 @@ plot_ts <- function(data, unit=NA, ...) {
 
 plot_profile <- function(data, unit=NA, ...) {
   
-  ymax = copy(data)[, max(year(date_start))]
+  # Label years  
+  ymax = data[, max(year(date_start))]
   
-  dt = data[, `:=`(
-    # Running mean
-    ltn = cumsum(value)/1:.N
-  ), by=.(iso3)
-  ][, .(
+  dt = data[, .(
     date = as.Date(min(format(date_start, "2021-%m-%d"))),
     value = mean(value, na.rm=T),
     sd = sd(value, na.rm=T),
-    # Past 3 years
+    # Highlight past 3 years
     value_1 = mean(fifelse(year==max(year)-0, value, NA_real_), na.rm=T),
     value_2 = mean(fifelse(year==max(year)-1, value, NA_real_), na.rm=T),
     value_3 = mean(fifelse(year==max(year)-2, value, NA_real_), na.rm=T)
@@ -93,8 +95,7 @@ plot_profile <- function(data, unit=NA, ...) {
     ymin = value-sd,
     ymax = value+sd
   )]
-  
-  # Label years
+
   yrange = dt[, c(min(value, na.rm=T), max(value_1, na.rm=T))]
   
   # Monthly bands
@@ -131,8 +132,6 @@ plot_profile <- function(data, unit=NA, ...) {
 
 ```
 
-Collection of visual concepts for WA Dashboard.
-
 # Water Availability
 
 ## Basin Closure
@@ -141,7 +140,7 @@ Collection of visual concepts for WA Dashboard.
 
 ```{r}
 
-# Verify periodicity
+# Verify data periodicity
 data[sheet=="sheet1", .N, by=period]
 
 # Yearly
@@ -158,13 +157,6 @@ ind <- dcast(ind, ...~id)[order(date_start),
 # Monthly
 dt <- data[id %in% c("utilized_flow", "net_inflow") & period=="month"]
 dt <- dcast(dt, ...~id)[, value := 100 * utilized_flow / net_inflow]
-```
-
-```{r, results='asis', eval=F}
-ind[, scoreBox(
-  value = sprintf('<span class="">%s %% / year</span>', value),
-  subtitle = sprintf('<span class="">+/- %s %% / year</span>', sd),
-  footer = "Percent Closure")]
 ```
 
 ```{r}
@@ -282,24 +274,12 @@ dt <- dcast(dt, ...~id)[, value := 100 * agriculture / consumed_water]
 
 ```
 
-```{r, results='asis', eval=F}
-ind[, scoreBox(
-  value = sprintf('<span class="">%s %%</span>', value),
-  subtitle = sprintf('<span class="">+/- %%</span>', sd),
-  footer = "Agricultural Water Use")]
-```
-
-```{r}
+```{r, eval=F}
 # Monthly time-series
 plot_ts(dt, unit="%",
-  title="Utilizable Outflow", subtitle="Kenya - 2003 - 2017 (% closure)")
+  title="Agricultural water use", subtitle="Kenya - 2003 - 2017 (% closure)")
 ```
 
-```{r}
-# Monthly profile
-plot_profile(dt, unit="%",
-  title="Utilizable Outflow", subtitle="Kenya - 2003 - 2017 (% closure)")
-```
 
 
 
@@ -316,6 +296,27 @@ each shown as a mean and min value over the time series
 ## Precipitation 
 
 (inter and intra annual min and max over the time series)
+
+```{r}
+# Monthly
+dt <- data[id %in% c("rainfall") & period=="month"]
+dt <- dcast(dt, ...~id)[, value := rainfall]
+
+```
+
+```{r}
+# Monthly time-series
+plot_ts(dt, unit="km³",
+  title="Precipitation", subtitle="Kenya - 2003 - 2017 (km³ / month)")
+```
+
+```{r}
+# Monthly profile
+plot_profile(dt, unit="km³",
+  title="Precipitation", subtitle="Kenya - 2003 - 2017 (km³ / month)")
+```
+
+
 
 [^s1]: Indicator from resource base sheet
 [^ext]: Indicator from external database
