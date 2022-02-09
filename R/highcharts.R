@@ -126,16 +126,12 @@ plot_ecc_density <- function(
 #'
 #' @export
 plot_clim <- function(
-  data,
-  type = c("precipitation", "tmin", "tmax"),
-  sos = switch(type, precipitation=35, 2),
+  iso3 = names(ISO3),
+  unit = "km³",
   yrange = NULL,
-  title = "Climate Normals by Dekad",
-  subtitle = "Average across portfolio locations, 1990-2020 (mm)",
   ...) {
 
-  type = match.arg(type)
-  unit = c(" °C", " mm")[1 + (type=="precipitation")]
+  unit = ISO3[[iso3]][["unit"]]
 
   dt = data[, date := as.Date(date)][, .(
     date = min(date),

@@ -6,6 +6,7 @@
 #'
 #' @return
 #' @importFrom bs4Dash valueBox
+#' @importFrom shiny HTML
 #' @export
 #'
 #' @examples

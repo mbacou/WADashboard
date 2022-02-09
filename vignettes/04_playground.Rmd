@@ -1,0 +1,323 @@
+---
+title: "Visualization Playground"
+author: "BACOU, Melanie"
+date: "`r format(Sys.Date(), '%b. %d, %Y')`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Visualization Playground}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{css, echo=FALSE}
+.pagedtable-wrapper { border: unset; }
+.pagedtable-not-empty .pagedtable-footer { border-top: unset; }
+.pagedtable-header-name { overflow: unset; }
+```
+
+```{r}
+library(rmarkdown)
+library(shiny)
+
+# Load this development package
+devtools::load_all(".")
+
+data <- DATA[iso3=="ken"]
+
+```
+
+```{r}
+
+plot_ts <- function(data, unit=NA, ...) {
+  
+  dt = copy(data)[, `:=`(
+    # Running mean
+    ltn = cumsum(value)/1:.N
+  ), by=.(iso3)]
+  
+  setnames(dt, "date_end", "date")
+  
+  # Add trend decomposition
+  ts = ts(dt[, value], start=c(dt[, min(year(date))], 1), frequency=12)
+  tr = stl(ts, "periodic")
+  dt[, trend := tr[[1]][, "trend"]]
+  
+  yrange = dt[, c(min(value, na.rm=T), max(value, na.rm=T))]
+  
+  xBands = lapply(dt[, seq(min(date), max(date), by="year")], function(x) list(
+    from = datetime_to_timestamp(x),
+    to = datetime_to_timestamp(ceiling_date(x, "year")),
+    color = c("transparent", alpha(pal[["light"]], .4))[1+odd(year(x))]
+  ))
+  
+  highchart(type="stock") %>%
+    hc_add_series(dt, type="line", name=unit, hcaes(x=date, y=value),
+      color=pal[[1]], lineWidth=1) %>%
+    hc_add_series(dt, type="line", name="LTN", hcaes(x=date, y=ltn),
+      color=pal[[2]], lineWidth=2, marker=list(symbol="circle")) %>%
+    hc_add_series(dt, type="line", name="Trend", hcaes(x=date, y=trend),
+      color=pal[["orange"]], lineWidth=2, marker=list(symbol="circle")) %>%
+    
+    hc_legend(enabled=TRUE, align="right") %>%
+    hc_tooltip(valueSuffix=unit, shared=TRUE) %>%
+    hc_xAxis(type="datetime", plotBands=xBands) %>%
+    hc_yAxis(min=yrange[1], max=yrange[2]) %>%
+    hc_rangeSelector(enabled=TRUE, inputEnabled=FALSE) %>%
+    hc_navigator(enabled=FALSE) %>%
+    hc_scrollbar(enabled=FALSE) %>%
+    hc_chart(zoomType="x") %>%
+    hc_themed(...)
+}
+
+```
+
+```{r}
+
+plot_profile <- function(data, unit=NA, ...) {
+  
+  ymax = copy(data)[, max(year(date_start))]
+  
+  dt = data[, `:=`(
+    # Running mean
+    ltn = cumsum(value)/1:.N
+  ), by=.(iso3)
+  ][, .(
+    date = as.Date(min(format(date_start, "2021-%m-%d"))),
+    value = mean(value, na.rm=T),
+    sd = sd(value, na.rm=T),
+    # Past 3 years
+    value_1 = mean(fifelse(year==max(year)-0, value, NA_real_), na.rm=T),
+    value_2 = mean(fifelse(year==max(year)-1, value, NA_real_), na.rm=T),
+    value_3 = mean(fifelse(year==max(year)-2, value, NA_real_), na.rm=T)
+  ), by=.(iso3, month)][, `:=`(
+    ymin = value-sd,
+    ymax = value+sd
+  )]
+  
+  # Label years
+  yrange = dt[, c(min(value, na.rm=T), max(value_1, na.rm=T))]
+  
+  # Monthly bands
+  xBands = lapply(dt[, seq(as.Date(min(date)), as.Date(max(date)), by="month")], 
+    function(x) list(
+      from = datetime_to_timestamp(x),
+      to = datetime_to_timestamp(ceiling_date(x, unit="month")-1),
+      color = c("transparent", alpha(pal[["light"]], .4))[1+odd(month(x))]
+    ))
+  
+  highchart() %>%
+    hc_chart(zoomType="x") %>%
+    hc_add_series(dt, type="arearange",
+      hcaes(x=date, low=ymin, high=ymax), name="+/- Std. Dev.",
+      color=pal[[2]], fillOpacity=.1, marker=list(enabled=FALSE)) %>%
+    
+    hc_add_series(dt, type="column", hcaes(x=date, y=value_3), name=ymax-2,
+      color=alpha(pal[["orange"]], .3)) %>%
+    hc_add_series(dt, type="column", hcaes(x=date, y=value_2), name=ymax-1,
+      color=alpha(pal[["orange"]], .6)) %>%
+    hc_add_series(dt, type="column", hcaes(x=date, y=value_1), name=ymax-0,
+      color=alpha(pal[["orange"]], .9)) %>%
+    
+    hc_add_series(dt, type="line", hcaes(x=date, y=value), name="LTN",
+      color=pal[[2]], lineWidth=2, marker=list(enabled=TRUE)) %>%
+    
+    hc_tooltip(valueSuffix=unit) %>%
+    hc_legend(enabled=TRUE, align="right") %>%
+    hc_xAxis(type="datetime", dateTimeLabelFormats=list(month="%e %b"),
+      plotBands=xBands) %>%
+    hc_themed(...)
+  
+}
+
+```
+
+Collection of visual concepts for WA Dashboard.
+
+# Water Availability
+
+## Basin Closure
+
+(ratio of utilized flow[^s1]/net inflow[^s1])
+
+```{r}
+
+# Verify periodicity
+data[sheet=="sheet1", .N, by=period]
+
+# Yearly
+ind <- data[id %in% c("utilized_flow", "net_inflow") & period=="year"]
+ind <- dcast(ind, ...~id)[order(date_start),
+  value := 100 * utilized_flow / net_inflow
+][, .(
+  value = mean(value, na.rm=T),
+  ymin = min(value, na.rm=T),
+  ymax = max(value, na.rm=T),
+  sd = sd(value, na.rm=T)
+), by=.(iso3)]
+
+# Monthly
+dt <- data[id %in% c("utilized_flow", "net_inflow") & period=="month"]
+dt <- dcast(dt, ...~id)[, value := 100 * utilized_flow / net_inflow]
+```
+
+```{r, results='asis', eval=F}
+ind[, scoreBox(
+  value = sprintf('<span class="">%s %% / year</span>', value),
+  subtitle = sprintf('<span class="">+/- %s %% / year</span>', sd),
+  footer = "Percent Closure")]
+```
+
+```{r}
+# Monthly time-series
+plot_ts(dt, unit="% closure",
+  title="Mara Basin Closure", subtitle="Kenya - 2003 - 2017 (% closure)")
+```
+
+```{r}
+# Monthly profile
+plot_profile(dt, unit="% closure", 
+  title="Mara Basin Closure", subtitle="Kenya - 2003 - 2017 (% closure)")
+```
+
+## Availability per Capita
+
+(ratio of consumed[^s1]/population[^ext])
+
+```{r}
+
+tot_pop <- 1280000
+
+# Yearly
+ind <- data[id %in% c("consumed_water") & period=="year"]
+ind <- dcast(ind, ...~id)[order(date_start),
+  value := consumed_water / tot_pop
+][, .(
+  value = mean(value, na.rm=T),
+  ymin = min(value, na.rm=T),
+  ymax = max(value, na.rm=T),
+  sd = sd(value, na.rm=T)
+), by=.(iso3)]
+
+
+# Monthly
+dt <- data[id %in% c("consumed_water") & period=="month"]
+dt <- dcast(dt, ...~id)[, value := consumed_water / tot_pop]
+
+```
+
+```{r}
+# Monthly time-series
+plot_ts(dt, unit="km³",
+  title="Per Capita Water Consumption", subtitle="Kenya - 2003 - 2017 (% closure)")
+```
+
+```{r}
+# Monthly profile
+plot_profile(dt, unit="km³",
+  title="Per Capita Water Consumption", subtitle="Kenya - 2003 - 2017 (% closure)")
+```
+
+## Available for further use
+
+(utilizable outflow[^s1])
+
+```{r}
+
+# Yearly
+ind <- data[id %in% c("utilizable_outflow") & period=="year"]
+ind <- dcast(ind, ...~id)[order(date_start),
+  value := utilizable_outflow
+][, .(
+  value = mean(value, na.rm=T),
+  ymin = min(value, na.rm=T),
+  ymax = max(value, na.rm=T),
+  sd = sd(value, na.rm=T)
+), by=.(iso3)]
+
+
+# Monthly
+dt <- data[id %in% c("utilizable_outflow") & period=="month"]
+dt <- dcast(dt, ...~id)[, value := utilizable_outflow]
+
+```
+
+```{r}
+# Monthly time-series
+plot_ts(dt, unit="km³",
+  title="Utilizable Outflow", subtitle="Kenya - 2003 - 2017 (% closure)")
+```
+
+```{r}
+# Monthly profile
+plot_profile(dt, unit="km³",
+  title="Utilizable Outflow", subtitle="Kenya - 2003 - 2017 (% closure)")
+```
+
+
+# Water Use
+
+## Agricultural water use 
+
+(ratio of agricultural ET[^s3]/water consumed[^s1])
+
+```{r, eval=FALSE}
+
+# Verify periodicity
+data[sheet=="sheet2", .N, by=period]
+
+# Yearly
+ind <- data[id %in% c("consumed_water", "agriculture") & period=="year"]
+ind <- dcast(ind, ...~id)[order(date_start),
+  value := 100 * agriculture / consumed_water
+][, .(
+  value = mean(value, na.rm=T),
+  ymin = min(value, na.rm=T),
+  ymax = max(value, na.rm=T),
+  sd = sd(value, na.rm=T)
+), by=.(iso3)]
+
+# Monthly
+dt <- data[id %in% c("consumed_water", "agriculture") & period=="month"]
+dt <- dcast(dt, ...~id)[, value := 100 * agriculture / consumed_water]
+
+```
+
+```{r, results='asis', eval=F}
+ind[, scoreBox(
+  value = sprintf('<span class="">%s %%</span>', value),
+  subtitle = sprintf('<span class="">+/- %%</span>', sd),
+  footer = "Agricultural Water Use")]
+```
+
+```{r}
+# Monthly time-series
+plot_ts(dt, unit="%",
+  title="Utilizable Outflow", subtitle="Kenya - 2003 - 2017 (% closure)")
+```
+
+```{r}
+# Monthly profile
+plot_profile(dt, unit="%",
+  title="Utilizable Outflow", subtitle="Kenya - 2003 - 2017 (% closure)")
+```
+
+
+
+## Environmental stress 
+
+(percentage of time (months in the time series) during which environmental flows are not met) – Manohar/Mansoor to advise calculation from CSV WA output)
+
+each shown as a mean and min value over the time series
+
+
+
+# Basin Variability
+
+## Precipitation 
+
+(inter and intra annual min and max over the time series)
+
+[^s1]: Indicator from resource base sheet
+[^ext]: Indicator from external database
+[^s2]: Indicator from ET sheet
+
