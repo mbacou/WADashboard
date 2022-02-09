@@ -20,6 +20,9 @@ Collection of visuals for WA Dashboard.
 ```{r, echo=FALSE, message=FALSE}
 library(rmarkdown)
 library(shiny)
+library(scales)
+
+#knitr::opts_chunk$set(code_folding="hide")
 
 # Load this development package
 devtools::load_all(".")
@@ -29,45 +32,68 @@ devtools::load_all(".")
 data <- DATA[iso3=="ken"]
 ```
 
-Helper functions:
+Plot helper functions:
 
 ```{r}
 
-plot_ts <- function(data, unit=NA, ...) {
+plot_ts <- function(data, name=NA, unit=NA, yrange=NULL, ...) {
   
-  dt = copy(data)[, `:=`(
+  dt = copy(data)
+  setnames(dt, "date_end", "date")
+  
+  dt[order(date), `:=`(
     # Running mean
     ltn = cumsum(value)/1:.N
   ), by=.(iso3)]
   
-  setnames(dt, "date_end", "date")
+  # Infer period frequency (1=year, 2=season, 12=month, 36=dekad)
+  freq = dt[, .N, by=year(date)][1, .N]
   
-  # Add trend decomposition by Loess
-  ts = ts(dt[, value], start=c(dt[, min(year(date))], 1), frequency=12)
-  tr = stl(ts, "periodic")
-  dt[, trend := tr[[1]][, "trend"]]
+  tr = if(freq>1) {
+    # Loess trend component
+    ts(dt[, value], frequency=1) %>% stl("periodic")[[1]][, "trend"] 
+  } else {
+    # Linear trend
+    predict(lm(value~date, dt))
+  }
   
-  yrange = dt[, c(min(value, na.rm=T), max(value, na.rm=T))]
+  dt[, trend := tr]
+  yrange = if(missing(yrange)) dt[, range(value, na.rm=T)] else yrange
   
+  # Period bands  
   xBands = lapply(dt[, seq(min(date), max(date), by="year")], function(x) list(
     from = datetime_to_timestamp(x),
     to = datetime_to_timestamp(ceiling_date(x, "year")),
     color = c("transparent", alpha(pal[["light"]], .4))[1+odd(year(x))]
   ))
   
-  highchart(type="stock") %>%
-    hc_add_series(dt, type="line", name=unit, hcaes(x=date, y=value),
+  # Flags
+  flag = dt[dt[, c(which.min(value), which.max(value))]
+  ][, `:=`(
+    label = c("Min.", "Max."),
+    unit = unit
+  )]
+  
+  highchart2(type="stock") %>%
+    hc_add_dependency("modules/annotations.js") %>%
+    hc_add_dependency("modules/stock.js") %>%
+    hc_add_series(dt, type="line", name=name, hcaes(x=date, y=value),
       color=pal[[1]], lineWidth=1) %>%
     hc_add_series(dt, type="line", name="LTN", hcaes(x=date, y=ltn),
       color=pal[[2]], lineWidth=2, marker=list(symbol="circle")) %>%
     hc_add_series(dt, type="line", name="Trend", hcaes(x=date, y=trend),
       color=pal[["orange"]], lineWidth=2, marker=list(symbol="circle")) %>%
     
+    hc_add_series(flag, type="flags",
+      hcaes(x=date, y=value, title=sprintf('%s %s (%s %s)', label, year, comma(value), unit)),
+      color=pal[["black"]], fillColor=pal[["light"]], 
+      shape="squarepin", showInLegend=FALSE) %>%
+    
     hc_legend(enabled=TRUE, align="right") %>%
     hc_tooltip(valueSuffix=unit, shared=TRUE) %>%
     hc_xAxis(type="datetime", plotBands=xBands) %>%
     hc_yAxis(min=yrange[1], max=yrange[2]) %>%
-    hc_rangeSelector(enabled=TRUE, inputEnabled=FALSE) %>%
+    hc_rangeSelector(enabled=(freq>1), inputEnabled=FALSE) %>%
     hc_navigator(enabled=FALSE) %>%
     hc_scrollbar(enabled=FALSE) %>%
     hc_chart(zoomType="x") %>%
@@ -78,7 +104,7 @@ plot_ts <- function(data, unit=NA, ...) {
 
 ```{r}
 
-plot_profile <- function(data, unit=NA, ...) {
+plot_profile <- function(data, unit=NA, yrange=NULL, ...) {
   
   # Label years  
   ymax = data[, max(year(date_start))]
@@ -95,8 +121,8 @@ plot_profile <- function(data, unit=NA, ...) {
     ymin = value-sd,
     ymax = value+sd
   )]
-
-  yrange = dt[, c(min(value, na.rm=T), max(value_1, na.rm=T))]
+  
+  yrange = if(missing(yrange)) dt[, range(date, rm=T)] else yrange
   
   # Monthly bands
   xBands = lapply(dt[, seq(as.Date(min(date)), as.Date(max(date)), by="month")], 
@@ -106,7 +132,8 @@ plot_profile <- function(data, unit=NA, ...) {
       color = c("transparent", alpha(pal[["light"]], .4))[1+odd(month(x))]
     ))
   
-  highchart() %>%
+  highchart2(type="stock") %>%
+    hc_add_dependency("modules/stock.js") %>%
     hc_chart(zoomType="x") %>%
     hc_add_series(dt, type="arearange",
       hcaes(x=date, low=ymin, high=ymax), name="+/- Std. Dev.",
@@ -138,111 +165,58 @@ plot_profile <- function(data, unit=NA, ...) {
 
 (ratio of utilized flow[^s1]/net inflow[^s1])
 
-```{r}
+```{r, layout="l-screen"}
 
 # Verify data periodicity
 data[sheet=="sheet1", .N, by=period]
 
 # Yearly
-ind <- data[id %in% c("utilized_flow", "net_inflow") & period=="year"]
-ind <- dcast(ind, ...~id)[order(date_start),
-  value := 100 * utilized_flow / net_inflow
-][, .(
-  value = mean(value, na.rm=T),
-  ymin = min(value, na.rm=T),
-  ymax = max(value, na.rm=T),
-  sd = sd(value, na.rm=T)
-), by=.(iso3)]
-
-# Monthly
-dt <- data[id %in% c("utilized_flow", "net_inflow") & period=="month"]
+dt <- data[id %in% c("utilized_flow", "net_inflow") & period=="year"]
 dt <- dcast(dt, ...~id)[, value := 100 * utilized_flow / net_inflow]
-```
 
-```{r}
-# Monthly time-series
-plot_ts(dt, unit="% closure",
-  title="Mara Basin Closure", subtitle="Kenya - 2003 - 2017 (% closure)")
-```
-
-```{r}
-# Monthly profile
-plot_profile(dt, unit="% closure", 
-  title="Mara Basin Closure", subtitle="Kenya - 2003 - 2017 (% closure)")
+plot_ts(dt, name="Pct. basin closure", unit="%",
+  title="Mara Basin Closure", subtitle="Kenya 2003-2017 (%)")
 ```
 
 ## Availability per Capita
 
 (ratio of consumed[^s1]/population[^ext])
 
-```{r}
+```{r, layout="l-screen"}
 
 tot_pop <- 1280000
 
 # Yearly
-ind <- data[id %in% c("consumed_water") & period=="year"]
-ind <- dcast(ind, ...~id)[order(date_start),
-  value := consumed_water / tot_pop
-][, .(
-  value = mean(value, na.rm=T),
-  ymin = min(value, na.rm=T),
-  ymax = max(value, na.rm=T),
-  sd = sd(value, na.rm=T)
-), by=.(iso3)]
+dt <- data[id %in% c("consumed_water") & period=="year"]
+dt <- dcast(dt, ...~id)[, value := 1E6 * consumed_water / tot_pop]
 
-
-# Monthly
-dt <- data[id %in% c("consumed_water") & period=="month"]
-dt <- dcast(dt, ...~id)[, value := consumed_water / tot_pop]
-
+plot_ts(dt, name="Per Capita  Water Consumption", unit="m³",
+  title="Mara Basin Closure", subtitle="Kenya 2003-2017 (m³)")
 ```
 
-```{r}
-# Monthly time-series
-plot_ts(dt, unit="km³",
-  title="Per Capita Water Consumption", subtitle="Kenya - 2003 - 2017 (% closure)")
-```
-
-```{r}
+```{r, layout="l-screen"}
 # Monthly profile
+
+dt <- data[id %in% c("consumed_water") & period=="month"]
+dt <- dcast(dt, ...~id)[, value := 1E6 * consumed_water / tot_pop]
+
 plot_profile(dt, unit="km³",
-  title="Per Capita Water Consumption", subtitle="Kenya - 2003 - 2017 (% closure)")
+  title="Nara Basin Per Capita Water Consumption", subtitle="Kenya 2003-2017 (km³)")
 ```
+
 
 ## Available for further use
 
 (utilizable outflow[^s1])
 
-```{r}
+```{r, layout="l-screen"}
 
 # Yearly
-ind <- data[id %in% c("utilizable_outflow") & period=="year"]
-ind <- dcast(ind, ...~id)[order(date_start),
-  value := utilizable_outflow
-][, .(
-  value = mean(value, na.rm=T),
-  ymin = min(value, na.rm=T),
-  ymax = max(value, na.rm=T),
-  sd = sd(value, na.rm=T)
-), by=.(iso3)]
+dt <- data[id %in% c("utilized_flow") & period=="year"]
+dt <- dcast(dt, ...~id)[, value := utilized_flow]
 
-
-# Monthly
-dt <- data[id %in% c("utilizable_outflow") & period=="month"]
-dt <- dcast(dt, ...~id)[, value := utilizable_outflow]
-
-```
-
-```{r}
-# Monthly time-series
-plot_ts(dt, unit="km³",
-  title="Utilizable Outflow", subtitle="Kenya - 2003 - 2017 (% closure)")
-```
-
-```{r}
-# Monthly profile
-plot_profile(dt, unit="km³",
-  title="Utilizable Outflow", subtitle="Kenya - 2003 - 2017 (% closure)")
+plot_ts(dt, name="Utilizable Outflow", unit="km³",
+  title="Mara Basin Utilizable Outflow", subtitle="Kenya 2003-2017 (km³)")
 ```
 
 
@@ -250,45 +224,56 @@ plot_profile(dt, unit="km³",
 
 ## Agricultural water use 
 
-(ratio of agricultural ET[^s3]/water consumed[^s1])
+(ratio of agricultural ET[^s2]/water consumed[^s1])
 
-```{r, eval=FALSE}
+```{r}
 
+
+
+```
+
+```{r, layout="l-screen", eval=FALSE}
 # Verify periodicity
 data[sheet=="sheet2", .N, by=period]
 
-# Yearly
-ind <- data[id %in% c("consumed_water", "agriculture") & period=="year"]
-ind <- dcast(ind, ...~id)[order(date_start),
-  value := 100 * agriculture / consumed_water
-][, .(
-  value = mean(value, na.rm=T),
-  ymin = min(value, na.rm=T),
-  ymax = max(value, na.rm=T),
-  sd = sd(value, na.rm=T)
-), by=.(iso3)]
+# Yearly time-series
+dt <- data[id %in% c("consumed_water", "agriculture") & period=="year"]
+dt <- dcast(dt, ...~id)[, value := 100 * agriculture / consumed_water]
 
+plot_ts(dt, unit="%",
+  title="Agricultural water use", subtitle="Kenya - 2003 - 2017 (%)")
+```
+
+```{r, layout="l-screen", eval=FALSE}
 # Monthly
 dt <- data[id %in% c("consumed_water", "agriculture") & period=="month"]
 dt <- dcast(dt, ...~id)[, value := 100 * agriculture / consumed_water]
 
-```
-
-```{r, eval=F}
-# Monthly time-series
-plot_ts(dt, unit="%",
-  title="Agricultural water use", subtitle="Kenya - 2003 - 2017 (% closure)")
+plot_profile(dt, unit="%",
+  title="Agricultural water use", subtitle="Kenya - 2003 - 2017 (%)")
 ```
 
 
+## Environmental Stress 
 
+(percentage of time (months in the time series) during which environmental flows are not met) – Manohar/Mansoor to advise calculation from CSV WA output).
 
-## Environmental stress 
+Note sure whether to use 0 (zero) as a threshold or a low value.
 
-(percentage of time (months in the time series) during which environmental flows are not met) – Manohar/Mansoor to advise calculation from CSV WA output)
+```{r, layout="l-screen"}
+# Yearly time-series
+dt <- data[id %in% c("env_o", "nav_o", "com_o") & period=="month"]
+dt <- dcast(dt, ...~id)[, value := rowSums(cbind(env_o, nav_o, com_o), na.rm=T)
+    ][, value := 100 * sum(value <= 0.05, na.rm=T)/.N, by=year]
 
-each shown as a mean and min value over the time series
+plot_ts(dt, name="Insuffient Flow", unit="%",
+  title="Mara Basin - Environmental Stress", subtitle="Kenya 2003-2017 (% of months in period)")
+```
 
+```{r, layout="l-screen"}
+plot_profile(dt, unit="%",
+  title="Mara Basin - Environmental Stress", subtitle="Kenya 2003-2017 (% of months in period)")
+```
 
 
 # Basin Variability
@@ -297,23 +282,19 @@ each shown as a mean and min value over the time series
 
 (inter and intra annual min and max over the time series)
 
-```{r}
+```{r, layout="l-screen"}
 # Monthly
 dt <- data[id %in% c("rainfall") & period=="month"]
 dt <- dcast(dt, ...~id)[, value := rainfall]
 
+plot_ts(dt, name="Precipitation", unit="km³",
+  title="Precipitation", subtitle="Kenya 2003-2017 (km³ / month)")
 ```
 
-```{r}
-# Monthly time-series
-plot_ts(dt, unit="km³",
-  title="Precipitation", subtitle="Kenya - 2003 - 2017 (km³ / month)")
-```
-
-```{r}
+```{r, layout="l-screen"}
 # Monthly profile
 plot_profile(dt, unit="km³",
-  title="Precipitation", subtitle="Kenya - 2003 - 2017 (km³ / month)")
+  title="Precipitation", subtitle="Kenya 2003-2017 (km³ / month)")
 ```
 
 
