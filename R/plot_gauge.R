@@ -119,28 +119,11 @@ plot_agwater <- function(iso3=names(ISO3), unit="km3", ...) {
     innerRadius = c("88%", "63%", "38%", "13%")
   )]
 
-  highchart() %>%
-    hc_chart(height="100%") %>%
-    hc_pane(startAngle=0, endAngle=180,
-      background=list(backgroundColor=alpha(pal[["light"]], .1))
-      # background=list(
-      #   list(
-      #     outerRadius="112%", innerRadius="89%", borderWidth=0,
-      #     backgroundColor=alpha(pal[[1]], .1)),
-      #   list(
-      #     outerRadius="86%", innerRadius="63%", borderWidth=0,
-      #     backgroundColor=alpha(pal[[2]], .1)),
-      #   list(
-      #     outerRadius="61%", innerRadius="38%", borderWidth=0,
-      #     backgroundColor=alpha(pal[[3]], .1)),
-      #   list(
-      #     outerRadius="36%", innerRadius="13%", borderWidth=0,
-      #     backgroundColor=alpha(pal[[4]], .1))
-      # )
-    ) %>%
 
-    hc_add_series(dt, type="solidgauge",
-      hcaes(y=pct, color=color, radius=radius, innerRadius=innerRadius, group=group),
+
+  highchart2() %>%
+    hc_add_series(dt, type="dependencywheel",
+      hcaes(from=pct, to=color, weight=radius),
       borderWidth=1, borderColor="#fff",
       marker=list(enabled=TRUE)) %>%
 
