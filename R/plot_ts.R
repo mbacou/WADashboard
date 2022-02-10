@@ -74,7 +74,7 @@ plot_ts <- function(data, name=NA, unit=NA, yrange=NULL, ...) {
     hc_legend(enabled=TRUE, align="right") %>%
     hc_tooltip(valueSuffix=unit, shared=TRUE) %>%
     hc_xAxis(type="datetime", plotBands=xBands) %>%
-    hc_yAxis(min=yrange[1], max=yrange[2] + 0.02*diff(yrange) ) %>%
+    hc_yAxis(min=yrange[1], max=yrange[2]+0.02*diff(yrange) ) %>%
     hc_rangeSelector(enabled=(freq>1), inputEnabled=FALSE) %>%
     hc_navigator(enabled=FALSE) %>%
     hc_scrollbar(enabled=FALSE) %>%
@@ -100,19 +100,20 @@ plot_ts <- function(data, name=NA, unit=NA, yrange=NULL, ...) {
 #' @examples
 #' dt <- DATA[iso3=="ken" & id=="rainfall" & period=="month"]
 #' plot_profile(dt, unit="km³")
+#' plot_profile(dt, unit="km³", polar=TRUE)
 #'
 #' @export
 plot_profile <- function(data, unit=NA, yrange=NULL, polar=FALSE, ...) {
 
   dt = copy(data)
-  if(!"date" %in% names(dt)) setnames(dt, "date_start", "date", skip_absent=TRUE)
+  if(!"date" %in% names(dt)) setnames(dt, "date_start", "date")
   setorder(dt, date)
 
   # Label years
   ymax = dt[, max(year(date))]
 
   dt = dt[, .(
-    date = min(date),
+    date = max(date),
     value = mean(value, na.rm=T),
     sd = sd(value, na.rm=T),
     # Highlight past 3 years
@@ -123,8 +124,6 @@ plot_profile <- function(data, unit=NA, yrange=NULL, polar=FALSE, ...) {
     ymin = value-sd,
     ymax = value+sd
   )]
-
-  yrange = if(missing(yrange)) dt[, range(value, rm=T)] else yrange
 
   # Monthly bands
   xBands = lapply(dt[, seq.Date(min(date), max(date), by="month")],
@@ -154,7 +153,6 @@ plot_profile <- function(data, unit=NA, yrange=NULL, polar=FALSE, ...) {
     hc_legend(enabled=TRUE, align="right") %>%
     hc_xAxis(type="datetime", dateTimeLabelFormats=list(month="%b"),
       plotBands=xBands, labels=list(step=1)) %>%
-    hc_yAxis(min=yrange[1], max=yrange[2]) %>%
     hc_themed(...)
 }
 

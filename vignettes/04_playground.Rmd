@@ -102,7 +102,7 @@ plot_ts(dt, name="Utilizable Outflow", unit="MCM",
 
 Using a dependency graph to show agriculture vs. non-ag uses (or other flow allocations).
 
-```{r}
+```{r, out.height="340px"}
 plot_wheel(iso3="ken",
   title="System Water Uses",
   subtitle="Kenya 2003-2017")
@@ -184,7 +184,7 @@ plot_profile(dt, unit="km³",
 
 Intra-annual variability can also be shown as a polar chart:
 
-```{r, layout="l-screen"}
+```{r, out.height="500px"}
 # Monthly profile
 plot_profile(dt, unit="km³", polar=T,
   title="Precipitation", subtitle="Kenya 2003-2017 (km³ / month)")

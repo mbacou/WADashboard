@@ -7,7 +7,7 @@
 plot_profile(data, unit = NA, yrange = NULL, polar = FALSE, ...)
 }
 \arguments{
-\item{data}{data.table to plot with columns \code{date} and \code{value} (will use \code{date_end}
+\item{data}{data.table to plot with columns \code{date} and \code{value} (will use \code{date_start}
 if \code{date} is missing)}
 
 \item{unit}{display unit}
@@ -36,5 +36,7 @@ highcharter object
 Plot time-series intra-annual variability (highcharts)
 }
 \examples{
+dt <- DATA[iso3=="ken" & id=="rainfall" & period=="month"]
+plot_profile(dt, unit="km³")
 
 }
