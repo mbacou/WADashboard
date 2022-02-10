@@ -63,12 +63,12 @@ Shell scripts are provided to automate common tasks:
     - `WA_LIB` pointing to the location of a local R library (default to Linux shared library `/usr/local/lib/R/site-library`)  
 
 2. Edit 2 configuration files:  
-    - [List of river basins](https://github.com/mbacou/WADashboard/blob/main/data-raw/json/ISO3.json)  
-    - [Catalog of contextual geospatial layers](https://github.com/mbacou/WADashboard/blob/main/data-raw/json/LAYERS.json)  
+    - [List of river basins](https://github.com/mbacou/WADashboard/blob/main/data-raw/json/ISO3.yml)  
+    - [Catalog of 3rd party geospatial layers](https://github.com/mbacou/WADashboard/blob/main/data-raw/json/LAYERS.yml)  
     
-3. Rebuild the R package and reinstall by executing `./build.sh`.
+3. Whenever you change the configuration files, you will need to rebuild the R package and reinstall by executing `./build.sh`.
 
-If you append a new river basin, make sure you can successfully ETL its data with `datat_etl("new_basin_code")` before rebuilding the package.
+If you append a new river basin, make sure you can successfully ETL its data with `datat_etl("new_basin_code")` before rebuilding the package (else it will fail to build explicitly).
 
 
 # Application Deployment

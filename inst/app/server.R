@@ -116,7 +116,7 @@ function(input, output, session) {
 
   # Toggle map layers
   observe({
-    s$layers = c(input$chkLayer_1, input$chkLayer_2, input$chkLayer_3)
+    s$layers = c(input$chkLayer_2, input$chkLayer_3, input$chkLayer_4)
   })
 
   observeEvent(s$layers, ignoreInit=TRUE, {
@@ -169,7 +169,7 @@ function(input, output, session) {
   # Plots ----
   output$plot_ts = renderHighchart({
     req(s$var$var)
-    plot_ts(dt()[id==s$var$var], s$var$color)
+    plot_tss(dt()[id==s$var$var], s$var$color)
   })
 
   output$plot_gauge = renderHighchart({

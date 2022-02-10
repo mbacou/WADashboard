@@ -1,4 +1,4 @@
-#' Plot radar charts
+#' Plot radar charts (highcharts)
 #'
 #' @param iso3
 #' @inheritDotParams hc_themed

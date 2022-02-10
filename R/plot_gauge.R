@@ -1,4 +1,4 @@
-#' Plot radar charts
+#' Plot radial gauges (highcharts)
 #'
 #' @param iso3
 #' @inheritDotParams hc_themed
@@ -79,65 +79,69 @@ plot_gauge <- function(iso3=names(ISO3), unit="km3", ...) {
 }
 
 
-#' Plot Agricultural Water
+#' Plot dependency wheel (highcharts)
 #'
-#' @param iso3
+#' @param data (optional) data with columns `from`, `to`, `weight`
+#' @param iso3 basin ISO3 country code (see [ISO3])
+#' @param unit display unit
+#' @param icon optional vector of FA icon names (e.g. `tint`)
 #' @inheritDotParams hc_themed
 #'
 #' @examples
-#' plot_gauge(iso3="ken")
+#' plot_wheel(iso3="ken")
 #'
 #' @export
-plot_agwater <- function(iso3=names(ISO3), unit="km3", ...) {
+plot_wheel <- function(data=NULL, iso3=names(ISO3), unit=NA, icon=NULL, ...) {
 
   iso = match.arg(iso3)
-  unit = paste("", unit)
+  prd = ""
 
-  dt = DATA[iso3==iso & period=="year"
-    & id %in% c("agriculture", "economy", "energy", "environment",
-      "leisure", "net_inflow", "outflow")
-  ]
+  dt = if(missing(data)) {
 
-  prd = dt[, paste(range(year), collapse="-")]
+    # Agricultural breakdown for selected ISO3
+    dt = DATA[iso3==iso & period=="year"
+      & id %in% c("agriculture", "economy", "energy", "environment",
+        "leisure", "net_inflow", "outflow")]
 
-  dt = dt[, .(value = mean(value, na.rm=T)), by=.(id)
-  ][, group := fcase(
-    id=="agriculture", "agriculture",
-    id=="net_inflow", "inflow",
-    id=="outflow", "outflow",
-    id=="leisure", "non-agriculture",
-    id=="economy", "non-agriculture",
-    id=="energy", "non-agriculture",
-    id=="environment", "non-agriculture"
-  )][, .(value=sum(value, na.rm=T)), keyby=.(group)
-  ][c(2,3,1,4)]
+    prd = dt[, paste(range(year), collapse="-")]
+    dt = dt[, .(value = mean(value, na.rm=T)), by=.(id)
+    ][, group := fcase(
+      id=="agriculture", "agriculture",
+      id=="net_inflow", "inflow",
+      id=="outflow", "outflow",
+      id=="leisure", "non-agriculture",
+      id=="economy", "non-agriculture",
+      id=="energy", "non-agriculture",
+      id=="environment", "non-agriculture"
+    )][, .(value=sum(value, na.rm=T)), keyby=.(group)
+    ][c(2,3,1,4)
+    ][, `:=`(pct = 100*value/dt[1, value])]
 
-  dt[, `:=`(
-    pct = 100*value/dt[1, value],
-    color = pal[1:4],
-    radius = c("112%", "86%", "61%", "36%"),
-    innerRadius = c("88%", "63%", "38%", "13%")
-  )]
+    icon = rep("tint", 4)
 
+    dt[, .(
+      from = dt[c(1,1,1), group],
+      to = dt[c(2,3,4), group],
+      weight = dt[c(2,3,4), pct]
+    )][, `:=`(
+      from = sprintf('<span class="fa fa-%s">%s</span>', icon[.I], from),
+      to =  sprintf('<span class="fa fa-%s">%s</span>', icon[.I], to)
+    )]
 
+  } else {
+    # Use data provided as-is
+    data
+  }
 
-  highchart2() %>%
+  highchart() %>%
     hc_add_series(dt, type="dependencywheel",
-      hcaes(from=pct, to=color, weight=radius),
-      borderWidth=1, borderColor="#fff",
-      marker=list(enabled=TRUE)) %>%
+      hcaes(from=toupper(from), to=toupper(to), weight=weight),
+      borderWidth=1, borderColor="#fff", fillAlpha=.2,
+      startAngle=180, linkOpacity=.2,
+      dataLabels=list(enabled=TRUE, color=pal[["black"]])
+    ) %>%
 
-    hc_yAxis(min=0, max=100, lineWidth=0, tickPositions=list()) %>%
-    hc_tooltip(
-      pointFormat=
-        '<span class="pr-3 lead">{series.name}<br/>
-        <strong>{point.pct:,.0f}%</strong><br/>
-      {point.value:,.2f} km³ / year</span>',
-      borderWidth=0, backgroundColor=NA, shadow=FALSE) %>%
-    hc_legend(enabled=FALSE) %>%
-    hc_themed(
-      title = "System Water Uses",
-      subtitle = prd)
-
+    hc_tooltip(pointFormat="{point.to}<br/>{point.weight:.1f}%") %>%
+    hc_themed(...)
 }
 

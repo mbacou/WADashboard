@@ -1,4 +1,4 @@
-#' Custom Bootstrap theme
+#' Custom Bootstrap 4 theme
 #'
 #' A modified Bootstrap 4 theme based on IWMI branding guidelines.
 #'
@@ -19,9 +19,9 @@
 #' if(interactive()) bs_theme_preview(bs_themed())
 #'
 bs_themed <- function(
-  base_font = "'national-web-book'",
-  heading_font = "'DM Serif Text'",
-  font_size = 15,
+  base_font = "national-web-book",
+  heading_font = "dm-serif-text",
+  font_size = 16,
   palette = pal,
   elevation = 0,
   rounded = FALSE,
@@ -83,23 +83,23 @@ bs_themed <- function(
     `navbar-nav-link-padding-x` = ".75rem",
     `navbar-toggler-font-size` = "0.9rem",
 
-    `h1-font-size` = "1.8rem",
-    `h2-font-size` = "1.6rem",
-    `h3-font-size` = "1.4rem",
-    `h4-font-size` = "1.2rem",
-    `h5-font-size` = "1.0rem",
-    `h6-font-size` = "0.9rem",
+    `h1-font-size` = "2.2rem",
+    `h2-font-size` = "2.0rem",
+    `h3-font-size` = "1.8rem",
+    `h4-font-size` = "1.6rem",
+    `h5-font-size` = "1.4rem",
+    `h6-font-size` = "1.2rem",
     `small-font-size` = "87.5%",
 
-    `display1-size` = "2.0rem",
-    `display2-size` = "1.8rem",
-    `display3-size` = "1.6rem",
-    `display4-size` = "1.4rem",
+    `display1-size` = "2.2rem",
+    `display2-size` = "2.0rem",
+    `display3-size` = "1.8rem",
+    `display4-size` = "1.6rem",
 
     `line-height-base` = 20/font_size,
     `line-height-sm` = 20/font_size,
     `line-height-lg` = 20/font_size,
-    `headings-font-weight` = 300,
+    `headings-font-weight` = 400,
     `min-contrast-ratio` = 2.5
 
   ) %>%

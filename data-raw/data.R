@@ -1,7 +1,6 @@
 require(data.table)
-require(jsonlite)
+require(yaml)
 require(sf)
-require(terra)
 
 # IMWI color palette (uses GIMP palette format)
 tmp <- fread("./data-raw/json/palette.gpl", skip=4, header=F)
@@ -9,13 +8,13 @@ pal <- grDevices::rgb(tmp[, .(V1, V2, V3)], maxColorValue=255)
 names(pal) <- tmp[, V4]
 
 # Unique basin ISO3 codes and metadata
-ISO3 <- fromJSON("./data-raw/json/ISO3.json", flatten=TRUE)
+ISO3 <- read_yaml("./data-raw/json/ISO3.yml")
 
 # Basin and stream features (clipped)
 ZOI <- lapply(ISO3, function(x) lapply(x[c("admin", "water")], st_read))
 
 # WMS and Map Tile providers
-LAYERS <- fromJSON("./data-raw/json/LAYERS.json", flatten=TRUE)
+LAYERS <- read_yaml("./data-raw/json/LAYERS.yml")
 
 # WA+ data cube
 DATA <- list(

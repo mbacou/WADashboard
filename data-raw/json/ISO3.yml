@@ -1,0 +1,51 @@
+# Basin configuration:
+# - area: in hectares
+# - irrigated area: in hectares
+# - hydro power: in GWh/year
+# - source: system path is relative to the root location of your model data repository
+#   as configured in WA_DATA or via getOption("wa.data")
+# - admin: system paths are relative to this package root
+# - water: system paths are relative to this package root
+
+mli:
+  label: Niger River
+  source: ./csv_km3
+  admin: ./data-raw/json/mli_basin.geojson
+  water: ./data-raw/json/mli_gloric.geojson
+  type: river drainage basin
+  country: Mali
+  countries:
+  - Mali
+  - Guinea
+  - Burkina Faso
+  - Ivory Coast
+  unit: km³
+  area: 40000
+  irrigated area: 400
+  population: 800000
+  authorities: Niger Basin Authority
+  url: http://www.sath.abn.ne/
+  major season: Apr-Sep
+  minor season: Oct-Dec
+  major dams: 5
+  hydro power: 60
+
+ken:
+  label: Mara River
+  source: ./hydroloop_results/csv
+  admin: ./data-raw/json/ken_basin.geojson
+  water: ./data-raw/json/ken_gloric.geojson
+  type: river drainage basin
+  country: Kenya
+  countries:
+  - Kenya
+  unit: km³
+  area: 13750
+  irrigated area: 400
+  population: 1280000
+  authorities: Nile Basin Initiative
+  url: https://www.nilebasin.org/
+  major season: Feb-May
+  minor season: Oct-Dec
+  major dams: 3
+  hydro power: 50

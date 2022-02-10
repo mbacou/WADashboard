@@ -57,9 +57,8 @@ hc_themed <- function(
     tooltip = list(
       enabled = TRUE, shared = TRUE, split = FALSE,
       pointFormat = "{series.name}: <strong>{point.y:,.1f}</strong><br/>",
-      xDateFormat = "%Y-%m-%d",
-      dateTimeLabelFormats = "%Y-%m-%d",
-      valueDecimals = 2
+      xDateFormat = "%Y-%m-%d", dateTimeLabelFormats = "%Y-%m-%d", valueDecimals = 2,
+      style = list(color=pal[["black"]]), backgroundColor = pal[["light"]]
     ),
     plotOptions = list(
       series = list(

@@ -17,166 +17,45 @@ vignette: >
 
 Collection of visuals for WA Dashboard.
 
-```{r, echo=FALSE, message=FALSE}
+```{r, message=FALSE}
 library(rmarkdown)
 library(shiny)
-library(scales)
-
-#knitr::opts_chunk$set(code_folding="hide")
 
 # Load this development package
 devtools::load_all(".")
-```
 
-```{r}
 data <- DATA[iso3=="ken"]
 ```
 
-Plot helper functions:
-
-```{r}
-
-plot_ts <- function(data, name=NA, unit=NA, yrange=NULL, ...) {
-  
-  dt = copy(dt)[order(date_end)]
-  setnames(dt, "date_end", "date")
-  
-  dt[, `:=`(
-    # Running mean
-    ltn = cumsum(value)/1:.N
-  ), by=.(iso3)]
-  
-  # Infer periodicity (1=year, 2=season, 12=month, 36=dekad)
-  freq = dt[, .N, by=year(date)][1, N]
-  
-  tr = if(freq>1) {
-    # Loess trend component
-    ts = ts(dt[, value], frequency=freq)
-    stl(ts, "periodic")[[1]][, "trend"] 
-  } else {
-    # Linear trend
-    predict(lm(value~date, dt))
-  }
-  
-  dt[, trend := tr]
-  yrange = if(missing(yrange)) dt[, range(value, na.rm=T)] else yrange
-  
-  # Period bands  
-  xBands = lapply(dt[, seq(min(date), max(date), by="year")], function(x) list(
-    from = datetime_to_timestamp(x),
-    to = datetime_to_timestamp(ceiling_date(x, "year")),
-    color = c("transparent", alpha(pal[["light"]], .4))[1+odd(year(x))]
-  ))
-  
-  # Flags
-  flag = dt[dt[, c(which.min(value), which.max(value))]
-  ][, `:=`(
-    label = c("Min.", "Max."),
-    unit = unit
-  )]
-  
-  highchart2(type="stock") %>%
-    hc_add_dependency("modules/annotations.js") %>%
-    hc_add_dependency("modules/stock.js") %>%
-    hc_add_series(dt, type="line", name=name, hcaes(x=date, y=value),
-      color=alpha(pal[[1]], switch(as.character(freq), `1`=.8, 1)), 
-      lineWidth=switch(as.character(freq), `1`=3, 1)) %>%
-    hc_add_series(dt, type="line", name="LTN", hcaes(x=date, y=ltn),
-      color=pal[[2]], lineWidth=2, marker=list(symbol="circle")) %>%
-    hc_add_series(dt, type="line", name="Trend", hcaes(x=date, y=trend),
-      color=pal[["orange"]], lineWidth=2, marker=list(symbol="circle")) %>%
-    
-    hc_add_series(flag, type="flags",
-      hcaes(x=date, y=value, title=sprintf('%s %s (%s %s)', label, year, comma(value), unit)),
-      color=pal[["black"]], fillColor=pal[["light"]], 
-      shape="squarepin", showInLegend=FALSE) %>%
-    
-    hc_legend(enabled=TRUE, align="right") %>%
-    hc_tooltip(valueSuffix=unit, shared=TRUE) %>%
-    hc_xAxis(type="datetime", plotBands=xBands) %>%
-    hc_yAxis(min=yrange[1], max=yrange[2]) %>%
-    hc_rangeSelector(enabled=(freq>1), inputEnabled=FALSE) %>%
-    hc_navigator(enabled=FALSE) %>%
-    hc_scrollbar(enabled=FALSE) %>%
-    hc_chart(zoomType="x") %>%
-    hc_themed(...)
-}
-
-```
-
-```{r}
-
-plot_profile <- function(data, unit=NA, yrange=NULL, ...) {
-  
-  # Label years  
-  ymax = data[, max(year(date_start))]
-  
-  dt = data[, .(
-    date = as.Date(min(format(date_start, "2021-%m-%d"))),
-    value = mean(value, na.rm=T),
-    sd = sd(value, na.rm=T),
-    # Highlight past 3 years
-    value_1 = mean(fifelse(year==max(year)-0, value, NA_real_), na.rm=T),
-    value_2 = mean(fifelse(year==max(year)-1, value, NA_real_), na.rm=T),
-    value_3 = mean(fifelse(year==max(year)-2, value, NA_real_), na.rm=T)
-  ), by=.(iso3, month)][, `:=`(
-    ymin = value-sd,
-    ymax = value+sd
-  )]
-  
-  yrange = if(missing(yrange)) dt[, range(value, rm=T)] else yrange
-  
-  # Monthly bands
-  xBands = lapply(dt[, seq(as.Date(min(date)), as.Date(max(date)), by="month")], 
-    function(x) list(
-      from = datetime_to_timestamp(x),
-      to = datetime_to_timestamp(ceiling_date(x, unit="month")-1),
-      color = c("transparent", alpha(pal[["light"]], .4))[1+odd(month(x))]
-    ))
-  
-  highchart2(type="stock") %>%
-    hc_add_dependency("modules/stock.js") %>%
-    hc_chart(zoomType="x") %>%
-    hc_add_series(dt, type="arearange",
-      hcaes(x=date, low=ymin, high=ymax), name="+/- Std. Dev.",
-      color=pal[[2]], fillOpacity=.1, marker=list(enabled=FALSE)) %>%
-    
-    hc_add_series(dt, type="column", hcaes(x=date, y=value_3), name=ymax-2,
-      color=alpha(pal[["orange"]], .3)) %>%
-    hc_add_series(dt, type="column", hcaes(x=date, y=value_2), name=ymax-1,
-      color=alpha(pal[["orange"]], .6)) %>%
-    hc_add_series(dt, type="column", hcaes(x=date, y=value_1), name=ymax-0,
-      color=alpha(pal[["orange"]], .9)) %>%
-    
-    hc_add_series(dt, type="line", hcaes(x=date, y=value), name="LTN",
-      color=pal[[2]], lineWidth=3, marker=list(enabled=TRUE)) %>%
-    
-    hc_tooltip(valueSuffix=unit) %>%
-    hc_legend(enabled=TRUE, align="right") %>%
-    hc_xAxis(type="datetime", dateTimeLabelFormats=list(month="%e %b"),
-      plotBands=xBands) %>%
-    hc_yAxis(min=yrange[1], max=yrange[2]) %>%    
-    hc_rangeSelector(enabled=FALSE, inputEnabled=FALSE) %>%
-    hc_navigator(enabled=FALSE) %>%
-    hc_scrollbar(enabled=FALSE) %>%    
-    hc_themed(...)
-  
-}
-
-```
 
 # Water Availability
+
+Using a dependency graph to show agriculture vs. non-ag uses (or other flow allocations).
+
+```{r}
+plot_wheel(iso3="ken",
+  title="System Water Uses",
+  subtitle="Kenya 2003-2017")
+```
+
+Using small multiples to show agriculture vs. non-ag uses (or other allocations).
+
+```{r}
+
+```
 
 ## Basin Closure
 
 (ratio of utilized flow[^s1]/net inflow[^s1])
 
-```{r, layout="l-screen"}
-
+```{r}
 # Verify data periodicity
 data[, .N, by=.(sheet, period)]
-# => seasonal series are not ingested
+```
 
+Note that seasonal time-series have not been ingested yet, but will be available in the dashboard.
+
+```{r}
 # Yearly
 dt <- data[id %in% c("utilized_flow", "net_inflow") & period=="year"]
 dt <- dcast(dt, ...~id)[, value := 100 * utilized_flow / net_inflow]
@@ -191,7 +70,8 @@ plot_ts(dt, name="Pct. basin closure", unit="%",
 
 ```{r, layout="l-screen"}
 
-tot_pop <- 1280000
+# Basin population from config
+tot_pop <- ISO3[["ken"]]$population
 
 # Yearly
 dt <- data[id %in% c("consumed_water") & period=="year"]
@@ -211,18 +91,19 @@ plot_profile(dt, unit="km³",
   title="Mara Basin Per Capita Water Consumption", subtitle="Kenya 2003-2017 (km³)")
 ```
 
+Shows entire period stats and 3 most recent years (can also be polar, see below).
 
-## Available for further use
+
+## Water Available for Further Use
 
 (utilizable outflow[^s1])
 
-```{r, layout="l-screen"}
-
+```{r}
 # Yearly
 dt <- data[id %in% c("utilized_flow") & period=="year"]
-dt <- dcast(dt, ...~id)[, value := utilized_flow]
+dt <- dcast(dt, ...~id)[, value := 1000 * utilized_flow]
 
-plot_ts(dt, name="Utilizable Outflow", unit="km³",
+plot_ts(dt, name="Utilizable Outflow", unit="MCM",
   title="Mara Basin Utilizable Outflow", subtitle="Kenya 2003-2017 (km³)")
 ```
 
@@ -234,15 +115,10 @@ plot_ts(dt, name="Utilizable Outflow", unit="km³",
 (ratio of agricultural ET[^s2]/water consumed[^s1])
 
 ```{r}
-
-
-
+plot_wheel(iso3="ken")
 ```
 
-```{r, layout="l-screen", eval=FALSE}
-# Verify periodicity
-data[sheet=="sheet2", .N, by=period]
-
+```{r, eval=FALSE}
 # Yearly time-series
 dt <- data[id %in% c("consumed_water", "agriculture") & period=="year"]
 dt <- dcast(dt, ...~id)[, value := 100 * agriculture / consumed_water]
@@ -251,7 +127,7 @@ plot_ts(dt, unit="%",
   title="Agricultural water use", subtitle="Kenya - 2003 - 2017 (%)")
 ```
 
-```{r, layout="l-screen", eval=FALSE}
+```{r, eval=FALSE}
 # Monthly
 dt <- data[id %in% c("consumed_water", "agriculture") & period=="month"]
 dt <- dcast(dt, ...~id)[, value := 100 * agriculture / consumed_water]
@@ -265,7 +141,7 @@ plot_profile(dt, unit="%",
 
 (percentage of time (months in the time series) during which environmental flows are not met) – Manohar/Mansoor to advise calculation from CSV WA output).
 
-<span class="bg-warning">Note sure whether to use 0 (zero) as a threshold or a low value (e.g. < 5%).</span>
+<span class="bg-warning">We use a low threshold value (e.g. < 0.05). More details to follow.</span>
 
 ```{r, layout="l-screen"}
 threshold = 0.05
@@ -281,7 +157,8 @@ dt <- dcast(dt, ...~id)[, value := rowSums(cbind(env_o, nav_o, com_o), na.rm=T)
 
 plot_ts(dt, name="Insuffient Flow", unit="%",
   title="Mara Basin - Environmental Stress", 
-  subtitle=sprintf("Kenya 2003-2017 (%% of months in period below %s)", percent(threshold))
+  subtitle=sprintf("Kenya 2003-2017 (%% of months in period below %s km³)", 
+    threshold)
 )
 ```
 
@@ -290,20 +167,30 @@ plot_ts(dt, name="Insuffient Flow", unit="%",
 
 ## Precipitation 
 
-(inter and intra annual min and max over the time series)
+(inter and intra-annual min and max over the time series)
 
-```{r, layout="l-screen"}
+<p class="bg-warning">Add option in dashboard for users to toggle units between volume and height.<p>
+
+```{r}
 # Monthly
-dt <- data[id %in% c("rainfall") & period=="month"]
+dt <- data[id=="rainfall" & period=="month"]
 dt <- dcast(dt, ...~id)[, value := rainfall]
 
 plot_ts(dt, name="Precipitation", unit="m³",
   title="Precipitation", subtitle="Kenya 2003-2017 (km³ / month)")
 ```
 
-```{r, layout="l-screen"}
+```{r}
 # Monthly profile
 plot_profile(dt, unit="km³",
+  title="Precipitation", subtitle="Kenya 2003-2017 (km³ / month)")
+```
+
+Intra-annual variability can also be shown as a polar chart:
+
+```{r, layout="l-screen"}
+# Monthly profile
+plot_profile(dt, unit="km³", polar=T,
   title="Precipitation", subtitle="Kenya 2003-2017 (km³ / month)")
 ```
 

@@ -4,7 +4,7 @@
 }
 @font-face {
   src: url("./font/dm-serif-text.woff2");
-  font-family: "DM Serif Text";
+  font-family: "dm-serif-text";
 }
 
 .navbar {
