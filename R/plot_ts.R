@@ -85,7 +85,7 @@ plot_ts <- function(data, name=NA, unit=NA, yrange=NULL, ...) {
 
 #' Plot time-series intra-annual variability (highcharts)
 #'
-#' @param data data.table to plot with columns `date` and `value` (will use `date_end`
+#' @param data data.table to plot with columns `date` and `value` (will use `date_start`
 #'   if `date` is missing)
 #' @param unit display unit
 #' @param yrange user supplied y-axis range
@@ -105,7 +105,7 @@ plot_ts <- function(data, name=NA, unit=NA, yrange=NULL, ...) {
 plot_profile <- function(data, unit=NA, yrange=NULL, polar=FALSE, ...) {
 
   dt = copy(data)
-  if(!"date" %in% names(dt)) setnames(dt, "date_end", "date", skip_absent=TRUE)
+  if(!"date" %in% names(dt)) setnames(dt, "date_start", "date", skip_absent=TRUE)
   setorder(dt, date)
 
   # Label years

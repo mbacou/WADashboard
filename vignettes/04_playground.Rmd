@@ -30,20 +30,6 @@ data <- DATA[iso3=="ken"]
 
 # Water Availability
 
-Using a dependency graph to show agriculture vs. non-ag uses (or other flow allocations).
-
-```{r}
-plot_wheel(iso3="ken",
-  title="System Water Uses",
-  subtitle="Kenya 2003-2017")
-```
-
-Using small multiples to show agriculture vs. non-ag uses (or other allocations).
-
-```{r}
-
-```
-
 ## Basin Closure
 
 (ratio of utilized flow[^s1]/net inflow[^s1])
@@ -114,8 +100,18 @@ plot_ts(dt, name="Utilizable Outflow", unit="MCM",
 
 (ratio of agricultural ET[^s2]/water consumed[^s1])
 
+Using a dependency graph to show agriculture vs. non-ag uses (or other flow allocations).
+
 ```{r}
-plot_wheel(iso3="ken")
+plot_wheel(iso3="ken",
+  title="System Water Uses",
+  subtitle="Kenya 2003-2017")
+```
+
+Using small multiples to show agriculture vs. non-ag uses (or other allocations).
+
+```{r}
+
 ```
 
 ```{r, eval=FALSE}
