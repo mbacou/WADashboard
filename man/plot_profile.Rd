@@ -4,7 +4,14 @@
 \alias{plot_profile}
 \title{Plot time-series intra-annual variability (highcharts)}
 \usage{
-plot_profile(data, unit = NA, yrange = NULL, polar = FALSE, ...)
+plot_profile(
+  data,
+  unit = NA,
+  yrange = NULL,
+  polar = FALSE,
+  unit.threshold = 10,
+  ...
+)
 }
 \arguments{
 \item{data}{data.table to plot with columns \code{date} and \code{value} (will use \code{date_start}
@@ -15,6 +22,8 @@ if \code{date} is missing)}
 \item{yrange}{user supplied y-axis range}
 
 \item{polar}{use polar (circular) axis}
+
+\item{unit.threshold}{maximum threshold to convert from km³ to MCM unit (default: 10 km³)}
 
 \item{...}{
   Arguments passed on to \code{\link[=hc_themed]{hc_themed}}
@@ -38,5 +47,6 @@ Plot time-series intra-annual variability (highcharts)
 \examples{
 dt <- DATA[iso3=="ken" & id=="rainfall" & period=="month"]
 plot_profile(dt, unit="km³")
+plot_profile(dt, unit="km³", polar=TRUE)
 
 }

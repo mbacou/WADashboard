@@ -98,7 +98,7 @@ hc_themed <- function(
         dataLabels = list(enabled=TRUE, pointFormat="{point.value:,.0f}")
       ),
       solidgauge = list(
-        dataLabels = list(enabled=TRUE, pointFormat="{series.name}"),
+        dataLabels = list(enabled=TRUE),
         stickyTracking=FALSE
       )
     ),

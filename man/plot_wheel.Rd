@@ -4,7 +4,15 @@
 \alias{plot_wheel}
 \title{Plot dependency wheel (highcharts)}
 \usage{
-plot_wheel(data = NULL, iso3 = names(ISO3), unit = NA, icon = NULL, ...)
+plot_wheel(
+  data = NULL,
+  iso3 = names(ISO3),
+  subset = NULL,
+  unit = NA,
+  icon = NULL,
+  subtitle,
+  ...
+)
 }
 \arguments{
 \item{data}{(optional) data with columns \code{from}, \code{to}, \code{weight}}
@@ -15,18 +23,22 @@ plot_wheel(data = NULL, iso3 = names(ISO3), unit = NA, icon = NULL, ...)
 
 \item{icon}{optional vector of FA icon names (e.g. \code{tint})}
 
+\item{subtitle}{chart subtitle}
+
 \item{...}{
   Arguments passed on to \code{\link[=hc_themed]{hc_themed}}
   \describe{
     \item{\code{hc}}{a highchart object}
     \item{\code{title}}{chart title}
-    \item{\code{subtitle}}{chart subtitle}
     \item{\code{label}}{optional annotation}
     \item{\code{base_font}}{default font for all chart elements}
     \item{\code{axes}}{show axes (default: TRUE)}
     \item{\code{exporting}}{include chart export menu (default: TRUE)}
     \item{\code{credits}}{include credits (default: FALSE)}
   }}
+
+\item{filter}{character expression to filter data (else averages over the entire data
+range)}
 }
 \description{
 Plot dependency wheel (highcharts)

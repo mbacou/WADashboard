@@ -66,12 +66,15 @@ plot_ts <- function(data, name=NA, unit=NA, yrange=NULL, unit.threshold=10, ...)
   )]
 
   highchart(type="stock") %>%
-    hc_add_series(dt, type="line", name=name, hcaes(x=date, y=value),
+    hc_add_series(dt, type="line", hcaes(x=date, y=value),
+      name=sprintf('%s (%s)', name, unit),
       color=alpha(pal[[1]], switch(as.character(freq), `1`=.8, 1)),
       lineWidth=switch(as.character(freq), `1`=3, 1)) %>%
-    hc_add_series(dt, type="line", name=sprintf('LTN (%s)', unit), hcaes(x=date, y=ltn),
+    hc_add_series(dt, type="line", hcaes(x=date, y=ltn),
+      name=sprintf('LTN (%s)', unit),
       color=pal[[2]], lineWidth=2, marker=list(symbol="circle")) %>%
-    hc_add_series(dt, type="line", name=trend, hcaes(x=date, y=trend),
+    hc_add_series(dt, type="line", hcaes(x=date, y=trend),
+      name=trend,
       color=pal[["orange"]], lineWidth=2, marker=list(symbol="circle")) %>%
 
     hc_add_series(flag, type="flags",
@@ -81,7 +84,7 @@ plot_ts <- function(data, name=NA, unit=NA, yrange=NULL, unit.threshold=10, ...)
 
     hc_legend(enabled=TRUE, align="right") %>%
     hc_tooltip(valueSuffix=unit, shared=TRUE) %>%
-    hc_xAxis(type="datetime", plotBands=xBands) %>%
+    hc_xAxis(type="datetime", dateTimeLabelFormats=list(month="%Y %b"), plotBands=xBands) %>%
     hc_yAxis(min=yrange[1], max=yrange[2]+0.03*diff(yrange)) %>%
     hc_rangeSelector(enabled=(freq>1), inputEnabled=FALSE) %>%
     hc_navigator(enabled=FALSE) %>%
@@ -140,7 +143,7 @@ plot_profile <- function(data, unit=NA, yrange=NULL, polar=FALSE, unit.threshold
   )]
 
   # Monthly bands
-  xBands = lapply(dt[, seq.Date(min(date), max(date), by="3 months")],
+  xBands = lapply(dt[, seq.Date(min(date), max(date), by="month")],
     function(x) list(
       from = datetime_to_timestamp(x),
       to = datetime_to_timestamp(ceiling_date(x, unit="month")-1),
@@ -160,7 +163,8 @@ plot_profile <- function(data, unit=NA, yrange=NULL, polar=FALSE, unit.threshold
     hc_add_series(dt, type="column", hcaes(x=date, y=value_1), name=ymax-0,
       color=alpha(pal[["orange"]], .9)) %>%
 
-    hc_add_series(dt, type="line", hcaes(x=date, y=value), name=sprintf('LTN (%s)', unit),
+    hc_add_series(dt, type="line", hcaes(x=date, y=value),
+      name=sprintf('LTN (%s)', unit),
       color=pal[[2]], lineWidth=3, marker=list(enabled=TRUE)) %>%
 
     hc_tooltip(valueSuffix=paste("", unit)) %>%

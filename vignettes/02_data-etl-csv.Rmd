@@ -211,10 +211,10 @@ setnames(ken_1_y, tolower(names(ken_1_y))) %>%
 
 ## Sheet #2
 
-Then we extract Sheet #2 yearly and monthly variables (this is a breakdown of evapotranspiration by land use classes):
+Then we extract Sheet #2 yearly, seasonal, and monthly variables (this is a breakdown of evapotranspiration by land use classes):
 
 ```{r}
-f <- data[iso3=="ken" & period %in% c("year", "month") & sheet=="sheet2" & !is.na(year)]
+f <- data[iso3=="ken" & period %in% c("year", "season", "month") & sheet=="sheet2" & !is.na(year)]
 ken_2 <- lapply(1:nrow(f), function(x) fread(f[x, path])[, `:=`(
   iso3 = f[x, iso3],
   sheet = f[x, sheet],
@@ -253,13 +253,11 @@ ken_2[period=="month" & class %in% ken_2[, unique(class)][1]] %>%
 
 ## Sheet #3
 
-We inspect results for Sheet #3 "Agriculture Services". In the Kenya analysis, variables for Sheet #3 to Sheet #6 are available as yearly, seasonal, and/or monthly time-series (across multiple CSV files). The yearly and seasonal files include 1 variable per file. The monthly files include several levels (1.0 to 72.0)[^fn2].
+We inspect results for Sheet #3 "Agriculture Services". In the Kenya analysis, variables for Sheet #3 to Sheet #6 are available as yearly, seasonal, and/or monthly time-series (across multiple CSV files). The yearly and seasonal files include 1 variable per file. The monthly files include several levels (1.0 to 72.0)[^fn2]. Variables tagged with "35.0" and "54.0" refer to different land use categories.
 
 [^fn2]: Check with the authors.
 
 We (arbitrarily) gather all the **seasonal** time-series[^fn1] below:
-
-[^fn1]: What is the difference between variables tagged with "35.0" and "54.0" (e.g. `sheet3_35.0_et_depth_season.csv` and `sheet3_54.0_et_depth_season.csv`)?
 
 ```{r}
 f <- data[iso3=="ken" & sheet=="sheet3" & period %in% c("season") & str_detect(file, "54.0")]
@@ -316,40 +314,54 @@ setcolorder(cube,
 
 ```
 
-For consistency's sake, we encode `date_start` and `date_end` in all sheets (incl. yearly and monthly variables):
+For consistency's sake, we encode `date_start` and `date_end` in all sheets (incl. yearly and monthly variables) using the following date conventions:
 
 ```{r}
 
-cube[is.na(date_start) & is.na(month), `:=`(
+cube[period=="year", `:=`(
   # yearly series: 1/1 to 12/31
   date_start = as.IDate(paste(year, 1, 1), "%Y %m %d"),
   date_end = as.IDate(paste(year, 12, 31), "%Y %m %d")
-)][is.na(date_start) & !is.na(month), `:=`(
+)][period=="month", `:=`(
   # monthly series: 1/1 to 1/31
   date_start = as.IDate(paste(year, month, 1), "%Y %m %d"),
   date_end = ceiling_date(as.IDate(paste(year, month, 20), "%Y %m %d"), "months") - days(1)
 )]
 
-#saveRDS(cube, "./data-raw/rds/data.rds")
+#saveRDS(cube, "../data-raw/rds/data.rds")
 
 ```
 
 At this point the generated data cube includes the following dimensions and measures:
 
-`r paste("*", names(cube), collapse="\n")`
+```{r, results='asis'}
+paste("*", names(cube), collapse="\n")
+```
+
+And the following periodicity:
+
+```{r}
+# Verify periodicity
+cube[year==max(year), .N, by=.(iso3, sheet, period, year, month, date_start, date_end)] %>%
+  paged_table()
+```
 
 
 # Calculated Measures
 
-Another ETL step is required to map the variable codes used in the data files to their visual representation in the WA+ Sheets (SVG designs).
+Another ETL step is required to map the variable codes used in the data files to their visual representation in the WA+ Sheets (SVG designs). Importantly many SVG elements are **fields calculated** from output variables. We might need to replicate that logic as part of the ETL process[^fn3].
+
+[^fn3]: This is not an ideal approach, we'd rather avoid replicating any hydrological model logic in the visualization layer, and instead export all modeled variables. TBD for a future version.
 
 ```{r, out.width="33%", fig.width=3, fig.show="hold"}
 knitr::include_graphics(file.path("./fig", list.files("./fig")))
 ```
 
-This mapping is embedded in the WA+ `print_sheet` Python module, (e.g. [Sheet 1](https://github.com/wateraccounting/WAPORWA/blob/master/modules/WA/sheet1.py) in the WAPORWA repo). Importantly many SVG elements are **fields calculated** from output variables. We might need to replicate that logic as part of the ETL process[^fn3].
+This mapping is embedded in the WA+ `sheet{n}_functions` Python modules inside the [WA_hydroloop](https://github.com/wateraccounting/WA_Hyperloop) repo:
 
-[^fn3]: This is not an ideal approach, we'd rather avoid replicating any hydrological model logic in the visualization layer, and instead export all modeled variables. TBD for a future version.
+* [Sheet 1 formulas](https://github.com/wateraccounting/WA_Hyperloop/blob/master/sheet1_functions/sheet1_functions.py)
+* [Sheet 2 formulas](https://github.com/wateraccounting/WA_Hyperloop/blob/master/sheet2_functions/sheet2_functions.py)
+
 
 ## Sheet #1
 
@@ -357,20 +369,20 @@ Field mappings and field formulas for Sheet #1 are constructed per the list show
 
 ```{r}
 s1 <- fread(system.file("./data-raw/csv/sheet_1_schema.csv", package="WADashboard"))
-s1[, .SD, .SDcols=-c(1,7)] %>% paged_table()
+s1[, .SD, .SDcols=-c(1,8)] %>% paged_table()
 ```
 
-Apply mapping:
-
 ```{r}
-# Check for NA in data cube
+# Check for NA in data cube before applying formulas
 cube[is.na(value), .N, by=.(iso3, sheet, year, month, variable)] %>% paged_table()
 ```
 
-There are 24 variables with missing values in Sheet #3, we leave them as-is for now.
+There are 24 variables with missing values in Sheet #3, we ignore them for now.
+
+Apply variable map:
 
 ```{r}
-# Add unique variable ID to data cube based on S1 mapping
+# Add unique variable ID to data cube based on S1 map
 cube[s1, on=.(sheet, class, subclass, variable), id := i.id]
 
 # Verify
@@ -391,11 +403,11 @@ s1[!id %in% names(cube_1), id]
 # saveRDS(cube_1, "../data-raw/rds/data_sheet_1.rds")
 ```
 
-Note that placeholder `Q SW outlet` on Sheet #1 and `land_et` variable in the code need clarification.
+<p class="bg-warning">Note that placeholder `Q SW outlet` on Sheet #1 and `land_et` variable in the code need clarification.</p>
 
 ## Sheet #2
 
-We proceed similarly for mapping fields in Sheet #2 and Sheet #3. Sheet #2 is a breakdown of ET and T into 280 use classes. Note that we don't have exact formulas to calculate aggregated measures on this sheet (but can be inferred from the SVG design).
+We proceed similarly for mapping fields in Sheet #2 and Sheet #3. Sheet #2 is a breakdown of ET and T into 280 use classes.
 
 ```{r}
 cube_2 <- cube[sheet=="sheet2"][, id := NULL]
@@ -430,7 +442,7 @@ s2 <- cube_2[, .N, by=.(class, subclass, variable)
       subclass=="Residential", "residential",
       subclass=="Greenhouses", "greenhouses",
       subclass=="Indoor domestic", "idomestic",
-      subclass=="Indoor industry", "iiindustry",
+      subclass=="Indoor industry", "iindustry",
       subclass=="Livestock and husbandry", "livestock",
       subclass=="Power and energy", "powerandenergy",
       subclass=="Forest plantations", "forest",
@@ -469,28 +481,28 @@ s2 <- cube_2[, .N, by=.(class, subclass, variable)
 s2[, .N, by=id][N>1]
 ```
 
-Apply mapping:
+Apply variable map:
 
 ```{r}
-# Add unique variable ID to data cube based on S2 mapping
+# Add unique variable ID to data cube based on S2 map above
 cube_2[s2, on=.(sheet, class, subclass, variable), id := i.id]
 
 # Verify that all Sheet #2 fields have been mapped
 s2[!id %in% cube_2[, unique(id)], id]
 
-# Aggregate measure by flow type
+# Aggregate measures by flow type
 vars_1 <- cube_2[, .(value = sum(value, ba.rm=T)
 ), by=.(sheet, iso3, year, month, period, date_start, date_end, variable)]
 
-# Aggregate measure by top 4 land use class
+# Aggregate measures by top 4 land use class
 vars_2 <- cube_2[variable %in% c("et", "transpiration"), .(value = sum(value, na.rm=T)
 ), by=.(sheet, iso3, year, month, period, date_start, date_end, class, variable)]
 
 # Total ET
-vars_3 <- cube_2[variable %in% c("et"), .(value = sum(value, ba.rm=T)
-),by=.(sheet, iso3, year, month, period, date_start, date_end, variable)]
+vars_3 <- cube_2[variable %in% c("et"), .(value = sum(value, na.rm=T)
+), by=.(sheet, iso3, year, month, period, date_start, date_end, variable)]
 
-# Make unique IDs
+# Make additional unique IDs for these calculated fields
 vars_1 <- dcast(vars_1, sheet+iso3+period+date_start+date_end+year+month~variable)
 vars_3 <- dcast(vars_3, sheet+iso3+period+date_start+date_end+year+month~variable)
 vars_2[, `:=`(
@@ -533,13 +545,6 @@ Below is a final variable catalog for Sheet #2.
 s2 <- fread(system.file("./data-raw/csv/sheet_2_schema.csv", package="WADashboard"))
 s2[, .SD, .SDcols=-c(1)] %>% paged_table()
 ```
-
-And we plot some of the aggregate time-series for Kenya.
-
-```{r}
-
-```
-
 
 ## Sheet #3
 

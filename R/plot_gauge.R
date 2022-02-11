@@ -131,8 +131,12 @@ plot_wheel <- function(data=NULL, iso3=names(ISO3), subset=NULL,
       to = dt[c(2,3,4), group],
       weight = dt[c(2,3,4), pct]
     )][, `:=`(
-      from = sprintf('<span class="fa fa-%s">%s</span>', icon[.I], from),
-      to =  sprintf('<span class="fa fa-%s">%s</span>', icon[.I], to)
+      from = sprintf(
+        '<span class="lead"><i class="fa fa-%s fa-lg"></i><br/>%s</span>',
+        icon[.I], from),
+      to =  sprintf(
+        '<span class="lead"><i class="fa fa-%s fa-lg"></i><br/>%s</span>',
+        icon[.I], to)
     )]
 
   } else {
@@ -145,9 +149,10 @@ plot_wheel <- function(data=NULL, iso3=names(ISO3), subset=NULL,
       hcaes(from=toupper(from), to=toupper(to), weight=weight),
       borderWidth=1, borderColor="#fff", fillAlpha=.2,
       startAngle=180, linkOpacity=.2,
-      dataLabels=list(enabled=TRUE, color=pal[["black"]])
+      dataLabels=list(enabled=TRUE, color=pal[["black"]], useHTML=TRUE)
     ) %>%
 
+    hc_xAxis(format="{value:.1f}%", useHTML=TRUE) %>%
     hc_subtitle(align="center", verticalAlign="middle", useHTML=TRUE) %>%
     hc_tooltip(pointFormat="{point.to}<br/>{point.weight:.1f}%") %>%
     hc_themed(...)

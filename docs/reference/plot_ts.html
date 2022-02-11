@@ -60,7 +60,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">plot_ts</span><span class="op">(</span><span class="va">data</span>, name <span class="op">=</span> <span class="cn">NA</span>, unit <span class="op">=</span> <span class="cn">NA</span>, yrange <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">plot_ts</span><span class="op">(</span><span class="va">data</span>, name <span class="op">=</span> <span class="cn">NA</span>, unit <span class="op">=</span> <span class="cn">NA</span>, yrange <span class="op">=</span> <span class="cn">NULL</span>, unit.threshold <span class="op">=</span> <span class="fl">10</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -74,6 +74,8 @@ if <code>date</code> is missing)</p></dd>
 <dd><p>display unit</p></dd>
 <dt>yrange</dt>
 <dd><p>manual y-axis range</p></dd>
+<dt>unit.threshold</dt>
+<dd><p>maximum threshold to convert from km³ to MCM unit (default: 10 km³)</p></dd>
 <dt>...</dt>
 <dd><p>Arguments passed on to <code><a href="hc_themed.html">hc_themed</a></code></p><dl><dt><code>hc</code></dt>
 <dd><p>a highchart object</p></dd>
