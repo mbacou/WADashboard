@@ -5,6 +5,7 @@
 #' @param name series' display name
 #' @param unit display unit
 #' @param yrange manual y-axis range
+#' @param unit.threshold maximum threshold to convert from km³ to MCM unit (default: 10 km³)
 #' @inheritDotParams hc_themed
 #'
 #' @import data.table
@@ -17,11 +18,16 @@
 #' @examples
 #'
 #' @export
-plot_ts <- function(data, name=NA, unit=NA, yrange=NULL, ...) {
+plot_ts <- function(data, name=NA, unit=NA, yrange=NULL, unit.threshold=10, ...) {
 
   dt = copy(data)
   if(!"date" %in% names(dt)) setnames(dt, "date_end", "date", skip_absent=TRUE)
   setorder(dt, date)
+
+  if(dt[, .(unit)=="km³" & (max(value, na.rm=T) < unit.threshold)]) {
+    dt[, value := 1000* value]
+    unit = "MCM"
+  }
 
   dt[, `:=`(
     # Running mean
@@ -33,10 +39,12 @@ plot_ts <- function(data, name=NA, unit=NA, yrange=NULL, ...) {
 
   tr = if(freq>1) {
     # Loess trend component
+    trend = "trend (loess)"
     ts = ts(dt[, value], frequency=freq)
     stl(ts, "periodic")[[1]][, "trend"]
   } else {
     # Linear trend
+    trend = "trend (linear)"
     predict(lm(value~date, dt))
   }
 
@@ -61,9 +69,9 @@ plot_ts <- function(data, name=NA, unit=NA, yrange=NULL, ...) {
     hc_add_series(dt, type="line", name=name, hcaes(x=date, y=value),
       color=alpha(pal[[1]], switch(as.character(freq), `1`=.8, 1)),
       lineWidth=switch(as.character(freq), `1`=3, 1)) %>%
-    hc_add_series(dt, type="line", name="LTN", hcaes(x=date, y=ltn),
+    hc_add_series(dt, type="line", name=sprintf('LTN (%s)', unit), hcaes(x=date, y=ltn),
       color=pal[[2]], lineWidth=2, marker=list(symbol="circle")) %>%
-    hc_add_series(dt, type="line", name="Trend", hcaes(x=date, y=trend),
+    hc_add_series(dt, type="line", name=trend, hcaes(x=date, y=trend),
       color=pal[["orange"]], lineWidth=2, marker=list(symbol="circle")) %>%
 
     hc_add_series(flag, type="flags",
@@ -74,7 +82,7 @@ plot_ts <- function(data, name=NA, unit=NA, yrange=NULL, ...) {
     hc_legend(enabled=TRUE, align="right") %>%
     hc_tooltip(valueSuffix=unit, shared=TRUE) %>%
     hc_xAxis(type="datetime", plotBands=xBands) %>%
-    hc_yAxis(min=yrange[1], max=yrange[2]+0.02*diff(yrange) ) %>%
+    hc_yAxis(min=yrange[1], max=yrange[2]+0.03*diff(yrange)) %>%
     hc_rangeSelector(enabled=(freq>1), inputEnabled=FALSE) %>%
     hc_navigator(enabled=FALSE) %>%
     hc_scrollbar(enabled=FALSE) %>%
@@ -90,6 +98,7 @@ plot_ts <- function(data, name=NA, unit=NA, yrange=NULL, ...) {
 #' @param unit display unit
 #' @param yrange user supplied y-axis range
 #' @param polar use polar (circular) axis
+#' @param unit.threshold maximum threshold to convert from km³ to MCM unit (default: 10 km³)
 #' @inheritDotParams hc_themed
 #'
 #' @import data.table
@@ -103,11 +112,16 @@ plot_ts <- function(data, name=NA, unit=NA, yrange=NULL, ...) {
 #' plot_profile(dt, unit="km³", polar=TRUE)
 #'
 #' @export
-plot_profile <- function(data, unit=NA, yrange=NULL, polar=FALSE, ...) {
+plot_profile <- function(data, unit=NA, yrange=NULL, polar=FALSE, unit.threshold=10, ...) {
 
   dt = copy(data)
   if(!"date" %in% names(dt)) setnames(dt, "date_start", "date")
   setorder(dt, date)
+
+  if(dt[, .(unit)=="km³" & (max(value, na.rm=T) < unit.threshold)]) {
+    dt[, value := 1000* value]
+    unit = "MCM"
+  }
 
   # Label years
   ymax = dt[, max(year(date))]
@@ -126,7 +140,7 @@ plot_profile <- function(data, unit=NA, yrange=NULL, polar=FALSE, ...) {
   )]
 
   # Monthly bands
-  xBands = lapply(dt[, seq.Date(min(date), max(date), by="month")],
+  xBands = lapply(dt[, seq.Date(min(date), max(date), by="3 months")],
     function(x) list(
       from = datetime_to_timestamp(x),
       to = datetime_to_timestamp(ceiling_date(x, unit="month")-1),
@@ -137,7 +151,7 @@ plot_profile <- function(data, unit=NA, yrange=NULL, polar=FALSE, ...) {
     hc_chart(zoomType="x", polar=polar) %>%
     hc_add_series(dt, type="arearange",
       hcaes(x=date, low=ymin, high=ymax), name="+/- Std. Dev.",
-      color=pal[[2]], fillOpacity=.1, marker=list(enabled=FALSE)) %>%
+      color=pal[[2]], marker=list(enabled=FALSE)) %>%
 
     hc_add_series(dt, type="column", hcaes(x=date, y=value_3), name=ymax-2,
       color=alpha(pal[["orange"]], .3)) %>%
@@ -146,13 +160,14 @@ plot_profile <- function(data, unit=NA, yrange=NULL, polar=FALSE, ...) {
     hc_add_series(dt, type="column", hcaes(x=date, y=value_1), name=ymax-0,
       color=alpha(pal[["orange"]], .9)) %>%
 
-    hc_add_series(dt, type="line", hcaes(x=date, y=value), name="LTN",
+    hc_add_series(dt, type="line", hcaes(x=date, y=value), name=sprintf('LTN (%s)', unit),
       color=pal[[2]], lineWidth=3, marker=list(enabled=TRUE)) %>%
 
-    hc_tooltip(valueSuffix=unit) %>%
+    hc_tooltip(valueSuffix=paste("", unit)) %>%
     hc_legend(enabled=TRUE, align="right") %>%
     hc_xAxis(type="datetime", dateTimeLabelFormats=list(month="%b"),
       plotBands=xBands, labels=list(step=1)) %>%
+    hc_yAxis(opposite=TRUE, showFirstLabel=!polar) %>%
     hc_themed(...)
 }
 

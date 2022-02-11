@@ -83,25 +83,32 @@ plot_gauge <- function(iso3=names(ISO3), unit="km3", ...) {
 #'
 #' @param data (optional) data with columns `from`, `to`, `weight`
 #' @param iso3 basin ISO3 country code (see [ISO3])
+#' @param filter character expression to filter data (else averages over the entire data
+#'   range)
 #' @param unit display unit
 #' @param icon optional vector of FA icon names (e.g. `tint`)
+#' @inheritParams  hc_themed
 #' @inheritDotParams hc_themed
 #'
 #' @examples
 #' plot_wheel(iso3="ken")
 #'
 #' @export
-plot_wheel <- function(data=NULL, iso3=names(ISO3), unit=NA, icon=NULL, ...) {
+plot_wheel <- function(data=NULL, iso3=names(ISO3), subset=NULL,
+  unit=NA, icon=NULL, subtitle, ...) {
 
   iso = match.arg(iso3)
+  subset = if(missing(subset)) TRUE else parse(text=subset)
+  subtitle = if(missing(subtitle)) NA else
+    sprintf('<span class="lead bg-dark text-white p-2">%s</span>', subtitle)
   prd = ""
 
   dt = if(missing(data)) {
 
     # Agricultural breakdown for selected ISO3
-    dt = DATA[iso3==iso & period=="year"
-      & id %in% c("agriculture", "economy", "energy", "environment",
-        "leisure", "net_inflow", "outflow")]
+    dt = DATA[iso3==iso & period=="year" & eval(subset) &
+        id %in% c("agriculture", "economy", "energy", "environment",
+          "leisure", "net_inflow", "outflow")]
 
     prd = dt[, paste(range(year), collapse="-")]
     dt = dt[, .(value = mean(value, na.rm=T)), by=.(id)
@@ -141,6 +148,7 @@ plot_wheel <- function(data=NULL, iso3=names(ISO3), unit=NA, icon=NULL, ...) {
       dataLabels=list(enabled=TRUE, color=pal[["black"]])
     ) %>%
 
+    hc_subtitle(align="center", verticalAlign="middle", useHTML=TRUE) %>%
     hc_tooltip(pointFormat="{point.to}<br/>{point.weight:.1f}%") %>%
     hc_themed(...)
 }

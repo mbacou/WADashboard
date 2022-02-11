@@ -32,7 +32,8 @@ data <- DATA[iso3=="ken"]
 
 ## Basin Closure
 
-(ratio of utilized flow[^s1]/net inflow[^s1])
+`(1 – (outflow[^s1] / gross inflow[^s1])) * 100`
+
 
 ```{r}
 # Verify data periodicity
@@ -43,8 +44,8 @@ Note that seasonal time-series have not been ingested yet, but will be available
 
 ```{r}
 # Yearly
-dt <- data[id %in% c("utilized_flow", "net_inflow") & period=="year"]
-dt <- dcast(dt, ...~id)[, value := 100 * utilized_flow / net_inflow]
+dt <- data[id %in% c("outflow", "gross_inflow") & period=="year"]
+dt <- dcast(dt, ...~id)[, value := 100 * (1 - (outflow / gross_inflow))]
 
 plot_ts(dt, name="Pct. basin closure", unit="%",
   title="Mara Basin Closure", subtitle="Kenya 2003-2017 (%)")
@@ -52,7 +53,9 @@ plot_ts(dt, name="Pct. basin closure", unit="%",
 
 ## Availability per Capita
 
-(ratio of consumed[^s1]/population[^ext])
+(available water[^s1] / population[^ext])
+
+<span class="bg-warning">Note: `available_water` as `exploitable_water - non_uti - reserved_outflow` is negative. shall we use `consumed_water` or another definition?</span>
 
 ```{r, layout="l-screen"}
 
@@ -60,8 +63,8 @@ plot_ts(dt, name="Pct. basin closure", unit="%",
 tot_pop <- ISO3[["ken"]]$population
 
 # Yearly
-dt <- data[id %in% c("consumed_water") & period=="year"]
-dt <- dcast(dt, ...~id)[, value := 1E9 * consumed_water / tot_pop]
+dt <- data[id %in% c("exploitable_water", "reserved_outflow") & period=="year"]
+dt <- dcast(dt, ...~id)[, value := 1E9 * (exploitable_water) / tot_pop]
 
 plot_ts(dt, name="Per Capita  Water Consumption", unit="m³",
   title="Mara Basin Per Capita Water Consumption", subtitle="Kenya 2003-2017 (m³)")
@@ -69,12 +72,11 @@ plot_ts(dt, name="Per Capita  Water Consumption", unit="m³",
 
 ```{r, layout="l-screen"}
 # Monthly profile
+dt <- data[id %in% c("exploitable_water") & period=="month"]
+dt <- dcast(dt, ...~id)[, value := 1E9 * exploitable_water / tot_pop]
 
-dt <- data[id %in% c("consumed_water") & period=="month"]
-dt <- dcast(dt, ...~id)[, value := 1E9 * consumed_water / tot_pop]
-
-plot_profile(dt, unit="km³",
-  title="Mara Basin Per Capita Water Consumption", subtitle="Kenya 2003-2017 (km³)")
+plot_profile(dt, unit="m³",
+  title="Mara Basin Per Capita Water Consumption", subtitle="Kenya 2003-2017 (m³)")
 ```
 
 Shows entire period stats and 3 most recent years (can also be polar, see below).
@@ -98,26 +100,36 @@ plot_ts(dt, name="Utilizable Outflow", unit="MCM",
 
 ## Agricultural water use 
 
-(ratio of agricultural ET[^s2]/water consumed[^s1])
-
 Using a dependency graph to show agriculture vs. non-ag uses (or other flow allocations).
 
-```{r, out.height="340px"}
-plot_wheel(iso3="ken",
+```{r, out.width="50%", fig.show='hold'}
+plot_wheel(iso3="ken", subset="date_end=='2003-12-31'",
   title="System Water Uses",
-  subtitle="Kenya 2003-2017")
+  subtitle="Kenya 2003")
+
+plot_wheel(iso3="ken", subset="date_end=='2017-12-31'",
+  title="System Water Uses",
+  subtitle="Kenya 2017")
 ```
 
-Using small multiples to show agriculture vs. non-ag uses (or other allocations).
+`((Managed water use[^s2] – non ag classes[^s2]) / water consumed[^s1])`
 
-```{r}
+With `Non ag classes = (settlements + residential + industry + indoor domestic + indoor industry + power + energy + all_others)`
 
-```
+<span class="bg-warning">Note: verify definition of `all others` classes.</span>
 
 ```{r, eval=FALSE}
 # Yearly time-series
-dt <- data[id %in% c("consumed_water", "agriculture") & period=="year"]
-dt <- dcast(dt, ...~id)[, value := 100 * agriculture / consumed_water]
+dt <- data[id %in% c("malu_et", "consumed_water") | 
+    (id %like% "settlement") | (id %like% "residential") | (id %like% "industry") |
+    (id %like% "domestic") | (id %like% "power") | (id %like% "others")
+    & period=="year"]
+
+dt <- dcast(dt, ...~id)[, value := 100 * malu_et,
+    - molu_settlements_et - malu_residential_et - 
+    - malu_industry_et - malu_iiindustry_et -
+    - malu_idomestic_et - malu_powerandenergy_et -
+    - malu_others1_et - malu_others2_et, -molu_others_et), na.rm=T) / consumed_water]
 
 plot_ts(dt, unit="%",
   title="Agricultural water use", subtitle="Kenya - 2003 - 2017 (%)")
@@ -172,22 +184,20 @@ plot_ts(dt, name="Insuffient Flow", unit="%",
 dt <- data[id=="rainfall" & period=="month"]
 dt <- dcast(dt, ...~id)[, value := rainfall]
 
-plot_ts(dt, name="Precipitation", unit="m³",
-  title="Precipitation", subtitle="Kenya 2003-2017 (km³ / month)")
+plot_ts(dt, name="Precipitation", unit="km³",
+  title="Precipitation", subtitle="Kenya 2003-2017 (MCM / month)")
 ```
 
 ```{r}
-# Monthly profile
 plot_profile(dt, unit="km³",
-  title="Precipitation", subtitle="Kenya 2003-2017 (km³ / month)")
+  title="Precipitation", subtitle="Kenya 2003-2017 (MCM / month)")
 ```
 
 Intra-annual variability can also be shown as a polar chart:
 
 ```{r, out.height="500px"}
-# Monthly profile
 plot_profile(dt, unit="km³", polar=T,
-  title="Precipitation", subtitle="Kenya 2003-2017 (km³ / month)")
+  title="Precipitation", subtitle="Kenya 2003-2017 (MCM / month)")
 ```
 
 
