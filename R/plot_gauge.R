@@ -81,80 +81,75 @@ plot_gauge <- function(iso3=names(ISO3), unit="km3", ...) {
 
 #' Plot dependency wheel (highcharts)
 #'
-#' @param data (optional) data with columns `from`, `to`, `weight`
-#' @param iso3 basin ISO3 country code (see [ISO3])
-#' @param filter character expression to filter data (else averages over the entire data
-#'   range)
+#' @param data (optional) data with columns `from`, `to`, `weight`, `color` and `icon`
+#'   (e.g. "tint")
 #' @param unit display unit
-#' @param icon optional vector of FA icon names (e.g. `tint`)
-#' @inheritParams  hc_themed
+#' @param colors ordered color palette
+#' @pparam icons named vector of icon names
+#' @param rot start angle
+#' @inheritParams hc_themed
 #' @inheritDotParams hc_themed
 #'
 #' @examples
-#' plot_wheel(iso3="ken")
+#' plot_wheel(dt)
 #'
 #' @export
-plot_wheel <- function(data=NULL, iso3=names(ISO3), subset=NULL,
-  unit=NA, icon=NULL, subtitle, ...) {
+plot_wheel <- function(data, unit=NA, colors=pal, icons=NA, rot=180, subtitle, ...) {
 
-  iso = match.arg(iso3)
-  subset = if(missing(subset)) TRUE else parse(text=subset)
+  colors = unname(colors)
   subtitle = if(missing(subtitle)) NA else
     sprintf('<span class="lead bg-dark text-white p-2">%s</span>', subtitle)
-  prd = ""
+  if("color" %in% names(dt)) dt[, color := unname(color)]
 
-  dt = if(missing(data)) {
-
-    # Agricultural breakdown for selected ISO3
-    dt = DATA[iso3==iso & period=="year" & eval(subset) &
-        id %in% c("agriculture", "economy", "energy", "environment",
-          "leisure", "net_inflow", "outflow")]
-
-    prd = dt[, paste(range(year), collapse="-")]
-    dt = dt[, .(value = mean(value, na.rm=T)), by=.(id)
-    ][, group := fcase(
-      id=="agriculture", "agriculture",
-      id=="net_inflow", "inflow",
-      id=="outflow", "outflow",
-      id=="leisure", "non-agriculture",
-      id=="economy", "non-agriculture",
-      id=="energy", "non-agriculture",
-      id=="environment", "non-agriculture"
-    )][, .(value=sum(value, na.rm=T)), keyby=.(group)
-    ][c(2,3,1,4)
-    ][, `:=`(pct = 100*value/dt[1, value])]
-
-    icon = rep("tint", 4)
-
-    dt[, .(
-      from = dt[c(1,1,1), group],
-      to = dt[c(2,3,4), group],
-      weight = dt[c(2,3,4), pct]
-    )][, `:=`(
-      from = sprintf(
-        '<span class="lead"><i class="fa fa-%s fa-lg"></i><br/>%s</span>',
-        icon[.I], from),
-      to =  sprintf(
-        '<span class="lead"><i class="fa fa-%s fa-lg"></i><br/>%s</span>',
-        icon[.I], to)
-    )]
-
-  } else {
-    # Use data provided as-is
-    data
-  }
+  dt = copy(data)[, `:=`(
+    from = sprintf(
+      '<span><i class="fa fa-%s fa-lg"></i><br/>%s</span>',
+      icons[from], toupper(from)),
+    to =  sprintf(
+      '<span><i class="fa fa-%s fa-lg"></i><br/>%s</span>',
+      icons[to], toupper(to))
+  )]
 
   highchart() %>%
     hc_add_series(dt, type="dependencywheel",
-      hcaes(from=toupper(from), to=toupper(to), weight=weight),
       borderWidth=1, borderColor="#fff", fillAlpha=.2,
-      startAngle=180, linkOpacity=.2,
+      startAngle=rot, linkOpacity=.2, colors=colors,
       dataLabels=list(enabled=TRUE, color=pal[["black"]], useHTML=TRUE)
     ) %>%
 
     hc_xAxis(format="{value:.1f}%", useHTML=TRUE) %>%
     hc_subtitle(align="center", verticalAlign="middle", useHTML=TRUE) %>%
     hc_tooltip(pointFormat="{point.to}<br/>{point.weight:.1f}%") %>%
+    hc_themed(...)
+}
+
+
+#' Plot Sankey (highcharts)
+#'
+#' @param data (optional) data with columns `from`, `to`, `weight` and `color`
+#' @param unit display unit
+#' @param colors ordered color palette
+#' @inheritDotParams hc_themed
+#'
+#' @examples
+#' plot_sankey(dt)
+#'
+#' @export
+plot_sankey <- function(data, unit=NA, colors=pal, ...) {
+
+  dt <- copy(data)
+  colors = unname(colors)
+  if("color" %in% names(dt)) dt[, color := unname(color)]
+
+  highchart() %>%
+    hc_add_series(data, type="sankey",
+      borderWidth=1, borderColor="#fff", fillAlpha=.2,
+      linkOpacity=.2, colors=colors,
+      dataLabels=list(enabled=TRUE, color=pal[["black"]], useHTML=TRUE)
+    ) %>%
+
+    hc_xAxis(format="{value:.1f}", useHTML=TRUE) %>%
+    hc_tooltip(pointFormat="{point.to}<br/>{point.weight:.1f}") %>%
     hc_themed(...)
 }
 

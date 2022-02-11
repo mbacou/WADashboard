@@ -98,18 +98,6 @@ plot_ts(dt, name="Utilizable Outflow", unit="MCM",
 
 ## Agricultural water use 
 
-Using a dependency graph to show water allocation between agriculture and non-ag uses (or other breakdowns).
-
-```{r, out.width="40%", fig.show='hold'}
-plot_wheel(iso3="ken", subset="period=='year' & year==2003",
-  title="System Water Uses",
-  subtitle="2003")
-
-plot_wheel(iso3="ken", subset="period=='year' & year==2017",
-  title="System Water Uses",
-  subtitle="2017")
-```
-
 ((managed water use[^s2] – non-ag ET[^s2]) / water consumed[^s1])
 
 ```{r}
@@ -128,7 +116,7 @@ dt <- dcast(dt, year+month+date_end+date_start~id)[, value := 100 * (
 ) / consumed_water]
 
 plot_ts(dt, name="Ag. water use", unit="%",
-  title="Agricultural water use", subtitle="2003 - 2017 (% of consumption)")
+  title="Agricultural water use", subtitle="2003-2017 (% of consumption)")
 ```
 
 ```{r}
@@ -147,10 +135,52 @@ dt <- dcast(dt, year+month+date_end+date_start~id)[, value := 100 * (
 ) / consumed_water]
 
 plot_profile(dt, name="Ag. water use", unit="%",
-  title="Agricultural water use", subtitle="2003 - 2017 (%)")
+  title="Agricultural water use", subtitle="2003-2017 (%)")
 ```
 
-Using a dependency graph to show ET allocation across land use categories.
+Using a dependency graph to show water allocation between agricultural and non-ag. uses (or other breakdowns).
+
+```{r, out.width="40%"}
+ag <- c("Irrigated crops", "Livestock and husbandry", "Greenhouses", 
+  "Forest plantations", "Rainfed crops")
+
+dt <- data[period=="year" & year==2017 &
+    ((sheet=="sheet2" & id %like% "_et") | (sheet=="sheet1" & id %in% c("outflow")))
+][META, on=.(id), `:=`(
+  from = i.class,
+  to = fcase(i.subclass %in% ag, "agriculture", default = "non-agriculture")
+)][from != ""
+][from=="OUTFLOW", to := "outflow"
+][, from := "inflow"][, .(weight = sum(value, na.rm=T)), by=.(from, to)
+][, `:=`(
+  weight = 100 * weight/sum(weight, na.rm=T),
+  color = pal[c("navy", "green", "orange")]
+)]
+
+plot_wheel(dt, rot=180, 
+  colors=pal[c("blue", "navy", "green", "orange")],
+  icons=c(`inflow`="tint", `agriculture`="envira", 
+    `outflow`="faucet", `non-agriculture`="industry"),
+  title="System Water Uses",
+  subtitle="2017 (% allocation")
+```
+
+Using a Sankey graph to show ET allocation across land use categories.
+
+```{r}
+dt <- data[sheet=="sheet2" & period=="year" & year==2017 & id %like% "_et"
+][META, on=.(id), `:=`(
+  from = str_to_title(i.class),
+  to = str_to_title(i.subclass)
+)][from != "", .(weight = sum(value, na.rm=T)), by=.(from, to)
+][, `:=`(
+  weight = 100 * weight/sum(weight, na.rm=T)
+)]
+
+plot_sankey(dt, 
+  title="Evapotranspiration",
+  subtitle="2017 (% allocation)")
+```
 
 
 ## Environmental Stress 
