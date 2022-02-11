@@ -32,7 +32,7 @@ plot_ts <- function(data, name=NA, unit=NA, yrange=NULL, unit.threshold=10, ...)
   dt[, `:=`(
     # Running mean
     ltn = cumsum(value)/1:.N
-  )]
+  ), by=month(date)]
 
   # Infer periodicity (1=year, 2=season, 12=month, 36=dekad)
   freq = dt[, .N, by=year(date)][1, N]
@@ -83,9 +83,9 @@ plot_ts <- function(data, name=NA, unit=NA, yrange=NULL, unit.threshold=10, ...)
       shape="squarepin", showInLegend=FALSE) %>%
 
     hc_legend(enabled=TRUE, align="right") %>%
-    hc_tooltip(valueSuffix=unit, shared=TRUE) %>%
+    hc_tooltip(valueSuffix=paste("", unit)) %>%
     hc_xAxis(type="datetime", dateTimeLabelFormats=list(month="%Y %b"), plotBands=xBands) %>%
-    hc_yAxis(min=yrange[1], max=yrange[2]+0.03*diff(yrange)) %>%
+    #hc_yAxis(min=yrange[1], max=yrange[2]+0.03*diff(yrange)) %>%
     hc_rangeSelector(enabled=(freq>1), inputEnabled=FALSE) %>%
     hc_navigator(enabled=FALSE) %>%
     hc_scrollbar(enabled=FALSE) %>%

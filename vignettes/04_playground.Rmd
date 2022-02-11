@@ -15,18 +15,16 @@ vignette: >
 .pagedtable-header-name { overflow: unset; }
 ```
 
-Collection of visuals for WA Dashboard. Variable codes and definitions are in this [shared catalog](https://docs.google.com/spreadsheets/d/13c8t2JgA2QK_YZ6OgI9o0JJcnuq90WOeipzNxS1HPow/edit?usp=sharing).
-
 ```{r, message=FALSE, echo=FALSE}
 library(rmarkdown)
 library(shiny)
 
 # Load this development package
 devtools::load_all(".")
-
 data <- DATA[iso3=="ken"]
 ```
 
+Collection of visuals for WA Dashboard. Variable codes and definitions are in this [shared catalog](https://docs.google.com/spreadsheets/d/13c8t2JgA2QK_YZ6OgI9o0JJcnuq90WOeipzNxS1HPow/edit?usp=sharing).
 
 # Water Availability
 
@@ -39,8 +37,6 @@ data <- DATA[iso3=="ken"]
 # Verify data periodicity
 data[, .N, by=.(sheet, period)]
 ```
-
-Note that seasonal time-series have not been ingested yet, but will be available in the dashboard.
 
 ```{r}
 # Yearly
@@ -90,7 +86,7 @@ dt <- data[id %in% c("utilized_flow") & period=="year"]
 dt <- dcast(dt, ...~id)[, value := 1000 * utilized_flow]
 
 plot_ts(dt, name="Utilizable Outflow", unit="MCM",
-  title="Mara Basin Utilizable Outflow", subtitle="2003-2017 (km³)")
+  title="Mara Basin Utilizable Outflow", subtitle="2003-2017")
 ```
 
 
@@ -144,6 +140,7 @@ Using a dependency graph to show water allocation between agricultural and non-a
 ag <- c("Irrigated crops", "Livestock and husbandry", "Greenhouses", 
   "Forest plantations", "Rainfed crops")
 
+# (convoluted)
 dt <- data[period=="year" & year==2017 &
     ((sheet=="sheet2" & id %like% "_et") | (sheet=="sheet1" & id %in% c("outflow")))
 ][META, on=.(id), `:=`(
@@ -223,19 +220,19 @@ dt <- data[id=="rainfall" & period=="month"]
 dt <- dcast(dt, ...~id)[, value := rainfall]
 
 plot_ts(dt, name="Precipitation", unit="km³",
-  title="Precipitation", subtitle="2003-2017 (MCM / month)")
+  title="Precipitation", subtitle="2003-2017")
 ```
 
 ```{r}
 plot_profile(dt, unit="km³",
-  title="Precipitation", subtitle="2003-2017 (MCM / month)")
+  title="Precipitation", subtitle="2003-2017")
 ```
 
 Intra-annual variability can also be shown as a polar chart:
 
 ```{r, out.height="500px"}
 plot_profile(dt, unit="km³", polar=T,
-  title="Precipitation", subtitle="2003-2017 (MCM / month)")
+  title="Precipitation", subtitle="2003-2017")
 ```
 
 
