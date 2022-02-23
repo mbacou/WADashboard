@@ -7,9 +7,9 @@
 plot_profile(
   data,
   unit = NA,
-  yrange = NULL,
   polar = FALSE,
   unit.threshold = 10,
+  subtitle = NULL,
   ...
 )
 }
@@ -19,18 +19,17 @@ if \code{date} is missing)}
 
 \item{unit}{display unit}
 
-\item{yrange}{user supplied y-axis range}
-
 \item{polar}{use polar (circular) axis}
 
 \item{unit.threshold}{maximum threshold to convert from km³ to MCM unit (default: 10 km³)}
+
+\item{subtitle}{chart subtitle}
 
 \item{...}{
   Arguments passed on to \code{\link[=hc_themed]{hc_themed}}
   \describe{
     \item{\code{hc}}{a highchart object}
     \item{\code{title}}{chart title}
-    \item{\code{subtitle}}{chart subtitle}
     \item{\code{label}}{optional annotation}
     \item{\code{base_font}}{default font for all chart elements}
     \item{\code{axes}}{show axes (default: TRUE)}

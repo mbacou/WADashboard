@@ -113,13 +113,12 @@ plot_wheel <- function(data, unit=NA, colors=pal, icons=NA, rot=180, subtitle, .
   highchart() %>%
     hc_add_series(dt, type="dependencywheel",
       borderWidth=1, borderColor="#fff", fillAlpha=.2,
-      startAngle=rot, linkOpacity=.2, colors=colors,
-      dataLabels=list(enabled=TRUE, color=pal[["black"]], useHTML=TRUE)
+      startAngle=rot, linkOpacity=.2, colors=colors, name="",
+      dataLabels=list(enabled=TRUE, color=pal[["black"]])
     ) %>%
 
-    hc_xAxis(format="{value:.1f}%", useHTML=TRUE) %>%
     hc_subtitle(align="center", verticalAlign="middle", useHTML=TRUE) %>%
-    hc_tooltip(pointFormat="{point.to}<br/>{point.weight:.1f}%") %>%
+    hc_tooltip(pointFormat="{point.to}<br/>{point.weight:,.1f}%") %>%
     hc_themed(...)
 }
 
@@ -144,12 +143,12 @@ plot_sankey <- function(data, unit=NA, colors=pal, ...) {
   highchart() %>%
     hc_add_series(data, type="sankey",
       borderWidth=1, borderColor="#fff", fillAlpha=.2,
-      linkOpacity=.2, colors=colors,
+      linkOpacity=.2, colors=colors, name="",
       dataLabels=list(enabled=TRUE, color=pal[["black"]], useHTML=TRUE)
     ) %>%
 
     hc_xAxis(format="{value:.1f}", useHTML=TRUE) %>%
-    hc_tooltip(pointFormat="{point.to}<br/>{point.weight:.1f}") %>%
+    hc_tooltip(pointFormat="{point.to}<br/>{point.weight:,.1f}") %>%
     hc_themed(...)
 }
 

@@ -75,7 +75,7 @@ hc_themed <- function(
       arearange = list(
         lineWidth = 0,
         fillOpacity = .2,
-        marker = list(enabled=FALSE, radius=3)
+        marker = list(enabled=FALSE, radius=3, symbol="circle")
       ),
       pie = list(
         lineWidth = 0,

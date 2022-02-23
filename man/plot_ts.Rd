@@ -4,7 +4,15 @@
 \alias{plot_ts}
 \title{Plot hydrological time-series (highcharts)}
 \usage{
-plot_ts(data, name = NA, unit = NA, yrange = NULL, unit.threshold = 10, ...)
+plot_ts(
+  data,
+  name = NA,
+  unit = NA,
+  yrange = NULL,
+  unit.threshold = 10,
+  subtitle = NULL,
+  ...
+)
 }
 \arguments{
 \item{data}{data.table to plot with columns \code{date} and \code{value} (will use \code{date_end}
@@ -18,12 +26,13 @@ if \code{date} is missing)}
 
 \item{unit.threshold}{maximum threshold to convert from km³ to MCM unit (default: 10 km³)}
 
+\item{subtitle}{chart subtitle}
+
 \item{...}{
   Arguments passed on to \code{\link[=hc_themed]{hc_themed}}
   \describe{
     \item{\code{hc}}{a highchart object}
     \item{\code{title}}{chart title}
-    \item{\code{subtitle}}{chart subtitle}
     \item{\code{label}}{optional annotation}
     \item{\code{base_font}}{default font for all chart elements}
     \item{\code{axes}}{show axes (default: TRUE)}
