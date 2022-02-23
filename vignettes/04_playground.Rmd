@@ -314,7 +314,7 @@ highchart(type="stock") %>%
 
 ```
 
-<p class="bg-warning>Verify definitions of inflow and outflow above.</p>"
+<p class="bg-warning">Verify definitions of inflow and outflow above.</p>
 
 [^s1]: Indicator from resource base sheet
 [^ext]: Indicator from external database
