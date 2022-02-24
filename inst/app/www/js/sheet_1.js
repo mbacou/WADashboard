@@ -51,7 +51,6 @@ d3.xml("./svg/sheet_1.svg")
             "color" : d3.select(this).attr("fill")
             }, {priority: "event"}
           );
-        //console.log(d3.select(this).attr("d"));
       });
 
   obj
@@ -69,17 +68,16 @@ var root = svg.select(".sheet_1").select("svg");
 
   root
     .selectAll("rect")
-    .data(data)
+    .data(data, function(d) { return d ? "rect_"+d.id : this.id; })
     //.attr("height", d => 1000*d.value)
     .attr("var", d => d.id)
     .attr("value", d => d.value);
 
   root
     .selectAll("text[class=data]")
-    .data(data)
-    // will need to include data mapping here
-    .attr("text-anchor", "middle")
-    .text(d => d3.format("(.2f")(d.value));
+    .data(data, function(d) { return d ? "var_"+d.id : this.id; })
+    .text(d => d.value)
+    .attr("text-anchor", "middle");
 
 });
 

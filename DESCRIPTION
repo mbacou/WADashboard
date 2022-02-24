@@ -31,7 +31,8 @@ Imports:
   shinybusy,
   shinyWidgets (>= 0.6.2),
   stringr,
-  terra (>= 1.4-16)
+  terra (>= 1.4-16),
+  yaml
 Suggests:
   knitr
 Encoding: UTF-8

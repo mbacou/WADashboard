@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_gauge.R
 \name{plot_gauge}
 \alias{plot_gauge}
-\title{Plot radar charts}
+\title{Plot radial gauges (highcharts)}
 \usage{
 plot_gauge(iso3 = names(ISO3), unit = "km3", ...)
 }
@@ -21,7 +21,7 @@ plot_gauge(iso3 = names(ISO3), unit = "km3", ...)
   }}
 }
 \description{
-Plot radar charts
+Plot radial gauges (highcharts)
 }
 \examples{
 plot_gauge(iso3="ken")

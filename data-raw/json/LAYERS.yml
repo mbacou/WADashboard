@@ -1,0 +1,58 @@
+# List of external geospatial layers to display in the map viewer
+# - label: arbitrary
+# - url: root of WMS or tile server or URL template
+# - legend: URL template
+# - attr: attribution
+
+DEA:
+  label: Digital Earth Africa
+  url: https://ows.digitalearth.africa/
+  legend: https://ows.digitalearth.africa/
+  attr: DEA
+  layers: {}
+
+FAO:
+  label: FAO WaPOR GeoServer
+  url: https://io.apps.fao.org/geoserver/wms?
+  legend: https://io.apps.fao.org/geoserver/wms?request=GetLegendGraphic&format=image/png&layer=%s
+  info: Description
+  attr: FAO WaPOR
+  layers:
+    Basemaps:
+      Natural Earth: RICCAR:gray_hr_sr_w_3
+      Blue Marble: NASA:bluemarble_ls_sw_st
+    Basin Features:
+      Hydrological Basins: AQUAMAPS:hydrobasins_africa
+      Major Rivers: AQUAMAPS:rivers_africa
+      Total Population: WPOP:wpop_t
+    Land Cover:
+      Land Cover (annual) 100m: WAPOR_2:l2_lcc_a
+      Land Use - Niger (annual) 100m: WATER:niger_lus
+      Land Use - Nile (annual) 100m: WATER:nile_lus
+    Hydrology:
+      Precipitation (annual) 5km: WAPOR_2:l1_pcp_a
+      Precipitation Anomaly (monthly): NMME:fmpa
+      Evaporation (dekadal) 250m: WAPOR_2:l1_e_d
+      Evapotranspiration (dekadal) 250m: C3S:agera5_et0_d
+      Actual ET (annual) 100m: WAPOR_2:l2_aeti_a
+      # Incremental ET - Niger (monthly) 100m: WATER:niger_etincr
+      # Incremental ET - Nile (monthly) 100m: WATER:niger_etincr
+      Drought Intensity (dekadal): ASIS:di_d
+      Agricultural Stress Index (dekadal): ASIS:asi_d
+
+MAPTILER:
+  label: Maptiler raster basemaps
+  url: //api.maptiler.com/%s?key=%s
+  attr: OSM
+  layers:
+    default: maps/topo/{z}/{x}/{y}.png
+    hybrid: maps/hybrid/{z}/{x}/{y}.jpg
+    hillshade: tiles/hillshade/{z}/{x}/{y}.webp
+
+MAPTILERV:
+  label: Maptiler vector basemaps
+  url: //api.maptiler.com/tiles/%s/style.json?key=%s
+  attr: OSM
+  layers:
+    default: 42a84100-2300-4647-ba8f-a70afaf51946
+    topo: topo

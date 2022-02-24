@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_radar.R
 \name{plot_radar}
 \alias{plot_radar}
-\title{Plot radar charts}
+\title{Plot radar charts (highcharts)}
 \usage{
 plot_radar(iso3 = names(ISO3), ...)
 }
@@ -21,7 +21,7 @@ plot_radar(iso3 = names(ISO3), ...)
   }}
 }
 \description{
-Plot radar charts
+Plot radar charts (highcharts)
 }
 \examples{
 plot_radar(iso3="ken")

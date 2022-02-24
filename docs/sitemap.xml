@@ -19,6 +19,9 @@
     <loc>https://github.mbacou.io/WADashboard/articles/03_data-etl-netcdf.html</loc>
   </url>
   <url>
+    <loc>https://github.mbacou.io/WADashboard/articles/04_playground.html</loc>
+  </url>
+  <url>
     <loc>https://github.mbacou.io/WADashboard/articles/index.html</loc>
   </url>
   <url>
@@ -130,10 +133,16 @@
     <loc>https://github.mbacou.io/WADashboard/reference/plot_idx_mosaic.html</loc>
   </url>
   <url>
+    <loc>https://github.mbacou.io/WADashboard/reference/plot_profile.html</loc>
+  </url>
+  <url>
     <loc>https://github.mbacou.io/WADashboard/reference/plot_radar.html</loc>
   </url>
   <url>
     <loc>https://github.mbacou.io/WADashboard/reference/plot_rcp.html</loc>
+  </url>
+  <url>
+    <loc>https://github.mbacou.io/WADashboard/reference/plot_sankey.html</loc>
   </url>
   <url>
     <loc>https://github.mbacou.io/WADashboard/reference/plot_tick.html</loc>
@@ -145,7 +154,13 @@
     <loc>https://github.mbacou.io/WADashboard/reference/plot_ts.html</loc>
   </url>
   <url>
+    <loc>https://github.mbacou.io/WADashboard/reference/plot_tss.html</loc>
+  </url>
+  <url>
     <loc>https://github.mbacou.io/WADashboard/reference/plot_waterfall.html</loc>
+  </url>
+  <url>
+    <loc>https://github.mbacou.io/WADashboard/reference/plot_wheel.html</loc>
   </url>
   <url>
     <loc>https://github.mbacou.io/WADashboard/reference/scoreBox.html</loc>

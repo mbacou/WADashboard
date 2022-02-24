@@ -1,4 +1,4 @@
-#' Plot radar charts
+#' Plot radial gauges (highcharts)
 #'
 #' @param iso3
 #' @inheritDotParams hc_themed
@@ -76,5 +76,79 @@ plot_gauge <- function(iso3=names(ISO3), unit="km3", ...) {
       title = "System Water Uses",
       subtitle = prd)
 
+}
+
+
+#' Plot dependency wheel (highcharts)
+#'
+#' @param data (optional) data with columns `from`, `to`, `weight`, `color` and `icon`
+#'   (e.g. "tint")
+#' @param unit display unit
+#' @param colors ordered color palette
+#' @pparam icons named vector of icon names
+#' @param rot start angle
+#' @inheritParams hc_themed
+#' @inheritDotParams hc_themed
+#'
+#' @examples
+#' plot_wheel(dt)
+#'
+#' @export
+plot_wheel <- function(data, unit=NA, colors=pal, icons=NA, rot=180, subtitle, ...) {
+
+  colors = unname(colors)
+  subtitle = if(missing(subtitle)) NA else
+    sprintf('<span class="lead bg-dark text-white p-2">%s</span>', subtitle)
+  if("color" %in% names(dt)) dt[, color := unname(color)]
+
+  dt = copy(data)[, `:=`(
+    from = sprintf(
+      '<span><i class="fa fa-%s fa-lg"></i><br/>%s</span>',
+      icons[from], toupper(from)),
+    to =  sprintf(
+      '<span><i class="fa fa-%s fa-lg"></i><br/>%s</span>',
+      icons[to], toupper(to))
+  )]
+
+  highchart() %>%
+    hc_add_series(dt, type="dependencywheel",
+      borderWidth=1, borderColor="#fff", fillAlpha=.2,
+      startAngle=rot, linkOpacity=.2, colors=colors, name="",
+      dataLabels=list(enabled=TRUE, color=pal[["black"]])
+    ) %>%
+
+    hc_subtitle(align="center", verticalAlign="middle", useHTML=TRUE) %>%
+    hc_tooltip(pointFormat="{point.to}<br/>{point.weight:,.1f}%") %>%
+    hc_themed(...)
+}
+
+
+#' Plot Sankey (highcharts)
+#'
+#' @param data (optional) data with columns `from`, `to`, `weight` and `color`
+#' @param unit display unit
+#' @param colors ordered color palette
+#' @inheritDotParams hc_themed
+#'
+#' @examples
+#' plot_sankey(dt)
+#'
+#' @export
+plot_sankey <- function(data, unit=NA, colors=pal, ...) {
+
+  dt <- copy(data)
+  colors = unname(colors)
+  if("color" %in% names(dt)) dt[, color := unname(color)]
+
+  highchart() %>%
+    hc_add_series(data, type="sankey",
+      borderWidth=1, borderColor="#fff", fillAlpha=.2,
+      linkOpacity=.2, colors=colors, name="",
+      dataLabels=list(enabled=TRUE, color=pal[["black"]], useHTML=TRUE)
+    ) %>%
+
+    hc_xAxis(format="{value:.1f}", useHTML=TRUE) %>%
+    hc_tooltip(pointFormat="{point.to}<br/>{point.weight:,.1f}") %>%
+    hc_themed(...)
 }
 

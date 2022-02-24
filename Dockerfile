@@ -26,7 +26,7 @@ RUN \
   R -e "install.packages(c('remotes', 'gtools', 'TTR', \
   'sf', 'terra', 'data.table', 'bslib', 'r2d3', 'lubridate', 'scales', \
   'leaflet.extras', 'fresh', 'shinybusy', 'shinyWidgets', 'bs4Dash', \
-  'stringr', 'highcharter'), \
+  'stringr', 'highcharter', 'yaml'), \
   repos='https://packagemanager.rstudio.com/all/2022-02-01+Y3JhbiwyOjQ1MjYyMTU7NDU1MjVERTc')"
 
 # Install application R package from Github

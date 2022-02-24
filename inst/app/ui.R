@@ -17,7 +17,7 @@ footer <- fluidRow(class="bg-dark",
       Delft in partnership with the International Water Management Institute, the
       Food and Agriculture Organization of the United Nations, and the World Water
       Assessment Program."),
-    p(
+    p(class="small",
       HTML("&copy; IWMI"),
       paste(year(Sys.Date()), "All rights reserved.", sep=". "),
       a(class="text-white", "Terms of use.",
@@ -62,7 +62,7 @@ header <- fluidRow(class="pt-5 align-items-end shadow",
       div(class="col pb-3",
         tags$label(class="text-info", "Timespan"), br(),
         actionButton("btnRefresh", "-",
-          class="btn-outline-info btn-sm", width="8rem")
+          class="btn-outline-info btn-sm", width="9rem")
       ),
       div(class="col pl-2",
         radioGroupButtons("txtPeriod",
@@ -71,7 +71,7 @@ header <- fluidRow(class="pt-5 align-items-end shadow",
       ),
       div(class="col pl-2",
         radioGroupButtons("txtUnit",
-          span(class="text-info", "Flow units"), c("km³", "ft³", "MCM"),
+          span(class="text-info", "Volume units"), c("km³", "ft³", "MCM"),
           status="outline-info", justified=TRUE, size="sm", width="8rem")
       ),
       div(class="col pl-2 pb-3",
@@ -98,52 +98,53 @@ slider <- fluidRow(
 
 # Map ----
 map <- fluidRow(id="divMap", class="w-100 no-gutters collapse show",
-  column(8, style="height:20rem;",
+  column(8, style="height:22rem;",
     leafletOutput("map", width="100%", height="100%")
   ),
   column(4, class="waved3",
     navs_pill(
-      nav(title="Layers", icon=icon("layer-group"),
+      nav(title=span(class="small", "Layers"), icon=icon("layer-group"),
         fluidRow(class="no-gutters",
           column(12,
-            style="height:17.2rem; overflow:auto;",
+            style="height:19.2rem; overflow:auto;",
             accordion(id="accLayers",
+              # Pull FAO layers for now
               accordionItem(
-                title="Basin Features",
+                title=names(LAYERS[["FAO"]]$layers)[2],
                 icon=icon("caret-right"),
                 class="border-0", bg="white", collapsed=FALSE,
-                awesomeCheckboxGroup("chkLayer_1", NULL,
-                  choices=names(LAYERS[[2]]$layers[3:5]),
+                awesomeCheckboxGroup("chkLayer_2", NULL,
+                  choices=names(LAYERS[["FAO"]]$layers[[2]]),
                   status="info", width="100%")
               ),
               accordionItem(
-                title="Land Cover",
-                icon=icon("caret-right"),
-                class="border-0", bg="white", collapsed=TRUE,
-                awesomeCheckboxGroup("chkLayer_2", NULL,
-                  choices=names(LAYERS[[2]]$layers[15:17]),
-                  width="100%", status="info")
-              ),
-              accordionItem(
-                title="Hydrology",
+                title=names(LAYERS[["FAO"]]$layers)[3],
                 icon=icon("caret-right"),
                 class="border-0", bg="white", collapsed=TRUE,
                 awesomeCheckboxGroup("chkLayer_3", NULL,
-                  choices=names(LAYERS[[2]]$layers[6:14]),
+                  choices=names(LAYERS[["FAO"]]$layers[[3]]),
+                  width="100%", status="info")
+              ),
+              accordionItem(
+                title=names(LAYERS[["FAO"]]$layers)[4],
+                icon=icon("caret-right"),
+                class="border-0", bg="white", collapsed=TRUE,
+                awesomeCheckboxGroup("chkLayer_4", NULL,
+                  choices=names(LAYERS[["FAO"]]$layers[[4]]),
                   width="100%", status="info")
               )
             )
           )
         )
       ),
-      nav(title="Legend", icon=icon("palette"),
+      nav(title=span(class="small", "Legend"), icon=icon("palette"),
         column(12, class="bg-white",
-          style="height:17.2rem; overflow:auto;",
+          style="height:19.2rem; overflow:auto;",
           uiOutput("uiLegend"))
       ),
-      nav(title="Info", icon=icon("info-circle"),
+      nav(title=span(class="small", "Info"), icon=icon("info-circle"),
         column(12, class="pb-2 bg-white",
-          style="height:17.2rem; overflow:auto;",
+          style="height:19.2rem; overflow:auto;",
           uiOutput("uiInfo"))
       )
     )

@@ -94,10 +94,13 @@ function(input, output, session) {
           '%s <a href="%s"><i class="fa fa-external-link fa-fw"></i></a>', authorities, url),
         `area` = sprintf("%s ha", comma(area)),
         `population` = sprintf("%s", comma(`population`)),
-        `annual rainfall` = sprintf("%s mm", comma(`annual rainfall`)),
-        `annual ET` = sprintf("%s mm", comma(`annual ET`)),
         `irrigated area` = sprintf("%s ha", comma(`irrigated area`)),
-        `hydro power` = sprintf("%s GWh/year", comma(`hydro power`))
+        `hydro power` = sprintf("%s GWh/year", comma(`hydro power`)),
+        `annual rainfall` = dt()[id=="rainfall" & period=="year",
+          sprintf('%s %s', comma(mean(value, na.rm=T)), dt$unit)],
+        `annual ET` = dt()[id=="et" & period=="year",
+          sprintf('%s %s', comma(mean(value, na.rm=T)), dt$unit)]
+
       )]
       melt(dt, id.vars=1)[!variable %in% c("country", "admin", "water", "source", "url", "unit"), .(
         variable = sprintf('<span class="text-info">%s</span>', str_to_title(variable)),
@@ -113,7 +116,7 @@ function(input, output, session) {
 
   # Toggle map layers
   observe({
-    s$layers = c(input$chkLayer_1, input$chkLayer_2, input$chkLayer_3)
+    s$layers = c(input$chkLayer_2, input$chkLayer_3, input$chkLayer_4)
   })
 
   observeEvent(s$layers, ignoreInit=TRUE, {
@@ -166,7 +169,7 @@ function(input, output, session) {
   # Plots ----
   output$plot_ts = renderHighchart({
     req(s$var$var)
-    plot_ts(dt()[id==s$var$var], s$var$color)
+    plot_tss(dt()[id==s$var$var], s$var$color)
   })
 
   output$plot_gauge = renderHighchart({

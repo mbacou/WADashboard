@@ -38,7 +38,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">WADashboard</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.6</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -159,14 +159,14 @@
 <li>Edit 2 configuration files:
 <ul>
 <li>
-<a href="https://github.com/mbacou/WADashboard/blob/main/data-raw/json/ISO3.json" class="external-link">List of river basins</a><br>
+<a href="https://github.com/mbacou/WADashboard/blob/main/data-raw/json/ISO3.yml" class="external-link">List of river basins</a><br>
 </li>
-<li><a href="https://github.com/mbacou/WADashboard/blob/main/data-raw/json/LAYERS.json" class="external-link">Catalog of contextual geospatial layers</a></li>
+<li><a href="https://github.com/mbacou/WADashboard/blob/main/data-raw/json/LAYERS.yml" class="external-link">Catalog of 3rd party geospatial layers</a></li>
 </ul>
 </li>
-<li>Rebuild the R package and reinstall by executing <code>./build.sh</code>.</li>
+<li>Whenever you change the configuration files, you will need to rebuild the R package and reinstall by executing <code>./build.sh</code>.</li>
 </ol>
-<p>If you append a new river basin, make sure you can successfully ETL its data with <code>datat_etl("new_basin_code")</code> before rebuilding the package.</p>
+<p>If you append a new river basin, make sure you can successfully ETL its data with <code>datat_etl("new_basin_code")</code> before rebuilding the package (else it will fail to build explicitly).</p>
 </div>
 <div class="section level2">
 <h2 id="application-deployment">Application Deployment<a class="anchor" aria-label="anchor" href="#application-deployment"></a>

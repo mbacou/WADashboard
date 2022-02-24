@@ -56,17 +56,16 @@ hc_themed <- function(
     ),
     tooltip = list(
       enabled = TRUE, shared = TRUE, split = FALSE,
-      pointFormat = "{series.name}: <strong>{point.y:,.1f}</strong><br/>",
-      xDateFormat = "%Y-%m-%d",
-      dateTimeLabelFormats = "%Y-%m-%d",
-      valueDecimals = 2
+      pointFormat = "{series.name}<br/><strong>{point.y:,.1f}</strong><br/>",
+      xDateFormat = "%Y-%m-%d", dateTimeLabelFormats = "%Y-%m-%d", valueDecimals = 1,
+      style = list(color=pal[["black"]]), backgroundColor = pal[["light"]]
     ),
     plotOptions = list(
       series = list(
         opacity = .8,
         connectNulls = TRUE,
         marker = list(enabled=NA, radius=3, enabledThreshold=8),
-        dataLabels = list(enabled=NA, style=list(fontSize="11px"))
+        dataLabels = list(enabled=NA, style=list(fontSize="12px"))
       ),
       area = list(
         lineWidth = 0,
@@ -76,7 +75,7 @@ hc_themed <- function(
       arearange = list(
         lineWidth = 0,
         fillOpacity = .2,
-        marker = list(enabled=FALSE, radius=3)
+        marker = list(enabled=FALSE, radius=3, symbol="circle")
       ),
       pie = list(
         lineWidth = 0,
@@ -99,7 +98,7 @@ hc_themed <- function(
         dataLabels = list(enabled=TRUE, pointFormat="{point.value:,.0f}")
       ),
       solidgauge = list(
-        dataLabels = list(enabled=TRUE, pointFormat="{series.nane}"),
+        dataLabels = list(enabled=TRUE),
         stickyTracking=FALSE
       )
     ),
