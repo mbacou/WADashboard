@@ -164,7 +164,7 @@ tab_12 <- tagList(
 
 tab_13 <- tagList(
   h3(class="text-primary", "Basin Variability"),
-  highchartOutput("plot_radar", height="340px"),
+  highchartOutput("plot_radar", height="360px"),
   div(class="text-right",
     actionButton("btnScore", "Learn More", width="6rem", class="my-3")
   )
