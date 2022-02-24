@@ -60,18 +60,18 @@ header <- fluidRow(class="pt-5 align-items-end shadow",
   column(7,
     fluidRow(class="no-gutters float-md-right align-items-end",
       div(class="col pb-3",
-        tags$label(class="text-info", "Timespan"), br(),
+        tags$label(class="small text-info", "Timespan"), br(),
         actionButton("btnRefresh", "-",
           class="btn-outline-info btn-sm", width="9rem")
       ),
       div(class="col pl-2",
         radioGroupButtons("txtPeriod",
-          span(class="text-info", "Periodicity"), c("year", "season", "month"),
+          span(class="small text-info", "Periodicity"), c("year", "season", "month"),
           status="outline-info", justified=TRUE, size="sm")
       ),
       div(class="col pl-2",
         radioGroupButtons("txtUnit",
-          span(class="text-info", "Volume units"), c("km³", "ft³", "MCM"),
+          span(class="small text-info", "Volume units"), c("km³", "ft³", "MCM"),
           status="outline-info", justified=TRUE, size="sm", width="8rem")
       ),
       div(class="col pl-2 pb-3",
@@ -103,7 +103,7 @@ map <- fluidRow(id="divMap", class="w-100 no-gutters collapse show",
   ),
   column(4, class="waved3",
     navs_pill(
-      nav(title=span(class="small", "Layers"), icon=icon("layer-group"),
+      nav(title=span(class="small", "Map Layers"), icon=icon("layer-group"),
         fluidRow(class="no-gutters",
           column(12,
             style="height:19.2rem; overflow:auto;",
@@ -142,7 +142,7 @@ map <- fluidRow(id="divMap", class="w-100 no-gutters collapse show",
           style="height:19.2rem; overflow:auto;",
           uiOutput("uiLegend"))
       ),
-      nav(title=span(class="small", "Info"), icon=icon("info-circle"),
+      nav(title=span(class="small", "Layer Info"), icon=icon("info-circle"),
         column(12, class="pb-2 bg-white",
           style="height:19.2rem; overflow:auto;",
           uiOutput("uiInfo"))
@@ -285,7 +285,7 @@ page_5 <- fluidRow(class="border-top",
 )
 
 
-# Layout ----
+# Main Layout ----
 function() {
   page_navbar(
     id = "navPage",
