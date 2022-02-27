@@ -81,7 +81,7 @@ plot_gauge <- function(iso3=names(ISO3), unit="km3", ...) {
 
 #' Plot dependency wheel (highcharts)
 #'
-#' @param data (optional) data with columns `from`, `to`, `weight`, `color` and `icon`
+#' @param data data.frame with columns `from`, `to`, `weight`, `color` and `icon`
 #'   (e.g. "tint")
 #' @param unit display unit
 #' @param colors ordered color palette
@@ -91,6 +91,14 @@ plot_gauge <- function(iso3=names(ISO3), unit="km3", ...) {
 #' @inheritDotParams hc_themed
 #'
 #' @examples
+#' dt <- fread("
+#'   from, to, weight
+#'   sector 1, sector 2, 22
+#'   sector 1, sector 3, 40
+#'   sector 1, sector 4, 60
+#'   sector 2, sector 3, 50
+#' ")
+#'
 #' plot_wheel(dt)
 #'
 #' @export
@@ -101,13 +109,17 @@ plot_wheel <- function(data, unit=NA, colors=pal, icons=NA, rot=180, subtitle, .
     sprintf('<span class="lead bg-dark text-white p-2">%s</span>', subtitle)
   if("color" %in% names(dt)) dt[, color := unname(color)]
 
-  dt = copy(data)[, `:=`(
+  dt = copy(data)
+
+  if(!missing(icons)) dt[, icon := icons[from]
+  ][is.na(icon), icon := icons[to]
+  ][, `:=`(
     from = sprintf(
       '<span><i class="fa fa-%s fa-lg"></i><br/>%s</span>',
-      icons[from], toupper(from)),
+      icon, toupper(from)),
     to =  sprintf(
       '<span><i class="fa fa-%s fa-lg"></i><br/>%s</span>',
-      icons[to], toupper(to))
+      icon, toupper(to))
   )]
 
   highchart() %>%
@@ -118,12 +130,12 @@ plot_wheel <- function(data, unit=NA, colors=pal, icons=NA, rot=180, subtitle, .
     ) %>%
 
     hc_subtitle(align="center", verticalAlign="middle", useHTML=TRUE) %>%
-    hc_tooltip(pointFormat="{point.to}<br/>{point.weight:,.1f}%") %>%
+    hc_tooltip(pointFormat="{point.to}<br/>{point.weight:,.1f}") %>%
     hc_themed(...)
 }
 
 
-#' Plot Sankey (highcharts)
+#' Plot Sankey diagram (highcharts)
 #'
 #' @param data (optional) data with columns `from`, `to`, `weight` and `color`
 #' @param unit display unit

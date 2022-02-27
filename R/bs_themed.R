@@ -106,6 +106,8 @@ bs_themed <- function(
     bs_add_variables(
       .where =  "declarations",
 
+      `navbar-brand-padding-y` = "0.5rem",
+
       `body-bg` = "lighten($light, 4%)",
       `border-color` = "$light",
       `gray-100` = "lighten($light, 4%)",
