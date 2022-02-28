@@ -7,7 +7,7 @@
 bs_themed(
   base_font = "national-web-book",
   heading_font = "dm-serif-text",
-  font_size = 16,
+  font_size = 15,
   palette = pal,
   elevation = 0,
   rounded = FALSE,

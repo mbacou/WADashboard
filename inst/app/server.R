@@ -40,12 +40,18 @@ function(input, output, session) {
         dt()[, format(min(date_start), "%Y %b")], dt()[, format(max(date_end), "%Y %b")]))
     # Update periodicity
     updateRadioGroupButtons(session, "txtPeriod",
-      disabledChoices=dt()[sheet=="sheet1", setdiff(c("year", "season", "month"), unique(period))])
+      disabledChoices=dt()[sheet=="sheet1",
+        setdiff(c("year", "season", "month"), unique(period))])
+    # Update time slider
+    dt = dt()[sheet=="sheet1" & period=="year"]
+    updateSliderTextInput(session, "txtDate", NULL,
+      dt[order(date_end), format(unique(date_end), "%Y %b")],
+      selected=dt[, format(max(date_end), "%Y %b")])
   })
 
   observeEvent(input$txtPeriod, {
     # Update time slider
-    dt <- dt()[sheet=="sheet1"]
+    dt = dt()[sheet=="sheet1" & period==input$txtPeriod]
     updateSliderTextInput(session, "txtDate", NULL,
       dt[order(date_end), format(unique(date_end), "%Y %b")],
       selected=dt[, format(max(date_end), "%Y %b")])
@@ -84,11 +90,13 @@ function(input, output, session) {
   # Key facts ----
   output$tb_basin = renderTable(
     hover=T, spacing="xs", colnames=F, align="lr", width="100%", {
-      # Flatten list to data.table
+      # Flatten configuration list to data.table
       dt = lapply(ISO3[[s$iso3]],
-        function(x) if(is.character(x)) paste(x, collapse=", ") else x) %>%
+        function(x) switch(class(x),
+          `character` = paste(x, collapse=", "), `list` = NULL, x)
+      ) %>%
         as.data.table()
-      # Format
+      # Format entries
       dt[, `:=`(
         `authorities` = sprintf(
           '%s <a href="%s"><i class="fa fa-external-link fa-fw"></i></a>', authorities, url),
@@ -98,15 +106,23 @@ function(input, output, session) {
         `hydro power` = sprintf("%s GWh/year", comma(`hydro power`)),
         `annual rainfall` = dt()[id=="rainfall" & period=="year",
           sprintf('%s %s', comma(mean(value, na.rm=T)), dt$unit)],
-        `annual ET` = dt()[id=="et" & period=="year",
+        `annual evapotranspiration` = dt()[id=="et" & period=="year",
           sprintf('%s %s', comma(mean(value, na.rm=T)), dt$unit)]
 
       )]
-      melt(dt, id.vars=1)[!variable %in% c("country", "admin", "water", "source", "url", "unit"), .(
-        variable = sprintf('<span class="text-info">%s</span>', str_to_title(variable)),
-        value
-      )]
+      melt(dt, id.vars=1)[!variable %in%
+          c("country", "admin", "water", "source", "url", "unit", "description"), .(
+            variable = sprintf('<span class="text-info">%s</span>', str_to_title(variable)),
+            value
+          )]
     }
+  )
+
+  output$txt_basin = renderUI(
+    span(class="mx-4 small text-warning", toupper(ISO3[[s$iso3]][["label"]]))
+  )
+  output$txt_desc = renderUI(
+    p(ISO3[[s$iso3]][["description"]])
   )
 
   # Map ----
@@ -172,12 +188,14 @@ function(input, output, session) {
     plot_tss(dt()[id==s$var$var], s$var$color)
   })
 
-  output$plot_gauge = renderHighchart({
-    plot_gauge(iso3="ken")
+  output$plot_luc = renderHighchart({
+    plot_luc(s$iso3)
   })
 
-  output$plot_radar = renderHighchart({
-    plot_radar(iso3=s$iso3)
-  })
+  # About ----
+  output$tb_sources = renderTable(
+    hover=T, align="llccl", width="100%",
+    fread("./md/sources.csv")
+  )
 
 }

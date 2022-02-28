@@ -1,22 +1,19 @@
 #' Plot radial gauges (highcharts)
 #'
-#' @param iso3
+#' @param iso3 basin ISO3 code
 #' @inheritDotParams hc_themed
 #'
 #' @examples
-#' plot_gauge(iso3="ken")
+#' plot_gauge("ken", unit="km³")
 #'
 #' @export
-plot_gauge <- function(iso3=names(ISO3), unit="km3", ...) {
+plot_gauge <- function(iso3=names(ISO3), unit=NA, ...) {
 
   iso = match.arg(iso3)
   unit = paste("", unit)
-
   dt = DATA[iso3==iso & period=="year"
     & id %in% c("agriculture", "economy", "energy", "environment",
-      "leisure", "net_inflow", "outflow")
-  ]
-
+      "leisure", "net_inflow", "outflow")]
   prd = dt[, paste(range(year), collapse="-")]
 
   dt = dt[, .(value = mean(value, na.rm=T)), by=.(id)
@@ -43,49 +40,66 @@ plot_gauge <- function(iso3=names(ISO3), unit="km3", ...) {
     hc_chart(height="100%") %>%
     hc_pane(startAngle=0, endAngle=180,
       background=list(backgroundColor=alpha(pal[["light"]], .1))
-      # background=list(
-      #   list(
-      #     outerRadius="112%", innerRadius="89%", borderWidth=0,
-      #     backgroundColor=alpha(pal[[1]], .1)),
-      #   list(
-      #     outerRadius="86%", innerRadius="63%", borderWidth=0,
-      #     backgroundColor=alpha(pal[[2]], .1)),
-      #   list(
-      #     outerRadius="61%", innerRadius="38%", borderWidth=0,
-      #     backgroundColor=alpha(pal[[3]], .1)),
-      #   list(
-      #     outerRadius="36%", innerRadius="13%", borderWidth=0,
-      #     backgroundColor=alpha(pal[[4]], .1))
-      # )
     ) %>%
 
     hc_add_series(dt, type="solidgauge",
       hcaes(y=pct, color=color, radius=radius, innerRadius=innerRadius, group=group),
-      borderWidth=1, borderColor="#fff",
-      marker=list(enabled=TRUE)) %>%
+      name="Water Uses") %>%
 
     hc_yAxis(min=0, max=100, lineWidth=0, tickPositions=list()) %>%
-    hc_tooltip(
-      pointFormat=
-        '<span class="pr-3 lead">{series.name}<br/>
-        <strong>{point.pct:,.0f}%</strong><br/>
-      {point.value:,.2f} km³ / year</span>',
-      borderWidth=0, backgroundColor=NA, shadow=FALSE) %>%
+    hc_tooltip(pointFormat='
+    <span class="pr-3 lead">{series.name}<br/>
+    <strong>{point.pct:,.0f}%</strong><br/>
+    {point.value:,.2f} km³ / year</span>') %>%
     hc_legend(enabled=FALSE) %>%
-    hc_themed(
-      title = "System Water Uses",
-      subtitle = prd)
+    hc_themed(...)
 
+}
+
+
+#' Plot land uses (highcharts)
+#'
+#' @param iso3 basin ISO3 code
+#' @inheritDotParams hc_themed
+#'
+#' @examples
+#' plot_luc("ken")
+#'
+#' @export
+plot_luc <- function(iso3=names(ISO3), ...) {
+
+  iso = match.arg(iso3)
+
+  dt = ISO3[[iso]][["land uses"]] %>% as.data.table() %>% melt()
+  dt[, `:=`(
+    pct = 100 * value/sum(value, na.rm=T),
+    color = unname(pal[
+      c("teal", "green", "light", "blue", "yellow", "orange", "maroon", "red", "light-blue")])
+  )]
+
+  highchart() %>%
+    hc_pane(background=list(
+      backgroundColor=alpha(pal[["light"]], .1))) %>%
+    hc_add_series(dt[order(-pct)], type="column",
+      hcaes(y=pct, color=color, name=variable), name="Land Use",
+      dataLabels=list(enabled=TRUE,
+        pointFormat="{point.variable}<br/>{point.y:,.1f}%")) %>%
+    hc_tooltip(
+      pointFormat="{point.variable}<br/>{point.y:,.1f}%") %>%
+    hc_xAxis(lineWidth=0, tickPositions=list()) %>%
+    hc_yAxis(opposite=TRUE) %>%
+    hc_legend(enabled=FALSE) %>%
+    hc_themed(...)
 }
 
 
 #' Plot dependency wheel (highcharts)
 #'
-#' @param data data.frame with columns `from`, `to`, `weight`, `color` and `icon`
+#' @param data data.table with columns `from`, `to`, `weight`, `color` and `icon`
 #'   (e.g. "tint")
 #' @param unit display unit
 #' @param colors ordered color palette
-#' @pparam icons named vector of icon names
+#' @param icons named vector of icon names
 #' @param rot start angle
 #' @inheritParams hc_themed
 #' @inheritDotParams hc_themed

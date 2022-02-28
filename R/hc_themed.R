@@ -1,4 +1,4 @@
-#' Custom HighCharts theme
+#' Custom Highcharts theme
 #'
 #' @param hc a highchart object
 #' @param title chart title
@@ -10,9 +10,19 @@
 #' @param credits include credits (default: FALSE)
 #' @inheritDotParams highcharter::hc_theme
 #' @import highcharter
+#'
+#' @examples
+#' data <- data.table(
+#'   x = Sys.Date() + 0:9,
+#'   y = rnorm(10)
+#' )
+#'
+#' hchart(data, "line", hcaes(x, y)) %>%
+#'   hc_themed()
+#'
 #' @export
 hc_themed <- function(
-  hc,
+    hc,
   title = NULL,
   subtitle = NULL,
   label = NULL,
@@ -24,7 +34,7 @@ hc_themed <- function(
   credits = FALSE,
   ...) {
 
-  thm <- hc_theme(
+  thm = hc_theme(
 
     chart = list(
       style = list(fontFamily=base_font),
@@ -56,7 +66,7 @@ hc_themed <- function(
     ),
     tooltip = list(
       enabled = TRUE, shared = TRUE, split = FALSE,
-      pointFormat = "{series.name}<br/><strong>{point.y:,.1f}</strong><br/>",
+      borderWidth=0, backgroundColor=alpha(pal[["light"]], .85), shadow=FALSE,
       xDateFormat = "%Y-%m-%d", dateTimeLabelFormats = "%Y-%m-%d", valueDecimals = 1,
       style = list(color=pal[["black"]]), backgroundColor = pal[["light"]]
     ),
@@ -64,8 +74,10 @@ hc_themed <- function(
       series = list(
         opacity = .8,
         connectNulls = TRUE,
-        marker = list(enabled=NA, radius=3, enabledThreshold=8),
-        dataLabels = list(enabled=NA, style=list(fontSize="12px"))
+        dataLabels = list(
+          enabled = NA, shadow = FALSE, align="left",
+          style = list(color=pal[["black"]], fontSize="15px", fontWeight="normal")
+        )
       ),
       area = list(
         lineWidth = 0,
@@ -78,10 +90,9 @@ hc_themed <- function(
         marker = list(enabled=FALSE, radius=3, symbol="circle")
       ),
       pie = list(
-        lineWidth = 0,
+        borderWidth = 1, borderColor = "#fff",
         startAngle = -90, endAngle = 270,
-        size = "84%", innerSize = "68%", center = c("50%", "40%"),
-        dataLabels = list(enabled=FALSE)
+        size = "84%", innerSize = "68%"
       ),
       bullet = list(
         pointPadding = 0.25, borderWidth = 1,
@@ -98,7 +109,8 @@ hc_themed <- function(
         dataLabels = list(enabled=TRUE, pointFormat="{point.value:,.0f}")
       ),
       solidgauge = list(
-        dataLabels = list(enabled=TRUE),
+        borderWidth = 1, borderColor = "#fff",
+        dataLabels = list(enabled=TRUE, pointFormat="{series.name}"),
         stickyTracking=FALSE
       )
     ),
@@ -117,11 +129,12 @@ hc_themed <- function(
       position = list(align="left"),
       href = "https://wateraccounting.org/",
       style = list(fontSize="11px")
-    ),
-    ...
+    )
   )
 
-  p  = hc_add_theme(hc, thm) %>%
+  if (length(list(...)) > 0) thm = hc_theme_merge(thm, hc_theme(...))
+
+  p = hc_add_theme(hc, thm) %>%
     hc_title(text = title) %>%
     hc_subtitle(text = subtitle)
 
@@ -129,5 +142,80 @@ hc_themed <- function(
     hc_annotations(list(labels = list(
       list(text=label, useHTML=TRUE, shape="rect", point=list(x=x, y=y)))))
 
+  return(p)
+}
+
+
+#' Custom Highcharts theme for sparklines
+#'
+#' This theme is used inside value boxes.
+#'
+#' @param hc a highchart object
+#' @inheritDotParams highcharter::hc_theme
+#'
+#' @examples
+#' data <- data.table(
+#'   x = Sys.Date() + 0:9,
+#'   y = rnorm(10)
+#' )
+#'
+#' hchart(data, "line", hcaes(x, y)) %>%
+#'   hc_themed_vb() %>%
+#'   hc_chart(backgroundColor=pal[["red"]])
+#'
+#' @export
+hc_themed_vb <- function(hc, ...) {
+
+  thm = hc_theme(
+    chart = list(
+      backgroundColor = NULL,
+      margins = c(0, 0, 0, 0),
+      spacingTop = 0,
+      spacingRight = 0,
+      spacingBottom = 0,
+      spacingLeft = 0,
+      plotBorderWidth = 0,
+      borderWidth = 0,
+      style = list(overflow = "visible")
+    ),
+    xAxis = list(
+      visible = FALSE,
+      endOnTick = FALSE,
+      startOnTick = FALSE
+    ),
+    yAxis = list(
+      visible = FALSE,
+      endOnTick = FALSE,
+      startOnTick = FALSE
+    ),
+    plotOptions = list(
+      series = list(
+        marker = list(enabled = FALSE),
+        lineWidth = 2,
+        shadow = FALSE,
+        opacity = .6,
+        fillOpacity = .25,
+        color = "#FFFFFFBF",
+        fillColor = list(
+          linearGradient = list(x1 = 0, y1 = 1, x2 = 0, y2 = 0),
+          stops = list(
+            list(0.00, "#FFFFFF00"),
+            list(0.50, "#FFFFFF7F"),
+            list(1.00, "#FFFFFFFF")
+          )
+        )
+      )
+    ),
+    tooltip = list(
+      xDateFormat = "%Y-%m-%d",
+      dateTimeLabelFormats = "%Y-%m-%d",
+      valueDecimals = 1
+    ),
+    exporting = list(enabled = FALSE),
+    credits = list(enabled = FALSE, text = "")
+  )
+
+  if (length(list(...)) > 0) thm = hc_theme_merge(thm, hc_theme(...))
+  p = hc_add_theme(hc, thm)
   return(p)
 }

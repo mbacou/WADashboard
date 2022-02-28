@@ -9,20 +9,20 @@
 footer <- fluidRow(class="bg-dark",
   column(7,
     p(class="mt-3", span(class="lead text-warning", "ABOUT"), br(),
-      "This dashboard summarizes results from the Water Accounting+ hydrological model
-      based on global-scale public-domain datasets. WA+ program objective is to
+      "This dashboard compiles results from the Water Accounting+ hydrologic model
+      based on global-scale public-domain datasets. WA+ objective is to
       achieve equitable and transparent water governance for all water consumers and
       to ensure a sustainable water balance."),
     p("The WA+ framework is developed by the UNESCO-IHE,
       Delft in partnership with the International Water Management Institute, the
       Food and Agriculture Organization of the United Nations, and the World Water
       Assessment Program."),
-    p(class="small",
-      HTML("&copy; IWMI"),
-      paste(year(Sys.Date()), "All rights reserved.", sep=". "),
-      a(class="text-white", "Terms of use.",
+    p(HTML("&copy; IWMI"),
+      paste(year(Sys.Date()), "all rights reserved", sep=", "),
+      HTML("&ndash;"),
+      a(class="text-white", "Terms of use",
         href="https://www.iwmi.cgiar.org/about/legal-information/"),
-      br(), "Version",
+      HTML("&ndash;"), "Version",
       as.character(packageVersion("WADashboard")[1]),
       "(", a(class="text-white",
         href="https://mbacou.github.io/WADashboard/news/", "what's new"), ")"
@@ -44,34 +44,34 @@ footer <- fluidRow(class="bg-dark",
 )
 
 # Header ----
-header <- fluidRow(class="pt-5 align-items-end shadow",
+header <- fluidRow(class="pt-5 align-items-end bg-white shadow",
   column(8,
     h3(class="text-primary", "Water Accounting+ for",
       em("better"), "water resource management.")
   ),
   column(5,
     pickerInput("txtISO3",
-      span(class="text-info", "Select a river basin"),
+      span(class="text-info", "River basin"),
       choices=names(ISO3), selected=init$iso3, width="16rem",
-      options=pickerOptions(style="btn-white"),
+      options=pickerOptions(style="btn-outline-info"),
       choicesOpt=list(content=l_iso3()))
   ),
   # Filters
   column(7,
     fluidRow(class="no-gutters float-md-right align-items-end",
       div(class="col pb-3",
-        tags$label(class="small text-info", "Timespan"), br(),
+        tags$label(class="text-info", "Model timespan"), br(),
         actionButton("btnRefresh", "-",
           class="btn-outline-info btn-sm", width="9rem")
       ),
       div(class="col pl-2",
         radioGroupButtons("txtPeriod",
-          span(class="small text-info", "Periodicity"), c("year", "season", "month"),
+          span(class="text-info", "Periodicity"), c("year", "season", "month"),
           status="outline-info", justified=TRUE, size="sm")
       ),
       div(class="col pl-2",
         radioGroupButtons("txtUnit",
-          span(class="small text-info", "Volume units"), c("km³", "ft³", "MCM"),
+          span(class="text-info", "Volume units"), c("km³", "ft³", "MCM"),
           status="outline-info", justified=TRUE, size="sm", width="8rem")
       ),
       div(class="col pl-2 pb-3",
@@ -85,11 +85,11 @@ header <- fluidRow(class="pt-5 align-items-end shadow",
 
 # Slider ----
 slider <- fluidRow(
-  class="w-100 no-gutters waved border-top border-bottom align-items-center",
+  class="w-100 no-gutters bg-waved border-top border-bottom align-items-center",
   column(12, class="px-4 pt-2 pb-0",
-    div(class="float-left", "Basin Timeline"),
+    div(class="float-left text-bold", "Basin Timeline"),
     sliderTextInput("txtDate", NULL,
-      data[iso3==init$iso3 & sheet=="sheet1"
+      choices=data[iso3==init$iso3 & sheet=="sheet1"
       ][order(date_end), format(unique(date_end), "%Y %b")],
       selected=format(init$date, "%Y %b"),
       width="99%", grid=TRUE, hide_min_max=TRUE)
@@ -101,9 +101,10 @@ map <- fluidRow(id="divMap", class="w-100 no-gutters collapse show",
   column(8, style="height:22rem;",
     leafletOutput("map", width="100%", height="100%")
   ),
-  column(4, class="waved3",
+  column(4, class="bg-waved3",
     navs_pill(
-      nav(title=span(class="small", "Map Layers"), icon=icon("layer-group"),
+      # Layers
+      nav(title="Map Layers", icon=icon("layer-group"),
         fluidRow(class="no-gutters",
           column(12,
             style="height:19.2rem; overflow:auto;",
@@ -137,12 +138,14 @@ map <- fluidRow(id="divMap", class="w-100 no-gutters collapse show",
           )
         )
       ),
-      nav(title=span(class="small", "Legend"), icon=icon("palette"),
+      # Layer legend
+      nav(title="Legend", icon=icon("palette"),
         column(12, class="bg-white",
           style="height:19.2rem; overflow:auto;",
           uiOutput("uiLegend"))
       ),
-      nav(title=span(class="small", "Layer Info"), icon=icon("info-circle"),
+      # Layer info
+      nav(title="Layer Info", icon=icon("info-circle"),
         column(12, class="pb-2 bg-white",
           style="height:19.2rem; overflow:auto;",
           uiOutput("uiInfo"))
@@ -151,32 +154,44 @@ map <- fluidRow(id="divMap", class="w-100 no-gutters collapse show",
   )
 )
 
-
-# Scorecards ----
-tab_11 <- tagList(
-  h3(class="text-primary", "Key Facts"),
-  div(class="table-responsive waved2", tableOutput("tb_basin"))
-)
-
-tab_12 <- tagList(
-  h3(class="text-primary", "Water Availability"),
-  highchartOutput("plot_gauge", height="340px")
-)
-
-tab_13 <- tagList(
-  h3(class="text-primary", "Basin Variability"),
-  highchartOutput("plot_radar", height="360px"),
-  div(class="text-right",
-    actionButton("btnScore", "Learn More", width="6rem", class="my-3")
-  )
-)
-
-
 # Overview ----
 overview <- fluidRow(
-  column(4, tab_11),
-  column(3, tab_12),
-  column(5, tab_13)
+  column(4, class="bg-white",
+    h4(class="text-primary", "Key Facts"),
+    div(class="table-responsive bg-waved2", tableOutput("tb_basin")),
+    h4(class="text-primary", "Land Use Allocation"),
+    highchartOutput("plot_luc", height="300px"),
+    p()
+  ),
+  column(8,
+    fluidRow(
+      column(12, h4(class="text-primary", "Water Availability")),
+      valueBoxSpark(
+        data[iso3=="ken" & id=="net_inflow" & period=="year", .(year, value)],
+        selected=2017,
+        title="Basin Closure",
+        width=4, type="area", unit="%"),
+      valueBoxSpark(
+        data[iso3=="ken" & id=="net_inflow" & period=="year", .(year, value)],
+        title="Availability per Capita",
+        width=4, type="column"),
+      valueBoxSpark(
+        data[iso3=="ken" & id=="net_inflow" & period=="year", .(year, value)],
+        title="Available for further Use",
+        width=4, type="column")
+    ),
+    fluidRow(
+      column(8, h4(class="text-primary", "Water Uses")),
+      column(4, h4(class="text-primary", "Basin Variability")),
+      valueBoxSpark(33, title="Agricultural Water Use",
+        width=4, icon=icon("tint")),
+      valueBoxSpark(44, title="Environmental Stress",
+        width=4),
+      valueBoxSpark(44, title="Precipitation",
+        width=4),
+      column(12, uiOutput("txt_desc"))
+    )
+  )
 )
 
 # Timeline ----
@@ -229,7 +244,7 @@ sheet_3 <- nav("Agricultural Services", icon=icon("faucet"),
 
 # Page 1 ----
 page_1 <- fluidRow(
-  column(12, overview, timeline)
+  column(12, overview)
 )
 
 # Page 2 ----
@@ -249,7 +264,7 @@ page_3 <- fluidRow(class="d-block bg-white",
     footer=column(12,
       textAreaInput("objSelected", "Click a cell to get its value", "none")
     ),
-    nav_spacer(), sheet_1, sheet_2, sheet_3)
+    nav_spacer(), sheet_1, sheet_2)
 )
 
 # Page 4 ----
@@ -279,9 +294,23 @@ page_4 <- fluidRow(
 )
 
 # Page 5 ----
-page_5 <- fluidRow(class="border-top",
-  column(12,
-    includeMarkdown("./md/about.md"))
+page_5 <- fluidRow(class="d-block bg-white",
+  navs_bar(
+    title = span(class="h4 text-primary", "About WA+"),
+    bg = "transparent",
+    inverse = FALSE,
+    nav_spacer(),
+    nav("Modeling Approach", icon=icon("info-circle"),
+      column(12,
+        includeMarkdown("./md/about.md"))
+    ),
+    nav("Data Sources", icon=icon("database"),
+      column(12,
+        includeMarkdown("./md/sources.md"),
+        div(class="table-responsive bg-waved2", tableOutput("tb_sources"))
+      )
+    )
+  )
 )
 
 

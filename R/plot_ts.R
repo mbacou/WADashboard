@@ -39,7 +39,7 @@ plot_ts <- function(data, name=NA, unit=NA, yrange=NULL,
   # Infer periodicity (1=year, 2=season, 12=month, 36=dekad)
   freq = dt[, .N, by=year(date)][1, N]
 
-  tr = if(freq>1) {
+  tr = if(freq > 1) {
     # Loess trend component
     trend = "trend (loess)"
     ts = ts(dt[, value], frequency=freq)

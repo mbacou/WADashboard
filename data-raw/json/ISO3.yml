@@ -1,34 +1,52 @@
 # Basin configuration:
+# - source: system path is relative to the root location of your model data repository
+#   as configured in WA_DATA or via getOption("wa.data")
+# - admin: system path to basin map relative to this package root
+# - water: system path to basin map relative to this package root
+# - country: primary country
+# - countries: all countries
 # - area: in hectares
 # - irrigated area: in hectares
 # - hydro power: in GWh/year
-# - source: system path is relative to the root location of your model data repository
-#   as configured in WA_DATA or via getOption("wa.data")
-# - admin: system paths are relative to this package root
-# - water: system paths are relative to this package root
 
 mli:
-  label: Niger River
+  label: Upper Niger River
   source: ./csv_km3
   admin: ./data-raw/json/mli_basin.geojson
   water: ./data-raw/json/mli_gloric.geojson
   type: river drainage basin
   country: Mali
   countries:
-  - Mali
-  - Guinea
-  - Burkina Faso
-  - Ivory Coast
+    - Mali
+    - Guinea
+    - Burkina Faso
   unit: km³
-  area: 40000
-  irrigated area: 400
-  population: 800000
+  area: 43317200
+  irrigated area: 866344
+  population: 8000000
   authorities: Niger Basin Authority
   url: http://www.sath.abn.ne/
-  major season: Apr-Sep
-  minor season: Oct-Dec
+  major season: Jun-Oct
+  minor season: --
   major dams: 5
   hydro power: 60
+  land uses:
+    shrubland: 19
+    rainfed crops: 14
+    fallow crops: 1
+    irrigated crops: 2
+    bare /sparse: 11
+    grassland: 23
+    tree cover: 29.6
+    built up: 0.2
+    water bodies: 0.2
+  description: >
+    This basin covers six different river networks (Niger, Bagoe, Bani, Baoulé,
+    Ninandan, and Tinkisso), and is transboundary between three countries (Guinea,
+    Mali and Burkina Faso). There is a unimodal rainfall pattern with a wet season
+    between June and end October. Forests, grasslands, shrubland, and cropland are
+    predominant land uses. Large scale expansion of irrigated agriculture has occurred
+    over the last few decades.
 
 ken:
   label: Mara River
@@ -38,7 +56,8 @@ ken:
   type: river drainage basin
   country: Kenya
   countries:
-  - Kenya
+    - Kenya
+    - Tanzania
   unit: km³
   area: 13750
   irrigated area: 400
@@ -49,3 +68,19 @@ ken:
   minor season: Oct-Dec
   major dams: 3
   hydro power: 50
+  land uses:
+    shrubland: 19
+    rainfed crops: 14
+    fallow crops: 1
+    irrigated crops: 2
+    bare /sparse: 11
+    grassland: 23
+    tree cover: 29.6
+    built up: 0.2
+    water bodies: 0.2
+  description: >
+    The Mara River basin has undergone significant land modification over recent
+    decades due to the expansion of agriculture, deforestation, population growth
+    and competing demands for different water uses. Water is available for further
+    allocation during the wet season. However, during the dry season most of the
+    available water is utilized.

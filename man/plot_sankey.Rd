@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_gauge.R
 \name{plot_sankey}
 \alias{plot_sankey}
-\title{Plot Sankey (highcharts)}
+\title{Plot Sankey diagram (highcharts)}
 \usage{
 plot_sankey(data, unit = NA, colors = pal, ...)
 }
@@ -27,7 +27,7 @@ plot_sankey(data, unit = NA, colors = pal, ...)
   }}
 }
 \description{
-Plot Sankey (highcharts)
+Plot Sankey diagram (highcharts)
 }
 \examples{
 plot_sankey(dt)

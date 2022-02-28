@@ -1,7 +1,6 @@
 #' Format basin picklist
 #'
 #' @return list of html tags
-#' @importFrom shiny tagList
 #' @export
 #'
 l_iso3 <- function() {

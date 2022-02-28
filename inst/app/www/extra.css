@@ -96,17 +96,11 @@ ul.nav.navbar-nav>li>a:hover{
   text-decoration: none;
   z-index: 10;
 }
-.small-box .icon>i.fa, .small-box .icon>i.fas, .small-box .icon>i.far,
-.small-box .icon>i.fab, .small-box .icon>i.fal, .small-box .icon>i.fad,
-.small-box .icon>i.ion {
-  font-size: 70px;
-  top: 20px;
-}
 .small-box .icon>i {
   position: absolute;
-  font-size: 90px;
+  font-size: 70px;
   top: 15px;
-  right: 15px;
+  right: 20px;
   transition: transform .3s linear;
 }
 .accordion>.card>.card-header, .accordion>.well>.card-header {
@@ -117,15 +111,15 @@ ul.nav.navbar-nav>li>a:hover{
   text-decoration: none;
 }
 
-.waved {
+.bg-waved {
   background: linear-gradient(180deg,
   rgba(232,231,231, 1) 0%, rgba(242,241,241, 1) 45%, rgba(255,255,255, 1) 100%);
 }
-.waved2 {
+.bg-waved2 {
   background: linear-gradient(180deg,
   rgba(255,255,255, .6) 0%, rgba(255,255,255, 1) 50%, rgba(255,255,255, .5) 100%);
 }
-.waved3 {
+.bg-waved3 {
   background: linear-gradient(180deg,
   rgba(255,255,255, .8) 0%, rgba(255,255,255, 0) 100%);
 }

@@ -38,7 +38,6 @@ accordion <- function(..., id, width = 12) {
 #' @param bg background color
 #'
 #' @rdname accordion
-#' @importFrom shiny a div icon
 #' @export
 accordionItem <- function(...,
   title=NULL, icon=NULL, status=NULL,

@@ -2,7 +2,7 @@
 % Please edit documentation in R/hc_themed.R
 \name{hc_themed}
 \alias{hc_themed}
-\title{Custom HighCharts theme}
+\title{Custom Highcharts theme}
 \usage{
 hc_themed(
   hc,
@@ -42,5 +42,15 @@ hc_themed(
   }}
 }
 \description{
-Custom HighCharts theme
+Custom Highcharts theme
+}
+\examples{
+data <- data.table(
+  x = Sys.Date() + 0:9,
+  y = rnorm(10)
+)
+
+hchart(data, "line", hcaes(x, y)) \%>\%
+  hc_themed()
+
 }

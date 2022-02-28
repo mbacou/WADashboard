@@ -1,0 +1,11 @@
+Data,Source / Satellite / Sensor,Periodicity,Spatial Resolution,Reference
+"Monthly Rainfall, P",CHIRPS rainfall V2,2000-2012,4 km,"Funk et al., [2015]"
+"Modeled Evapotranspiration, ET",Operational Simplified Surface Energy Balance (SSEBop),2000-2012,1 km,"Senay et al., [2013]"
+"Modeled discharge data, Q",Global Runoff Data Center (GRDC) runoff fields,1955-1982,-,"Fekete et al., [2002]"
+"Modeled runoff data, R",Global Runoff Data Center (GRDC) runoff fields,1882-1982,-,"Fekete et al., [2002]"
+"Mass Deviation, MD and Change in Storage, ΔS",Gravity Recovery and Climate Experiment (GRACE),2003-2017,1° x 1°,"Landerer and Swenson, [2012]"
+"Normalized Difference Vegetation Index, NDVI",MODerate resolution Imaging Spectroradiometer (MODIS),2000-2012,1 km,"Tucker, [1979]"
+Climatology Rainfall,Food and Agriculture Organization (FAO),1961-1990,0.5° x 0.5°,"Leemans and Cramer, [1991]; FAO, [1997];"
+"Max Planck Institute ET, MPI ET",Global eddy covariance data and machine learning approach,1984-2002,0.5° x 0.5°,"Jung et al., [2009]; Jung et al., [2010]"
+Digital Elevation Model,SRTM 30 plus,-,1 km,"Becker et al., [2009]"
+Station discharge data,Niger River Basin Authority,2000-2019,-,-

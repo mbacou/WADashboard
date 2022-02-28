@@ -7,12 +7,14 @@
 plot_wheel(data, unit = NA, colors = pal, icons = NA, rot = 180, subtitle, ...)
 }
 \arguments{
-\item{data}{(optional) data with columns \code{from}, \code{to}, \code{weight}, \code{color} and \code{icon}
+\item{data}{data.table with columns \code{from}, \code{to}, \code{weight}, \code{color} and \code{icon}
 (e.g. "tint")}
 
 \item{unit}{display unit}
 
 \item{colors}{ordered color palette}
+
+\item{icons}{named vector of icon names}
 
 \item{rot}{start angle}
 
@@ -34,6 +36,14 @@ plot_wheel(data, unit = NA, colors = pal, icons = NA, rot = 180, subtitle, ...)
 Plot dependency wheel (highcharts)
 }
 \examples{
+dt <- fread("
+  from, to, weight
+  sector 1, sector 2, 22
+  sector 1, sector 3, 40
+  sector 1, sector 4, 60
+  sector 2, sector 3, 50
+")
+
 plot_wheel(dt)
 
 }
