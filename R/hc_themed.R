@@ -80,7 +80,7 @@ hc_themed <- function(
         )
       ),
       area = list(
-        lineWidth = 0,
+        lineWidth = 2,
         fillOpacity = .3,
         marker = list(enabled=FALSE, radius=0)
       ),

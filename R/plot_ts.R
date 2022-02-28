@@ -200,18 +200,20 @@ plot_profile <- function(data, unit=NA,
 #' @return
 #'
 #' @examples
-#' plot_ts(DATA[iso3=="mli" & sheet=="sheet1" & id=="rainfall"])
+#' plot_tss(DATA[iso3=="mli" & sheet=="sheet1" & id=="rainfall"])
 #'
 #' @export
-plot_tss <- function(data, unit=NA, color=names(pal)) {
+plot_tss <- function(data, unit=NA, color=pal[[1]]) {
 
+  dt = copy(data)
   if(!"date" %in% names(dt)) setnames(dt, "date_end", "date", skip_absent=TRUE)
 
   highchart() %>%
     hc_chart(zoomType="x") %>%
     hc_add_series(dt, type="area",
       hcaes(x=date, y=value), name=dt[1, id],
-      color=color, fillColor=alpha(color, .2), marker=list(enabled=TRUE)) %>%
+      color=color, fillColor=alpha(color, .2),
+      marker=list(enabled=TRUE)) %>%
 
     hc_xAxis(type="datetime", dateTimeLabelFormats=list(month="%e %b")) %>%
     hc_tooltip(valueSuffix=paste("", unit),

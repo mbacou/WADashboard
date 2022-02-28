@@ -41,12 +41,12 @@ mli:
     built up: 0.2
     water bodies: 0.2
   description: >
-    This basin covers six different river networks (Niger, Bagoe, Bani, Baoulé,
-    Ninandan, and Tinkisso), and is transboundary between three countries (Guinea,
-    Mali and Burkina Faso). There is a unimodal rainfall pattern with a wet season
-    between June and end October. Forests, grasslands, shrubland, and cropland are
-    predominant land uses. Large scale expansion of irrigated agriculture has occurred
-    over the last few decades.
+    The Upper Niger River basin covers six different river networks (Niger,
+    Bagoe, Bani, Baoulé, Ninandan, and Tinkisso), and is transboundary between
+    three countries (Guinea, Mali and Burkina Faso). There is a unimodal
+    rainfall pattern with a wet season between June and end October. Forests,
+    grasslands, shrubland, and cropland are predominant land uses. Large scale
+    expansion of irrigated agriculture has occurred over the last few decades.
 
 ken:
   label: Mara River

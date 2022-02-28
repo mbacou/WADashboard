@@ -75,6 +75,7 @@ valueBoxSpark <- function(
     sparkobj = if(!is.na(type)) hchart(data, type,
       hcaes(x, y), color=pal[[status]], name=NA) %>%
       hc_size(height=80) %>%
+      hc_tooltip(pointFormat="{point.y:,.2f}") %>%
       hc_themed_vb()
     else sparkobj
   }

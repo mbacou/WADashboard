@@ -172,22 +172,22 @@ overview <- fluidRow(
         title="Basin Closure",
         width=4, type="area", unit="%"),
       valueBoxSpark(
-        data[iso3=="ken" & id=="net_inflow" & period=="year", .(year, value)],
+        data[iso3=="ken" & id=="landsc_et" & period=="year", .(year, value)],
         title="Availability per Capita",
-        width=4, type="column"),
+        width=4, type="column", unit=" km³"),
       valueBoxSpark(
-        data[iso3=="ken" & id=="net_inflow" & period=="year", .(year, value)],
+        data[iso3=="ken" & id=="utilized_flow" & period=="year", .(year, value)],
         title="Available for further Use",
-        width=4, type="column")
+        width=4, type="area", unit=" km³")
     ),
     fluidRow(
       column(8, h4(class="text-primary", "Water Uses")),
       column(4, h4(class="text-primary", "Basin Variability")),
-      valueBoxSpark(33, title="Agricultural Water Use",
+      valueBoxSpark(0, title="Agricultural Water Use",
         width=4, icon=icon("tint")),
-      valueBoxSpark(44, title="Environmental Stress",
+      valueBoxSpark(0, title="Environmental Stress",
         width=4),
-      valueBoxSpark(44, title="Precipitation",
+      valueBoxSpark(0, title="Precipitation",
         width=4),
       column(12, uiOutput("txt_desc"))
     )

@@ -4,7 +4,7 @@
 \alias{plot_tss}
 \title{Plot simple variable time-series (highcharts)}
 \usage{
-plot_tss(data, unit = NA, color = names(pal))
+plot_tss(data, unit = NA, color = pal[[1]])
 }
 \arguments{
 \item{data}{data.table to plot with columns \code{date} and \code{value} (will use \code{date_end}
@@ -21,6 +21,6 @@ if \code{date} is missing)}
 Plot simple variable time-series (highcharts)
 }
 \examples{
-plot_ts(DATA[iso3=="mli" & sheet=="sheet1" & id=="rainfall"])
+plot_tss(DATA[iso3=="mli" & sheet=="sheet1" & id=="rainfall"])
 
 }
