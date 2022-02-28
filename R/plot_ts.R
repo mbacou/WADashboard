@@ -203,7 +203,7 @@ plot_profile <- function(data, unit=NA,
 #' plot_tss(DATA[iso3=="mli" & sheet=="sheet1" & id=="rainfall"])
 #'
 #' @export
-plot_tss <- function(data, unit=NA, color=pal[[1]]) {
+plot_tss <- function(data, color=pal[[1]], unit=NA) {
 
   dt = copy(data)
   if(!"date" %in% names(dt)) setnames(dt, "date_end", "date", skip_absent=TRUE)

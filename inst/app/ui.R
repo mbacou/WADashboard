@@ -208,11 +208,12 @@ timeline <- fluidRow(class="bg-white",
 sheet_1 <- nav("Resource Base", icon=icon("th"),
   fluidRow(class="bg-white",
     column(4,
-      includeMarkdown("./md/sheet_1.md")
+      p(),
+      includeMarkdown("./md/sheet_1.md"),
+      highchartOutput("plot_ts_s1", height="200px")
     ),
     column(8,
-      d3Output("d3_sheet1", width="100%"),
-      highchartOutput("plot_ts", height="200px")
+      d3Output("d3_sheet1", height="500px")
     )
   )
 )
@@ -221,10 +222,12 @@ sheet_1 <- nav("Resource Base", icon=icon("th"),
 sheet_2 <- nav("Evapotranspiration", icon=icon("envira"),
   fluidRow(class="bg-white",
     column(4,
-      includeMarkdown("./md/sheet_2.md")
+      p(),
+      includeMarkdown("./md/sheet_2.md"),
+      highchartOutput("plot_ts_s2", height="200px")
     ),
     column(8,
-      d3Output("d3_sheet2", width="100%")
+      d3Output("d3_sheet2", height="500px")
     )
   )
 )
@@ -261,9 +264,6 @@ page_3 <- fluidRow(class="d-block bg-white",
     title = span(class="h4 text-primary", "Water Accounts"),
     bg = "transparent",
     inverse = FALSE,
-    footer=column(12,
-      textAreaInput("objSelected", "Click a cell to get its value", "none")
-    ),
     nav_spacer(), sheet_1, sheet_2)
 )
 

@@ -183,7 +183,12 @@ function(input, output, session) {
 
 
   # Plots ----
-  output$plot_ts = renderHighchart({
+  output$plot_ts_s1 = renderHighchart({
+    req(s$var$var)
+    plot_tss(dt()[id==s$var$var], s$var$color)
+  })
+
+  output$plot_ts_s2 = renderHighchart({
     req(s$var$var)
     plot_tss(dt()[id==s$var$var], s$var$color)
   })
