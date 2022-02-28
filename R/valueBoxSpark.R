@@ -5,6 +5,7 @@
 #' @param data (optional) data.table to summarize with at least columns `x` and `y`
 #' @param unit display unit
 #' @param selected selected `x` value to highlight
+#' @param info tooltip information text
 #' @param sparkobj (optional) highcharts object
 #' @param type (optional) type of spark chart (line, column, etc.) default to NA (no sparkline)
 #'   if not passed
@@ -37,15 +38,16 @@ valueBoxSpark <- function(
   selected = NA,
   title = "",
   subtitle = "",
+  info = NULL,
   sparkobj = NULL,
   type = NA,
   icon = NULL,
-  color = "primary",
+  color = "light",
   width = 4,
-  href = ""
+  href = NULL
 ){
 
-  bg = ""
+  bg = NULL
   dt = NULL
 
   if(inherits(value, "data.frame")) {
@@ -66,8 +68,8 @@ valueBoxSpark <- function(
 
     value = dt$value
     arr = c("&darr;", "&uarr;")[1 + (dt$trend >= 0)]
-    status = c("red", "green")[1 + (dt$trend >= 0)]
-    bg = c("danger", "success")[1 + (dt$trend >= 0)]
+    status = c("orange", "green")[1 + (dt$trend >= 0)]
+    bg = c("warning", "success")[1 + (dt$trend >= 0)]
     subtitle = if(missing(subtitle)) sprintf('%s %s per %s',
       arr, percent(dt$pct, acc=0.1), freq
     )
@@ -80,26 +82,38 @@ valueBoxSpark <- function(
     else sparkobj
   }
 
-  boxContent = div(class=paste0("small-box bg-", color),
+  info_icon = icon("info-circle",
+    class="float-right text-info", `data-toggle`="tooltip", title=info)
+
+  boxContent = div(class=sprintf("small-box bg-%s", color),
     div(class="inner",
-      if(!missing(title)) p(class="lead text-uppercase", title),
-      if(!missing(selected)) span(class="text-info", selected),
-      if(!is.na(value)) h3(class="mt-0", comma(value, suffix=unit)),
-      if(!is.null(dt)) tagList(
-        span(class="text-info", "Average over period"),
-        h3(class="mt-0", comma(dt$mean, suffix=unit)),
-        span(class="text-info", "Min / Max"),
-        h5(class="mt-0", comma(dt$min), "/", comma(dt$max)),
-        span(class="text-info", "Trend"),
-        h5(class="mt-0", comma(dt$trend, suffix=paste(unit, "/", freq), acc=0.01)),
+      div(class="p-2",
+        if(!missing(info)) info_icon,
+        if(!missing(title)) p(class="lead text-bold", title),
+        if(!missing(selected)) span(class="text-info", selected),
+        if(!is.na(value)) h3(class="mt-0", comma(value, suffix=unit)),
+        if(!is.null(dt)) tagList(
+          span(class="text-info", "Average over period"),
+          h3(class="mt-0", comma(dt$mean, suffix=unit)),
+          span(class="text-info", "Min. / Max."),
+          h5(class="mt-0", comma(dt$min, suffix=unit), "/", comma(dt$max, suffix=unit)),
+          span(class="text-info", "Trend"),
+          h5(class="mt-0", comma(dt$trend, suffix=paste(unit, "/", freq), acc=0.01))
+        )
       ),
+      if(!is.null(icon)) div(class="icon", icon),
       if(!is.null(sparkobj)) sparkobj
     ),
-    if(!is.null(icon)) div(class="icon", icon),
-    div(class=paste0("small-box-footer lead bg-", bg), HTML(subtitle))
+    div(class=sprintf("small-box-footer px-1 bg-%s text-center lead", bg),
+      HTML(subtitle))
   )
 
-  div(class=if(!is.null(width)) paste0("col-sm-", width),
+  if(!is.null(href))
+    boxContent = a(href=href, boxContent)
+
+  div(class=if(!is.null(width)) sprintf("col-sm-%s", width),
     boxContent
   )
 }
+
+

@@ -10,12 +10,13 @@ valueBoxSpark(
   selected = NA,
   title = "",
   subtitle = "",
+  info = NULL,
   sparkobj = NULL,
   type = NA,
   icon = NULL,
-  color = "primary",
+  color = "light",
   width = 4,
-  href = ""
+  href = NULL
 )
 }
 \arguments{
@@ -26,6 +27,8 @@ valueBoxSpark(
 \item{selected}{selected \code{x} value to highlight}
 
 \item{subtitle}{Subtitle text.}
+
+\item{info}{tooltip information text}
 
 \item{sparkobj}{(optional) highcharts object}
 

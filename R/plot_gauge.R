@@ -85,7 +85,7 @@ plot_luc <- function(iso3=names(ISO3), ...) {
       dataLabels=list(enabled=TRUE,
         pointFormat="{point.variable}<br/>{point.y:,.1f}%")) %>%
     hc_tooltip(
-      pointFormat="{point.variable}<br/>{point.y:,.1f}%") %>%
+      pointFormat="{point.y:,.1f}%") %>%
     hc_xAxis(lineWidth=0, tickPositions=list()) %>%
     hc_yAxis(opposite=TRUE) %>%
     hc_legend(enabled=FALSE) %>%

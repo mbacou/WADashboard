@@ -4,15 +4,15 @@
 \alias{plot_tss}
 \title{Plot simple variable time-series (highcharts)}
 \usage{
-plot_tss(data, unit = NA, color = pal[[1]])
+plot_tss(data, color = pal[[1]], unit = NA)
 }
 \arguments{
 \item{data}{data.table to plot with columns \code{date} and \code{value} (will use \code{date_end}
 if \code{date} is missing)}
 
-\item{unit}{display unit}
-
 \item{color}{an optional built-in color name (default "navy")}
+
+\item{unit}{display unit}
 }
 \value{
 

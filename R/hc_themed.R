@@ -22,7 +22,7 @@
 #'
 #' @export
 hc_themed <- function(
-    hc,
+  hc,
   title = NULL,
   subtitle = NULL,
   label = NULL,
@@ -37,57 +37,59 @@ hc_themed <- function(
   thm = hc_theme(
 
     chart = list(
-      style = list(fontFamily=base_font),
+      style = list(fontFamily = base_font),
       backgroundColor = "transparent"
     ),
     # Don't use semantic colors
     colors = unname(pal[names(pal)!="red"]),
     title = list(
-      style = list(color=pal[["black"]], fontSize="18px"),
+      style = list(color = pal[["black"]], fontSize = "18px"),
       align = "left"
     ),
     subtitle = list(
-      style = list(color=pal[["black"]], fontSize="15px"),
+      style = list(color = pal[["black"]], fontSize = "15px"),
       align = "left"
     ),
     legend = list(
       enabled = TRUE,
-      itemStyle = list(color=pal[["black"]]),
+      itemStyle = list(color = pal[["black"]]),
       verticalAlign = "top",
       align = "left",
-      itemHoverStyle = list(color=pal[["black"]])
+      itemHoverStyle = list(color = pal[["black"]])
     ),
     xAxis = list(
-      title = list(enabled=FALSE),
+      title = list(enabled = FALSE),
       dateTimeLabelFormats = list(day='%e %b', week='%e %b %y', month='%b-%y', year='%Y'))
     ,
     yAxis = list(
-      title = list(enabled=FALSE)
+      title = list(enabled = FALSE)
     ),
     tooltip = list(
       enabled = TRUE, shared = TRUE, split = FALSE,
-      borderWidth=0, backgroundColor=alpha(pal[["light"]], .85), shadow=FALSE,
-      xDateFormat = "%Y-%m-%d", dateTimeLabelFormats = "%Y-%m-%d", valueDecimals = 1,
-      style = list(color=pal[["black"]]), backgroundColor = pal[["light"]]
+      borderWidth = 1, shadow = FALSE,
+      backgroundColor = alpha(pal[["light"]], .85),
+      style = list(color = pal[["black"]], fontSize="14px"),
+      xDateFormat = "%Y-%m-%d",
+      dateTimeLabelFormats = "%Y-%m-%d",
+      valueDecimals = 1
     ),
     plotOptions = list(
       series = list(
-        opacity = .8,
-        connectNulls = TRUE,
+        opacity = .8, connectNulls = TRUE,
         dataLabels = list(
           enabled = NA, shadow = FALSE, align="left",
-          style = list(color=pal[["black"]], fontSize="15px", fontWeight="normal")
+          style = list(color=pal[["black"]], fontSize="14px", fontWeight="normal")
         )
       ),
       area = list(
         lineWidth = 2,
         fillOpacity = .3,
-        marker = list(enabled=FALSE, radius=0)
+        marker = list(enabled = FALSE, radius = 3, symbol = "circle")
       ),
       arearange = list(
         lineWidth = 0,
         fillOpacity = .2,
-        marker = list(enabled=FALSE, radius=3, symbol="circle")
+        marker = list(enabled = FALSE, radius = 3, symbol = "circle")
       ),
       pie = list(
         borderWidth = 1, borderColor = "#fff",
@@ -105,13 +107,12 @@ hc_themed <- function(
         medianColor = pal[["blue"]]
       ),
       heatmap = list(
-        marker = list(enabled=TRUE, lineWidth=6, lineColor=pal[["light"]]),
-        dataLabels = list(enabled=TRUE, pointFormat="{point.value:,.0f}")
+        marker = list(enabled = TRUE, lineWidth = 6, lineColor = pal[["light"]]),
+        dataLabels = list(enabled = TRUE, pointFormat = "{point.value:,.0f}")
       ),
       solidgauge = list(
-        borderWidth = 1, borderColor = "#fff",
-        dataLabels = list(enabled=TRUE, pointFormat="{series.name}"),
-        stickyTracking=FALSE
+        borderWidth = 1, borderColor = "#fff", stickyTracking = FALSE,
+        dataLabels = list(enabled = TRUE, pointFormat = "{series.name}")
       )
     ),
     exporting = list(
@@ -207,6 +208,10 @@ hc_themed_vb <- function(hc, ...) {
       )
     ),
     tooltip = list(
+      borderWidth = 1,
+      backgroundColor = alpha(pal[["light"]], .85),
+      shadow = FALSE,
+      style = list(color = pal[["black"]], fontSize="14px"),
       xDateFormat = "%Y-%m-%d",
       dateTimeLabelFormats = "%Y-%m-%d",
       valueDecimals = 1

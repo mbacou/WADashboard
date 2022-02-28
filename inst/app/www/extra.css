@@ -73,36 +73,18 @@ ul.nav.navbar-nav>li>a:hover{
   bottom: 6px;
 }
 
-.small-box {
-  border-radius: 0;
-  display: block;
-  margin-bottom: 20px;
-  position: relative;
-}
-.small-box>.inner {
-  padding: 10px;
-}
 .small-box .icon {
   color: rgba(51,51,51, 0.15);
   z-index: 0;
 }
-.small-box>.small-box-footer {
-  background-color: rgba(51,51,51, 0.1);
-  color: rgba(255,255,255, 0.8);
-  display: block;
-  padding: 3px 0;
-  position: relative;
-  text-align: center;
-  text-decoration: none;
-  z-index: 10;
-}
 .small-box .icon>i {
   position: absolute;
-  font-size: 70px;
-  top: 15px;
-  right: 20px;
+  font-size: 80px;
+  top: 12px;
+  right: 24px;
   transition: transform .3s linear;
 }
+
 .accordion>.card>.card-header, .accordion>.well>.card-header {
   margin-bottom: unset;
   border: none;
@@ -113,11 +95,11 @@ ul.nav.navbar-nav>li>a:hover{
 
 .bg-waved {
   background: linear-gradient(180deg,
-  rgba(232,231,231, 1) 0%, rgba(242,241,241, 1) 45%, rgba(255,255,255, 1) 100%);
+  rgba(232,231,231, .8) 0%, rgba(242,241,241, 1) 45%, rgba(255,255,255, 1) 100%);
 }
 .bg-waved2 {
   background: linear-gradient(180deg,
-  rgba(255,255,255, .6) 0%, rgba(255,255,255, 1) 50%, rgba(255,255,255, .5) 100%);
+  rgba(255,255,255, .6) 0%, rgba(255,255,255, 1) 40%, rgba(255,255,255, 1) 60%, rgba(255,255,255, .5) 100%);
 }
 .bg-waved3 {
   background: linear-gradient(180deg,

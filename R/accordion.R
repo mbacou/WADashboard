@@ -2,13 +2,13 @@
 #'
 #' This is a modified version of [bs4Dash::accordion()].
 #'
-#' @param ... slot for \link{accordionItem}.
-#' @param id unique accordion id.
-#' @param width the width of the accordion.
+#' @param ... slot for [accordionItem]
+#' @param id unique accordion id
+#' @param width the grid-system width of the accordion
 #'
 #' @rdname accordion
 #' @export
-accordion <- function(..., id, width = 12) {
+accordion <- function(..., id, width=12) {
 
   items = list(...)
 
@@ -40,13 +40,20 @@ accordion <- function(..., id, width = 12) {
 #' @rdname accordion
 #' @export
 accordionItem <- function(...,
-  title=NULL, icon=NULL, status=NULL,
-  collapsed=TRUE, solidHeader=TRUE, class=NULL, bg=NULL) {
+  title = NULL,
+  icon = NULL,
+  status = NULL,
+  collapsed = TRUE,
+  solidHeader = TRUE,
+  bg = NULL,
+  class = NULL
+) {
 
   cl = "card"
   if(!is.null(status)) cl = paste(cl, status, sep="-")
   if(!solidHeader) cl = paste(cl, "card-outline", sep=" ")
   if(!is.null(class)) cl = paste(cl, class, sep=" ")
+
   cl_body = "card-body p-0 text-muted collapse"
   if(!collapsed) cl_body = paste(cl_body, "show", sep=" ")
   if(!is.null(bg)) cl_body = paste(cl_body, bg, sep=" bg-")

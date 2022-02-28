@@ -52,7 +52,7 @@ header <- fluidRow(class="pt-5 align-items-end bg-white shadow",
   column(5,
     pickerInput("txtISO3",
       span(class="text-info", "River basin"),
-      choices=names(ISO3), selected=init$iso3, width="16rem",
+      choices=names(ISO3), selected=init$iso3, width="17rem",
       options=pickerOptions(style="btn-outline-info"),
       choicesOpt=list(content=l_iso3()))
   ),
@@ -60,7 +60,7 @@ header <- fluidRow(class="pt-5 align-items-end bg-white shadow",
   column(7,
     fluidRow(class="no-gutters float-md-right align-items-end",
       div(class="col pb-3",
-        tags$label(class="text-info", "Model timespan"), br(),
+        tags$label(class="text-info", "Modeled timespan"), br(),
         actionButton("btnRefresh", "-",
           class="btn-outline-info btn-sm", width="9rem")
       ),
@@ -85,7 +85,7 @@ header <- fluidRow(class="pt-5 align-items-end bg-white shadow",
 
 # Slider ----
 slider <- fluidRow(
-  class="w-100 no-gutters bg-waved border-top border-bottom align-items-center",
+  class="w-100 no-gutters bg-waved2 border-top border-bottom align-items-center",
   column(12, class="px-4 pt-2 pb-0",
     div(class="float-left text-bold", "Basin Timeline"),
     sliderTextInput("txtDate", NULL,
@@ -104,7 +104,7 @@ map <- fluidRow(id="divMap", class="w-100 no-gutters collapse show",
   column(4, class="bg-waved3",
     navs_pill(
       # Layers
-      nav(title="Map Layers", icon=icon("layer-group"),
+      nav(title="Layers", icon=icon("layer-group"),
         fluidRow(class="no-gutters",
           column(12,
             style="height:19.2rem; overflow:auto;",
@@ -157,20 +157,24 @@ map <- fluidRow(id="divMap", class="w-100 no-gutters collapse show",
 # Overview ----
 overview <- fluidRow(
   column(4, class="bg-white",
+    h4(class="text-primary", "Overview"),
+    uiOutput("txt_desc"),
     h4(class="text-primary", "Key Facts"),
     div(class="table-responsive bg-waved2", tableOutput("tb_basin")),
-    h4(class="text-primary", "Land Use Allocation"),
-    highchartOutput("plot_luc", height="300px"),
+    h4(class="text-primary", "Land Use"),
+    highchartOutput("plot_luc", height="280px"),
     p()
   ),
-  column(8,
+  column(8, class="bg-waved",
     fluidRow(
       column(12, h4(class="text-primary", "Water Availability")),
       valueBoxSpark(
         data[iso3=="ken" & id=="net_inflow" & period=="year", .(year, value)],
-        selected=2017,
         title="Basin Closure",
-        width=4, type="area", unit="%"),
+        info="When supply of water falls short of commitments to fulfil demand
+        in terms of water quality and quantity within the basin and at the river
+        mouth, for part or all of the year, basins are said to be closing.",
+        selected=2017, width=4, type="area", unit="%"),
       valueBoxSpark(
         data[iso3=="ken" & id=="landsc_et" & period=="year", .(year, value)],
         title="Availability per Capita",
@@ -184,12 +188,15 @@ overview <- fluidRow(
       column(8, h4(class="text-primary", "Water Uses")),
       column(4, h4(class="text-primary", "Basin Variability")),
       valueBoxSpark(0, title="Agricultural Water Use",
-        width=4, icon=icon("tint")),
-      valueBoxSpark(0, title="Environmental Stress",
         width=4),
-      valueBoxSpark(0, title="Precipitation",
-        width=4),
-      column(12, uiOutput("txt_desc"))
+      valueBoxSpark(
+        data[iso3=="ken" & id=="reserved_outflow" & period=="year", .(year, value)],
+        title="Environmental Stress",
+        width=4, type="area", unit="%"),
+      valueBoxSpark(
+        data[iso3=="ken" & id=="rainfall" & period=="year", .(year, value)],
+        title="Precipitation",
+        selected=2017, width=4, type="area", unit=" km³")
     )
   )
 )
@@ -330,7 +337,8 @@ function() {
     header = tagList(
       tags$head(
         tags$link(rel="stylesheet", type="text/css", href="extra.css"),
-        tags$link(rel="shortcut icon", href="fig/favicon.ico")
+        tags$link(rel="shortcut icon", href="fig/favicon.ico"),
+        tags$script(HTML("setInterval(function(){ $('[title]').tooltip(); }, 1000)"))
       ),
       column(12, header), map, slider),
     footer = column(12, footer),

@@ -12,7 +12,7 @@
 #' @param gradients enable background gradients (see [BS4
 #'   colors](https://getbootstrap.com/docs/4.0/utilities/colors/))
 #'
-#' @importFrom bslib bs_theme bs_add_variables
+#' @importFrom bslib font_face bs_theme bs_add_variables
 #' @return Modified Bootstrap 4 theme
 #' @export
 #' @examples
@@ -144,7 +144,13 @@ bs_themed <- function(
       `card-title-font-size` = "1rem",
       `card-spacer-y` = ".5rem",
       `card-bg` = "transparent",
-      `card-cap-bg` = "transparent"
+      `card-cap-bg` = "transparent",
+
+      `tooltip-bg` = "$yellow",
+      `tooltip-color` = "$dark",
+      `tooltip-opacity` = .85,
+      `tooltip-padding-x` = "1rem",
+      `tooltip-padding-y` = "1rem"
     )
 }
 
