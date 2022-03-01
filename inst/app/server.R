@@ -140,12 +140,13 @@ function(input, output, session) {
   })
 
   # Toggle layer timestamp
-  observeEvent(s$date, {
-    req(length(s$layers) > 0)
-    leafletProxy("map") %>%
-      map_addWMSProvider(provider="FAO", date=s$date) %>%
-      map_toggle(provider="FAO", layers=s$layers)
-  })
+  # TODO check geoserver behavior with FAO
+  # observeEvent(s$date, {
+  #   req(length(s$layers) > 0)
+  #   leafletProxy("map") %>%
+  #     map_addWMSProvider(provider="FAO", date=s$date) %>%
+  #     map_toggle(provider="FAO", layers=s$layers)
+  # })
 
   output$uiLegend = renderUI(
     if(length(s$layers) > 0) lapply(s$layers, function(x)

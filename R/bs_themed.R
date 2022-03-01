@@ -147,6 +147,7 @@ bs_themed <- function(
       `card-cap-bg` = "transparent",
 
       `tooltip-bg` = "$yellow",
+      `tooltip-arrow-color` = "transparent",
       `tooltip-color` = "$dark",
       `tooltip-opacity` = .85,
       `tooltip-padding-x` = "1rem",

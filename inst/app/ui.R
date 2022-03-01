@@ -97,6 +97,40 @@ slider <- fluidRow(
 )
 
 # Map ----
+layers <- accordion(id="accLayers",
+  # Pull FAO layers for now
+  accordionItem(
+    title=span(names(LAYERS[["FAO"]]$layers)[2],
+      span(class="float-right small text-muted",
+        length(LAYERS[["FAO"]]$layers[[2]]), "layers")),
+    icon=icon("caret-right"),
+    class="border-0", bg="white", collapsed=FALSE,
+    awesomeCheckboxGroup("chkLayer_2", NULL,
+      choices=names(LAYERS[["FAO"]]$layers[[2]]),
+      status="info", width="100%")
+  ),
+  accordionItem(
+    title=span(names(LAYERS[["FAO"]]$layers)[3],
+      span(class="float-right small text-muted",
+        length(LAYERS[["FAO"]]$layers[[3]]), "layers")),
+    icon=icon("caret-right"),
+    class="border-0", bg="white", collapsed=TRUE,
+    awesomeCheckboxGroup("chkLayer_3", NULL,
+      choices=names(LAYERS[["FAO"]]$layers[[3]]),
+      width="100%", status="info")
+  ),
+  accordionItem(
+    title=span(names(LAYERS[["FAO"]]$layers)[4],
+      span(class="float-right small text-muted",
+        length(LAYERS[["FAO"]]$layers[[4]]), "layers")),
+    icon=icon("caret-right"),
+    class="border-0", bg="white", collapsed=TRUE,
+    awesomeCheckboxGroup("chkLayer_4", NULL,
+      choices=names(LAYERS[["FAO"]]$layers[[4]]),
+      width="100%", status="info")
+  )
+)
+
 map <- fluidRow(id="divMap", class="w-100 no-gutters collapse show",
   column(8, style="height:22rem;",
     leafletOutput("map", width="100%", height="100%")
@@ -108,34 +142,7 @@ map <- fluidRow(id="divMap", class="w-100 no-gutters collapse show",
         fluidRow(class="no-gutters",
           column(12,
             style="height:19.2rem; overflow:auto;",
-            accordion(id="accLayers",
-              # Pull FAO layers for now
-              accordionItem(
-                title=names(LAYERS[["FAO"]]$layers)[2],
-                icon=icon("caret-right"),
-                class="border-0", bg="white", collapsed=FALSE,
-                awesomeCheckboxGroup("chkLayer_2", NULL,
-                  choices=names(LAYERS[["FAO"]]$layers[[2]]),
-                  status="info", width="100%")
-              ),
-              accordionItem(
-                title=names(LAYERS[["FAO"]]$layers)[3],
-                icon=icon("caret-right"),
-                class="border-0", bg="white", collapsed=TRUE,
-                awesomeCheckboxGroup("chkLayer_3", NULL,
-                  choices=names(LAYERS[["FAO"]]$layers[[3]]),
-                  width="100%", status="info")
-              ),
-              accordionItem(
-                title=names(LAYERS[["FAO"]]$layers)[4],
-                icon=icon("caret-right"),
-                class="border-0", bg="white", collapsed=TRUE,
-                awesomeCheckboxGroup("chkLayer_4", NULL,
-                  choices=names(LAYERS[["FAO"]]$layers[[4]]),
-                  width="100%", status="info")
-              )
-            )
-          )
+            layers)
         )
       ),
       # Layer legend
@@ -155,8 +162,8 @@ map <- fluidRow(id="divMap", class="w-100 no-gutters collapse show",
 )
 
 # Overview ----
-overview <- fluidRow(
-  column(4, class="bg-white",
+overview <- fluidRow(class="bg-white",
+  column(4,
     h4(class="text-primary", "Overview"),
     uiOutput("txt_desc"),
     h4(class="text-primary", "Key Facts"),

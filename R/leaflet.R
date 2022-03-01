@@ -32,7 +32,7 @@ mapboxDependencies <- function() {
 #' map_init()
 #'
 map_init <- function(
-  iso3 = names(ISO3),
+    iso3 = names(ISO3),
   key = getOption("wa.maptiler")
 ) {
 
@@ -86,28 +86,29 @@ map_init <- function(
 #' @export
 #'
 #' @examples
-map_addWMSProvider <- function(map, provider="FAO", date=Sys.Date()) {
+map_addWMSProvider <- function(map, provider=names(LAYERS), date=Sys.Date()) {
 
   date = as.Date(date)
-  provider = match.arg(provider, names(LAYERS))
+  provider = match.arg(provider)
   provider = LAYERS[[provider]]
+  layers = stack(provider$layers)
 
-  map %>% clearGroup(names(provider$layers))
+  map %>% clearGroup(rownames(layers))
 
-  for(i in seq_along(provider$layers)) {
-    d = if(names(provider$layers)[i] %like% "Land") Sys.Date() else date
+  for(i in 1:nrow(layers)) {
     map = addWMSTiles(map,
-      baseUrl = sprintf("%sTIME=%s", provider$url[[1]], format(d, "%Y-%m")),
-      layers = unname(provider$layers[[i]]),
+      baseUrl = provider$url[[1]],
+      layers = layers[i, "values"],
       attribution = provider$attr[[1]],
-      group = names(provider$layers)[i],
+      group = rownames(layers)[i],
       options = WMSTileOptions(
+        TIME=format(date, "%Y-%m"),
         version="1.1.1", format="image/png", transparent=TRUE, opacity=.6)
     )
   }
 
   map %>%
-    hideGroup(names(provider$layers))
+    hideGroup(rownames(layers))
 }
 
 
@@ -157,10 +158,11 @@ map_update <- function(map, iso3=names(ISO3)) {
 #' @return updated leaflet map
 #' @rdname map_init
 #' @export
-map_toggle <- function(map, provider="FAO", layers=NULL) {
+map_toggle <- function(map, provider=names(LAYERS), layers=NULL) {
 
-  provider = match.arg(provider, names(LAYERS))
+  provider = match.arg(provider)
   provider = LAYERS[[provider]]
+  all = rownames(stack(provider[["layers"]]))
 
   # WASA data
   # map = leafem:::addGeoRaster(map, stars::read_stars(nc[[1]]$source),
@@ -173,6 +175,6 @@ map_toggle <- function(map, provider="FAO", layers=NULL) {
 
   if(!length(layers) > 0) layers = ""
   map %>%
-    hideGroup(names(provider[["layers"]])) %>%
+    hideGroup(all) %>%
     showGroup(layers)
 }

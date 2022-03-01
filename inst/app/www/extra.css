@@ -95,7 +95,7 @@ ul.nav.navbar-nav>li>a:hover{
 
 .bg-waved {
   background: linear-gradient(180deg,
-  rgba(232,231,231, .8) 0%, rgba(242,241,241, 1) 45%, rgba(255,255,255, 1) 100%);
+  rgba(232,231,231, .7) 0%, rgba(242,241,241, .7) 45%, rgba(255,255,255, 1) 100%);
 }
 .bg-waved2 {
   background: linear-gradient(180deg,
