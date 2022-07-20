@@ -1,0 +1,58 @@
+sheet,id,class,subclass,variable,calculated,formula,step
+sheet1,net_inflow,INFLOW,CALCULATED,Net inflow,TRUE,gross_inflow + delta_s,7
+sheet1,q_sw_in,INFLOW,CALCULATED,Surface water inflow,TRUE,sw_mrs_i + sw_tri_i + sw_usw_i + sw_flo_i,2
+sheet1,q_gw_in,INFLOW,CALCULATED,Groundwater inflow,TRUE,gw_nat_i + gw_uti_i,3
+sheet1,external_in,INFLOW,CALCULATED,External inflow,TRUE,p_advec + q_desal + q_sw_in + q_gw_in,4
+sheet1,gross_inflow,INFLOW,CALCULATED,Gross inflow,TRUE,external_in + p_recy,5
+sheet1,delta_s,INFLOW,CALCULATED,Storage change,TRUE,surf_sto + sto_sink,6
+sheet1,p_advec,INFLOW,CALCULATED,Advection,TRUE,rainfall + snowfall,1
+sheet1,landsc_et,OUTFLOW,CALCULATED,Landscape ET,TRUE,land_et + et_u_pr + et_u_ut + et_u_mo,9
+sheet1,land_et,OUTFLOW,CALCULATED,Land ET,TRUE,et_l_pr + et_l_ut + et_l_mo + et_l_ma,8
+sheet1,outflow,OUTFLOW,CALCULATED,Outflow,TRUE,non_cons_water + non_rec_flow,18
+sheet1,q_sw_out,OUTFLOW,CALCULATED,Surface water outflow,TRUE,sw_mrs_o + sw_tri_o + sw_usw_o + sw_flo_o,19
+sheet1,q_gw_out,OUTFLOW,CALCULATED,Groundwater outflow,TRUE,gw_nat_o + gw_uti_o,20
+sheet1,consumed_water,OUTFLOW,CALCULATED,Consumed water,TRUE,landsc_et + utilized_flow,21
+sheet1,depleted_water,OUTFLOW,CALCULATED,Depleted water,TRUE,consumed_water - p_recy - non_rec_flow,22
+sheet1,external_out,OUTFLOW,CALCULATED,External outflow,TRUE,depleted_water + outflow,23
+sheet1,exploitable_water,OUTFLOW,CALCULATED,Exploitable water,TRUE,net_inflow - land_et - et_u_pr - et_u_ut - et_u_mo,10
+sheet1,reserved_outflow,OUTFLOW,CALCULATED,Reserved flow,TRUE,"pmax(com_o, nav_o, env_o, na.rm=TRUE)",11
+sheet1,available_water,OUTFLOW,CALCULATED,Available water,TRUE,exploitable_water - non_uti - reserved_outflow,12
+sheet1,utilized_flow,OUTFLOW,CALCULATED,Utilizable flow,TRUE,et_u_ma,13
+sheet1,utilizable_outflow,OUTFLOW,CALCULATED,Utilizable flow,TRUE,available_water - utilized_flow,14
+sheet1,inc_et,OUTFLOW,CALCULATED,Incremental ET,TRUE,et_manmade + et_natural,15
+sheet1,non_cons_water,OUTFLOW,CALCULATED,Non-consumed water,TRUE,utilizable_outflow + non_uti + reserved_outflow,16
+sheet1,non_rec_flow,OUTFLOW,CALCULATED,Non-recoverable flow,TRUE,et_u_pr + et_u_ut + et_u_mo + et_u_ma - inc_et - other_o,17
+sheet1,gw_nat_i,INFLOW,GROUNDWATER,Natural,FALSE,"",
+sheet1,gw_uti_i,INFLOW,GROUNDWATER,Utilized,FALSE,"",
+sheet1,rainfall,INFLOW,PRECIPITATION,Rainfall,FALSE,"",
+sheet1,snowfall,INFLOW,PRECIPITATION,Snowfall,FALSE,"",
+sheet1,p_recy,INFLOW,PRECIPITATION,Precipitation recycling,FALSE,"",
+sheet1,q_desal,INFLOW,OTHER,Desalinized,FALSE,"",
+sheet1,sw_mrs_i,INFLOW,SURFACE WATER,Main riverstem,FALSE,"",
+sheet1,sw_tri_i,INFLOW,SURFACE WATER,Tributaries,FALSE,"",
+sheet1,sw_flo_i,INFLOW,SURFACE WATER,Flood,FALSE,"",
+sheet1,sw_usw_i,INFLOW,SURFACE WATER,Utilized surface water,FALSE,"",
+sheet1,et_manmade,OUTFLOW,ET INCREMENTAL,Manmade,FALSE,"",
+sheet1,et_natural,OUTFLOW,ET INCREMENTAL,Natural,FALSE,"",
+sheet1,et_l_ma,OUTFLOW,ET LANDSCAPE,Managed,FALSE,"",
+sheet1,et_l_mo,OUTFLOW,ET LANDSCAPE,Modified,FALSE,"",
+sheet1,et_l_pr,OUTFLOW,ET LANDSCAPE,Protected,FALSE,"",
+sheet1,et_l_ut,OUTFLOW,ET LANDSCAPE,Utilized,FALSE,"",
+sheet1,et_u_ma,OUTFLOW,ET UTILIZED FLOW,Managed,FALSE,"",
+sheet1,et_u_mo,OUTFLOW,ET UTILIZED FLOW,Modified,FALSE,"",
+sheet1,et_u_pr,OUTFLOW,ET UTILIZED FLOW,Protected,FALSE,"",
+sheet1,et_u_ut,OUTFLOW,ET UTILIZED FLOW,Utilized,FALSE,"",
+sheet1,gw_nat_o,OUTFLOW,GROUNDWATER,Natural,FALSE,"",
+sheet1,gw_uti_o,OUTFLOW,GROUNDWATER,Utilized,FALSE,"",
+sheet1,non_uti,OUTFLOW,OTHER,Non-utilizable,FALSE,"",
+sheet1,other_o,OUTFLOW,OTHER,Other,FALSE,"",
+sheet1,com_o,OUTFLOW,RESERVED,Commited,FALSE,"",
+sheet1,nav_o,OUTFLOW,RESERVED,Navigational,FALSE,"",
+sheet1,env_o,OUTFLOW,RESERVED,Environmental,FALSE,"",
+sheet1,sw_mrs_o,OUTFLOW,SURFACE WATER,Main riverstem,FALSE,"",
+sheet1,sw_tri_o,OUTFLOW,SURFACE WATER,Tributaries,FALSE,"",
+sheet1,sw_flo_o,OUTFLOW,SURFACE WATER,Flood,FALSE,"",
+sheet1,basin_transfers,OUTFLOW,SURFACE WATER,Interbasin transfer,FALSE,"",
+sheet1,sw_usw_o,OUTFLOW,SURFACE WATER,Utilized surface water,FALSE,"",
+sheet1,surf_sto,STORAGE,CHANGE,Surface storage,FALSE,"",
+sheet1,sto_sink,STORAGE,CHANGE,Storage in sinks,FALSE,"",

@@ -112,172 +112,6 @@ plot_ecc_density <- function(
     hc_themed(title, subtitle, ...)
 }
 
-#' Plot dekadal index time series (highcharts)
-#' @param data biophysical time-series (output of `wc_extract()`)
-#' @param type index type `tp` (precipitation) or `temp` (temperature)
-#' @param sos start of season threshold (default: 35 mm or 8°C Tmin for blooming)
-#' @param yrange y-axis min and max
-#' @inheritParams hc_themed
-#' @import highcharter data.table
-#' @importFrom lubridate ceiling_date year<-
-#' @examples
-#' dt <- readRDS(file.path(getOption("wc.shared"), "tmp", "2020-burn_lockton_bio.rds"))
-#' plot_clim(dt[code=="bom_rain"])
-#'
-#' @export
-plot_clim <- function(
-  data,
-  type = c("precipitation", "tmin", "tmax"),
-  sos = switch(type, precipitation=35, 2),
-  yrange = NULL,
-  title = "Climate Normals by Dekad",
-  subtitle = "Average across portfolio locations, 1990-2020 (mm)",
-  ...) {
-
-  type = match.arg(type)
-  unit = c(" °C", " mm")[1 + (type=="precipitation")]
-
-  dt = data[, date := as.Date(date)][, .(
-    date = min(date),
-    value = fcase(
-      type=="tmin", min(value, na.rm=T),
-      type=="tmax", max(value, na.rm=T),
-      default = sum(value, na.rm=T))
-  ), keyby=.(loc_id, year=year(date), dekad=dekad(date, type="year"))]
-
-  year(dt$date) = year(Sys.Date())
-  dt = dt[, .(
-    value = mean(value, na.rm=T),
-    sd = sd(value, na.rm=T),
-    # Past 3 years
-    value_1 = mean(fifelse(year==max(year)-0, value, NA_real_), na.rm=T),
-    value_2 = mean(fifelse(year==max(year)-1, value, NA_real_), na.rm=T),
-    value_3 = mean(fifelse(year==max(year)-2, value, NA_real_), na.rm=T)
-  ), by=.(date)][, `:=`(
-    ymin = value-sd,
-    ymax = value+sd
-  )]
-
-  # Label years
-  ymax = data[, max(year(date))]
-  yrange = if(missing(yrange)) dt[, c(min(value, na.rm=T), max(value_1, na.rm=T))] else yrange
-
-  # Monthly bands
-  xBands = lapply(dt[, seq(min(date), max(date), by="month")], function(x) list(
-    from = datetime_to_timestamp(as.Date(x)),
-    to = datetime_to_timestamp(ceiling_date(as.Date(x), unit="month")-1),
-    color = c("transparent", alpha("#e9e9e9", .4))[1+odd(month(x))]
-  ))
-
-  # SOS vertical intercepts
-  intcp = dt[, sos := value >= sos][(sos) & !shift(sos), date]
-  xLines = lapply(intcp, function(x) list(
-    value=datetime_to_timestamp(x), color=pal[["red"]], width=1.2,
-    label=list(text=x, align="left", color=pal[["red"]])))
-
-  yLines = list(
-    list(value=sos, color=pal[["red"]], width=1.2,
-      label=list(text=sprintf("%s%s", sos, unit), align="left")),
-    list(value=0, color=pal[["black"]], width=1.2))
-
-  p = highchart() %>%
-    hc_chart(zoomType="x") %>%
-    hc_add_series(dt, type="arearange",
-      hcaes(x=date, low=ymin, high=ymax), name="+/- Std. Dev.",
-      color=pal[[1]], fillOpacity=.1, marker=list(enabled=FALSE)) %>%
-
-    hc_add_series(dt, type="column", hcaes(x=date, y=value_3), name=ymax-2,
-      color=alpha(pal[[11]], .3)) %>%
-    hc_add_series(dt, type="column", hcaes(x=date, y=value_2), name=ymax-1,
-      color=alpha(pal[[11]], .6)) %>%
-    hc_add_series(dt, type="column", hcaes(x=date, y=value_1), name=ymax-0,
-      color=alpha(pal[[11]], .9)) %>%
-
-    hc_add_series(dt, type="line", hcaes(x=date, y=value), name="LTN",
-      color=pal[[1]], lineWidth=2, marker=list(enabled=TRUE)) %>%
-
-    hc_tooltip(valueSuffix=unit) %>%
-    hc_legend(enabled=TRUE, align="right") %>%
-    hc_xAxis(type="datetime", dateTimeLabelFormats=list(month="%e %b"),
-      plotBands=xBands, plotLines=xLines) %>%
-    hc_yAxis(min=yrange[1], max=yrange[2], plotLines=yLines) %>%
-    hc_themed(title, subtitle, ...)
-
-  return(p)
-}
-
-#' Plot dekadal index time series with trends (highcharts)
-#' @param data biophysical time-series (output of [wc_extract])
-#' @param type precipitation or temperature variable
-#' @param yrange y-axis min and max
-#' @inheritParams hc_themed
-#' @import highcharter data.table
-#' @importFrom stats ts stl
-#' @importFrom gtools odd even
-#' @examples
-#' dt <- readRDS(file.path(getOption("wc.shared"), "tmp", "2020-burn_lockton_bio.rds"))
-#' plot_ts(dt[code=="bom_rain"])
-#'
-#' @export
-hc_ts <- function(
-  data,
-  type = c("precipitation", "temperature"),
-  yrange = NULL,
-  title = "Long-Term Cumulative Rainfall by Dekad",
-  subtitle = "Average across portfolio locations, 1990-2020 (mm)",
-  ...) {
-
-  type = match.arg(type)
-  unit = c("°C", "mm")[1+(type=="precipitation")]
-
-  dt = data[, .(
-    date = min(date),
-    value = fifelse(type=="temperature", min(value, na.rm=T), sum(value, na.rm=T))
-  ), keyby=.(loc_id, year=year(date), dekad=dekad(date, type="year"))
-  ][, ltn := cumsum(value)/1:.N, by=.(loc_id, dekad)
-  ][, .(
-    value = mean(value, na.rm=T),
-    ymin = min(value, na.rm=T),
-    ymax = max(value, na.rm=T),
-    ltn = mean(ltn, na.rm=T)
-  ), keyby=.(date)]
-
-  # Add trend decomposition
-  ts = ts(dt[, value], start=c(dt[, min(year(date))], 1), frequency=36)
-  tr = stl(ts, "periodic")
-  dt[, trend := tr[[1]][, "trend"]]
-
-  yrange = if(missing(yrange)) dt[, c(min(value, na.rm=T), max(value, na.rm=T))] else yrange
-
-  xBands = lapply(dt[, seq(min(date), max(date), by="year")], function(x) list(
-    from = datetime_to_timestamp(as.Date(x)),
-    to = datetime_to_timestamp(as.Date(x)+365-1),
-    color = c("transparent", alpha("#e9e9e9", .4))[1+odd(year(x))]
-  ))
-
-  p = highchart(type="stock") %>%
-    hc_add_series(dt, type="arearange", name="Min./Max.",
-      hcaes(x=date, low=ymin, high=ymax),
-      color=pal[[1]], lineWidth=0, marker=list(enabled=FALSE)) %>%
-    hc_add_series(dt, type="line", name=unit, hcaes(x=date, y=value),
-      color=pal[[1]], lineWidth=.5) %>%
-    hc_add_series(dt, type="line", name="LTN", hcaes(x=date, y=ltn),
-      color=pal[[1]], lineWidth=2, marker=list(symbol="circle")) %>%
-    hc_add_series(dt, type="line", name="Trend", hcaes(x=date, y=trend),
-      color=pal[["orange"]], lineWidth=2, marker=list(symbol="circle")) %>%
-
-    hc_legend(enabled=TRUE, align="right") %>%
-    hc_tooltip(valueSuffix=unit, shared=TRUE) %>%
-    hc_xAxis(type="datetime", plotBands=xBands) %>%
-    hc_yAxis(min=yrange[1], max=yrange[2]) %>%
-    hc_rangeSelector(enabled=TRUE, inputEnabled=FALSE) %>%
-    hc_navigator(enabled=FALSE) %>%
-    hc_scrollbar(enabled=FALSE) %>%
-    hc_chart(zoomType="x") %>%
-    hc_themed(title, subtitle, ...)
-
-  return(p)
-}
 
 #' Plot product recipes (highcharts)
 #' @param args pricing arguments
@@ -668,14 +502,14 @@ plot_idx_mosaic <- function(
 }
 
 
-#' Plot bullet charts
+#' Plot bullet charts (highcharts)
 #'
 #' @param data input data
 #' @param horizontal boolean orientation
 #' @inheritDotParams hc_themed
 #'
 #' @examples
-#' data = DATA[iso3=="mli" & sheet=="sheet1"]
+#' data <- DATA[iso3=="mli" & sheet=="sheet1" & period=="year"]
 #' plot_bullet(data)
 #'
 #' @export
@@ -686,80 +520,16 @@ plot_bullet <- function(data, horizontal=TRUE, ...) {
     min = min(value, na.rm=T),
     max = max(value, na.rm=T),
     date = year[year==max(year, na.rm=T)]
-  ), by=.(variable)][value>0]
+  ), by=.(id)][value>0]
 
-  hchart(dt, type="bullet",
-    hcaes(x=variable, y=max, target=value),
-    dataLabels=list(enabled=TRUE)) %>%
+  highchart() %>%
     hc_chart(inverted=horizontal, margin=c(40, 8, 40, 10)) %>%
-    hc_yAxis(min=0, max=dt[, max(max, na.rm=T)],
-      gridLineWidth=0, labels=list(format="{value}"),
-      plotBands=list(
-        list(from=0, to=dt$min, color=pal[["light"]], name="min"),
-        list(from=dt$min, to=100, color=alpha(pal[["light"]], .5), name="all")
-      )) %>%
-    hc_tooltip(pointFormat="{point.y:.0f} max<br/>{point.target:.0f} average") %>%
+    hc_add_series(dt, type="bullet",
+      hcaes(x=id, y=max, target=value),
+      dataLabels=list(enabled=TRUE, format="{y:.1f}", color=pal[["black"]])
+    ) %>%
+    hc_xAxis(type="category", opposite=TRUE) %>%
+    hc_tooltip(pointFormat="{point.y:.1f} max<br/>{point.target:.1f} avg") %>%
+    hc_legend(enabled=FALSE) %>%
     hc_themed(...)
-}
-
-#' Plot waterfall charts
-#'
-#' @param data input data
-#' @inheritDotParams hc_themed
-#'
-#' @examples
-#' vars = c("Rainfall", "Utilized", "Protected", "Main riverstem")
-#' data = DATA[iso3=="mli" & sheet=="sheet1" & variable %in% vars
-#' ][, .(value=sum(value, na.rm=T)), by=.(year, variable)
-#' ][variable %in% vars[2:4], value := -value]
-#' plot_waterfall(data)
-#'
-#' @export
-plot_waterfall <- function(data, ...) {
-
-  dt = data[, .(
-    value = mean(value, na.rm=T),
-    min = min(value, na.rm=T),
-    max = max(value, na.rm=T)
-  ), by=.(variable)
-  ]
-
-  hchart(dt, type="waterfall",
-    hcaes(name=variable, y=value, color=variable),
-    dataLabels=list(enabled=T, format="{point.name}<br/>{point.value:.0f}"),
-    borderWidth=1, borderColor=pal[["light"]], pointPadding=0) %>%
-    hc_yAxis(gridLineWidth=0) %>%
-    hc_tooltip(pointFormat="{point.y:.0f} avg.<br/>{point.max:.0f} max") %>%
-    hc_themed(...)
-
-}
-
-#' Plot radar charts
-#'
-#' @param data input data
-#' @inheritDotParams hc_themed
-#'
-#' @examples
-#' data = DATA[iso3=="mli" & sheet=="sheet1"]
-#' plot_radar(data)
-#'
-#' @export
-plot_radar <- function(data, ...) {
-
-
-}
-
-#' Plot radar charts
-#'
-#' @param data input data
-#' @inheritDotParams hc_themed
-#'
-#' @examples
-#' data = DATA[iso3=="mli" & sheet=="sheet1"]
-#' plot_radar(data)
-#'
-#' @export
-plot_radar <- function(data, ...) {
-
-
 }

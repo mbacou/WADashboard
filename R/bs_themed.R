@@ -1,4 +1,4 @@
-#' Custom Bootstrap theme
+#' Custom Bootstrap 4 theme
 #'
 #' A modified Bootstrap 4 theme based on IWMI branding guidelines.
 #'
@@ -12,15 +12,15 @@
 #' @param gradients enable background gradients (see [BS4
 #'   colors](https://getbootstrap.com/docs/4.0/utilities/colors/))
 #'
-#' @importFrom bslib bs_theme bs_add_variables
+#' @importFrom bslib font_face bs_theme bs_add_variables
 #' @return Modified Bootstrap 4 theme
 #' @export
 #' @examples
 #' if(interactive()) bs_theme_preview(bs_themed())
 #'
 bs_themed <- function(
-  base_font = "'national-web-book'",
-  heading_font = "'DM Serif Text'",
+  base_font = "national-web-book",
+  heading_font = "dm-serif-text",
   font_size = 15,
   palette = pal,
   elevation = 0,
@@ -83,12 +83,12 @@ bs_themed <- function(
     `navbar-nav-link-padding-x` = ".75rem",
     `navbar-toggler-font-size` = "0.9rem",
 
-    `h1-font-size` = "1.8rem",
-    `h2-font-size` = "1.6rem",
-    `h3-font-size` = "1.4rem",
-    `h4-font-size` = "1.2rem",
-    `h5-font-size` = "1.0rem",
-    `h6-font-size` = "0.9rem",
+    `h1-font-size` = "2.0rem",
+    `h2-font-size` = "1.8rem",
+    `h3-font-size` = "1.6rem",
+    `h4-font-size` = "1.4rem",
+    `h5-font-size` = "1.2rem",
+    `h6-font-size` = "1.0rem",
     `small-font-size` = "87.5%",
 
     `display1-size` = "2.0rem",
@@ -99,12 +99,14 @@ bs_themed <- function(
     `line-height-base` = 20/font_size,
     `line-height-sm` = 20/font_size,
     `line-height-lg` = 20/font_size,
-    `headings-font-weight` = 300,
+    `headings-font-weight` = 400,
     `min-contrast-ratio` = 2.5
 
   ) %>%
     bs_add_variables(
       .where =  "declarations",
+
+      `navbar-brand-padding-y` = "0.5rem",
 
       `body-bg` = "lighten($light, 4%)",
       `border-color` = "$light",
@@ -142,7 +144,14 @@ bs_themed <- function(
       `card-title-font-size` = "1rem",
       `card-spacer-y` = ".5rem",
       `card-bg` = "transparent",
-      `card-cap-bg` = "transparent"
+      `card-cap-bg` = "transparent",
+
+      `tooltip-bg` = "$yellow",
+      `tooltip-arrow-color` = "transparent",
+      `tooltip-color` = "$dark",
+      `tooltip-opacity` = .85,
+      `tooltip-padding-x` = "1rem",
+      `tooltip-padding-y` = "1rem"
     )
 }
 

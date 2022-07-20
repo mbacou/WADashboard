@@ -2,7 +2,7 @@
 % Please edit documentation in R/highcharts.R
 \name{plot_bullet}
 \alias{plot_bullet}
-\title{Plot bullet charts}
+\title{Plot bullet charts (highcharts)}
 \usage{
 plot_bullet(data, horizontal = TRUE, ...)
 }
@@ -25,10 +25,10 @@ plot_bullet(data, horizontal = TRUE, ...)
   }}
 }
 \description{
-Plot bullet charts
+Plot bullet charts (highcharts)
 }
 \examples{
-data = DATA[iso3=="mli" & sheet=="sheet1"]
+data <- DATA[iso3=="mli" & sheet=="sheet1" & period=="year"]
 plot_bullet(data)
 
 }

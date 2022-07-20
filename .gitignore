@@ -1,4 +1,5 @@
 .Rproj.user
+inst/app/app_cache
 shared/
 .vscode/
 .Renviron

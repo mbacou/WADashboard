@@ -13,7 +13,7 @@ function(input, output, session) {
   s = reactiveValues(
     iso3 = init$iso3,
     date = init$date,
-    var = list(var="var_incremental_etnat", color="green"),
+    var = list(var=init$var, color="green"),
     layers = NA
   )
 
@@ -40,12 +40,18 @@ function(input, output, session) {
         dt()[, format(min(date_start), "%Y %b")], dt()[, format(max(date_end), "%Y %b")]))
     # Update periodicity
     updateRadioGroupButtons(session, "txtPeriod",
-      disabledChoices=dt()[sheet=="sheet1", setdiff(c("year", "season", "month"), unique(period))])
+      disabledChoices=dt()[sheet=="sheet1",
+        setdiff(c("year", "season", "month"), unique(period))])
+    # Update time slider
+    dt = dt()[sheet=="sheet1" & period=="year"]
+    updateSliderTextInput(session, "txtDate", NULL,
+      dt[order(date_end), format(unique(date_end), "%Y %b")],
+      selected=dt[, format(max(date_end), "%Y %b")])
   })
 
   observeEvent(input$txtPeriod, {
     # Update time slider
-    dt <- dt()[sheet=="sheet1"]
+    dt = dt()[sheet=="sheet1" & period==input$txtPeriod]
     updateSliderTextInput(session, "txtDate", NULL,
       dt[order(date_end), format(unique(date_end), "%Y %b")],
       selected=dt[, format(max(date_end), "%Y %b")])
@@ -60,7 +66,7 @@ function(input, output, session) {
   })
 
 
-  # WA+ sheets ----
+  # Sheets ----
   output$d3_sheet1 = renderD3({
     r2d3(dtf()[sheet=="sheet1"], script="./www/js/sheet_1.js")
   })
@@ -84,26 +90,39 @@ function(input, output, session) {
   # Key facts ----
   output$tb_basin = renderTable(
     hover=T, spacing="xs", colnames=F, align="lr", width="100%", {
-      # Flatten list to data.table
+      # Flatten configuration list to data.table
       dt = lapply(ISO3[[s$iso3]],
-        function(x) if(is.character(x)) paste(x, collapse=", ") else x) %>%
+        function(x) switch(class(x),
+          `character` = paste(x, collapse=", "), `list` = NULL, x)
+      ) %>%
         as.data.table()
-      # Format
+      # Format entries
       dt[, `:=`(
         `authorities` = sprintf(
           '%s <a href="%s"><i class="fa fa-external-link fa-fw"></i></a>', authorities, url),
         `area` = sprintf("%s ha", comma(area)),
         `population` = sprintf("%s", comma(`population`)),
-        `annual rainfall` = sprintf("%s mm", comma(`annual rainfall`)),
-        `annual ET` = sprintf("%s mm", comma(`annual ET`)),
         `irrigated area` = sprintf("%s ha", comma(`irrigated area`)),
-        `hydro power` = sprintf("%s GWh/year", comma(`hydro power`))
+        `hydro power` = sprintf("%s GWh/year", comma(`hydro power`)),
+        `annual rainfall` = dt()[id=="rainfall" & period=="year",
+          sprintf('%s %s', comma(mean(value, na.rm=T)), dt$unit)],
+        `annual evapotranspiration` = dt()[id=="et" & period=="year",
+          sprintf('%s %s', comma(mean(value, na.rm=T)), dt$unit)]
+
       )]
-      melt(dt, id.vars=1)[!variable %in% c("country", "admin", "water", "source", "url", "unit"), .(
-        variable = sprintf('<span class="text-info">%s</span>', str_to_title(variable)),
-        value
-      )]
+      melt(dt, id.vars=1)[!variable %in%
+          c("country", "admin", "water", "source", "url", "unit", "description"), .(
+            variable = sprintf('<span class="text-info">%s</span>', str_to_title(variable)),
+            value
+          )]
     }
+  )
+
+  output$txt_basin = renderUI(
+    span(class="mx-4 small text-warning", toupper(ISO3[[s$iso3]][["label"]]))
+  )
+  output$txt_desc = renderUI(
+    p(ISO3[[s$iso3]][["description"]])
   )
 
   # Map ----
@@ -113,7 +132,7 @@ function(input, output, session) {
 
   # Toggle map layers
   observe({
-    s$layers = c(input$chkLayer_1, input$chkLayer_2, input$chkLayer_3)
+    s$layers = c(input$chkLayer_2, input$chkLayer_3, input$chkLayer_4)
   })
 
   observeEvent(s$layers, ignoreInit=TRUE, {
@@ -121,12 +140,13 @@ function(input, output, session) {
   })
 
   # Toggle layer timestamp
-  observeEvent(s$date, {
-    req(length(s$layers) > 0)
-    leafletProxy("map") %>%
-      map_addWMSProvider(provider="FAO", date=s$date) %>%
-      map_toggle(provider="FAO", layers=s$layers)
-  })
+  # TODO check geoserver behavior with FAO
+  # observeEvent(s$date, {
+  #   req(length(s$layers) > 0)
+  #   leafletProxy("map") %>%
+  #     map_addWMSProvider(provider="FAO", date=s$date) %>%
+  #     map_toggle(provider="FAO", layers=s$layers)
+  # })
 
   output$uiLegend = renderUI(
     if(length(s$layers) > 0) lapply(s$layers, function(x)
@@ -164,9 +184,24 @@ function(input, output, session) {
 
 
   # Plots ----
-  output$plot_ts = renderHighchart({
+  output$plot_ts_s1 = renderHighchart({
     req(s$var$var)
-    plot_ts(dt()[id==s$var$var], s$var$color)
+    plot_tss(dt()[id==s$var$var], s$var$color)
   })
+
+  output$plot_ts_s2 = renderHighchart({
+    req(s$var$var)
+    plot_tss(dt()[id==s$var$var], s$var$color)
+  })
+
+  output$plot_luc = renderHighchart({
+    plot_luc(s$iso3)
+  })
+
+  # About ----
+  output$tb_sources = renderTable(
+    hover=T, align="llccl", width="100%",
+    fread("./md/sources.csv")
+  )
 
 }

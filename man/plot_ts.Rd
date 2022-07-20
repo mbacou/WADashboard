@@ -2,20 +2,50 @@
 % Please edit documentation in R/plot_ts.R
 \name{plot_ts}
 \alias{plot_ts}
-\title{Plot variable time-series}
+\title{Plot hydrological time-series (highcharts)}
 \usage{
-plot_ts(dt, color = pal[1], unit = "km³")
+plot_ts(
+  data,
+  name = NA,
+  unit = NA,
+  yrange = NULL,
+  unit.threshold = 10,
+  subtitle = NULL,
+  ...
+)
 }
 \arguments{
-\item{unit}{}
+\item{data}{data.table to plot with columns \code{date} and \code{value} (will use \code{date_end}
+if \code{date} is missing)}
+
+\item{name}{series' display name}
+
+\item{unit}{display unit}
+
+\item{yrange}{manual y-axis range}
+
+\item{unit.threshold}{maximum threshold to convert from km³ to MCM unit (default: 10 km³)}
+
+\item{subtitle}{chart subtitle}
+
+\item{...}{
+  Arguments passed on to \code{\link[=hc_themed]{hc_themed}}
+  \describe{
+    \item{\code{hc}}{a highchart object}
+    \item{\code{title}}{chart title}
+    \item{\code{label}}{optional annotation}
+    \item{\code{base_font}}{default font for all chart elements}
+    \item{\code{axes}}{show axes (default: TRUE)}
+    \item{\code{exporting}}{include chart export menu (default: TRUE)}
+    \item{\code{credits}}{include credits (default: FALSE)}
+  }}
 }
 \value{
-
+highcharter object
 }
 \description{
-Plot variable time-series
+Plot hydrological time-series (highcharts)
 }
 \examples{
-plot_ts(DATA[iso3=="mli" & sheet=="sheet1" & variable=="Rainfall"])
 
 }

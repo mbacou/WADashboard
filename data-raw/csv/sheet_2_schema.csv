@@ -1,0 +1,387 @@
+sheet,id,class,subclass,variable,calculated
+sheet2,malu_industry_agr,MANAGED CONVENTIONAL,Industry,agriculture,FALSE
+sheet2,malu_crops_agr,MANAGED CONVENTIONAL,Irrigated crops,agriculture,FALSE
+sheet2,malu_waterbodies_agr,MANAGED CONVENTIONAL,Managed water bodies,agriculture,FALSE
+sheet2,malu_others1_agr,MANAGED CONVENTIONAL,Others,agriculture,FALSE
+sheet2,malu_residential_agr,MANAGED CONVENTIONAL,Residential,agriculture,FALSE
+sheet2,malu_greenhouses_agr,MANAGED NON_CONVENTIONAL,Greenhouses,agriculture,FALSE
+sheet2,malu_idomestic_agr,MANAGED NON_CONVENTIONAL,Indoor domestic,agriculture,FALSE
+sheet2,malu_iiindustry_agr,MANAGED NON_CONVENTIONAL,Indoor industry,agriculture,FALSE
+sheet2,malu_livestock_agr,MANAGED NON_CONVENTIONAL,Livestock and husbandry,agriculture,FALSE
+sheet2,malu_others2_agr,MANAGED NON_CONVENTIONAL,Others,agriculture,FALSE
+sheet2,malu_powerandenergy_agr,MANAGED NON_CONVENTIONAL,Power and energy,agriculture,FALSE
+sheet2,molu_forest_agr,MODIFIED,Forest plantations,agriculture,FALSE
+sheet2,molu_others_agr,MODIFIED,Others,agriculture,FALSE
+sheet2,molu_rainfed_agr,MODIFIED,Rainfed crops,agriculture,FALSE
+sheet2,molu_settlements_agr,MODIFIED,Settlements,agriculture,FALSE
+sheet2,plu_forest_agr,PROTECTED,Forest,agriculture,FALSE
+sheet2,plu_glaciers_agr,PROTECTED,Glaciers,agriculture,FALSE
+sheet2,plu_grasslands_agr,PROTECTED,Natural grasslands,agriculture,FALSE
+sheet2,plu_waterbodies_agr,PROTECTED,Natural water bodies,agriculture,FALSE
+sheet2,plu_others_agr,PROTECTED,Others,agriculture,FALSE
+sheet2,plu_shrubland_agr,PROTECTED,Shrubland,agriculture,FALSE
+sheet2,plu_wetlands_agr,PROTECTED,Wetlands,agriculture,FALSE
+sheet2,ulu_forest_agr,UTILIZED,Forest,agriculture,FALSE
+sheet2,ulu_grasslands_agr,UTILIZED,Natural grasslands,agriculture,FALSE
+sheet2,ulu_waterbodies_agr,UTILIZED,Natural water bodies,agriculture,FALSE
+sheet2,ulu_others_agr,UTILIZED,Others,agriculture,FALSE
+sheet2,ulu_shrubland_agr,UTILIZED,Shrubland,agriculture,FALSE
+sheet2,ulu_wetlands_agr,UTILIZED,Wetlands,agriculture,FALSE
+sheet2,malu_industry_eco,MANAGED CONVENTIONAL,Industry,economy,FALSE
+sheet2,malu_crops_eco,MANAGED CONVENTIONAL,Irrigated crops,economy,FALSE
+sheet2,malu_waterbodies_eco,MANAGED CONVENTIONAL,Managed water bodies,economy,FALSE
+sheet2,malu_others1_eco,MANAGED CONVENTIONAL,Others,economy,FALSE
+sheet2,malu_residential_eco,MANAGED CONVENTIONAL,Residential,economy,FALSE
+sheet2,malu_greenhouses_eco,MANAGED NON_CONVENTIONAL,Greenhouses,economy,FALSE
+sheet2,malu_idomestic_eco,MANAGED NON_CONVENTIONAL,Indoor domestic,economy,FALSE
+sheet2,malu_iiindustry_eco,MANAGED NON_CONVENTIONAL,Indoor industry,economy,FALSE
+sheet2,malu_livestock_eco,MANAGED NON_CONVENTIONAL,Livestock and husbandry,economy,FALSE
+sheet2,malu_others2_eco,MANAGED NON_CONVENTIONAL,Others,economy,FALSE
+sheet2,malu_powerandenergy_eco,MANAGED NON_CONVENTIONAL,Power and energy,economy,FALSE
+sheet2,molu_forest_eco,MODIFIED,Forest plantations,economy,FALSE
+sheet2,molu_others_eco,MODIFIED,Others,economy,FALSE
+sheet2,molu_rainfed_eco,MODIFIED,Rainfed crops,economy,FALSE
+sheet2,molu_settlements_eco,MODIFIED,Settlements,economy,FALSE
+sheet2,plu_forest_eco,PROTECTED,Forest,economy,FALSE
+sheet2,plu_glaciers_eco,PROTECTED,Glaciers,economy,FALSE
+sheet2,plu_grasslands_eco,PROTECTED,Natural grasslands,economy,FALSE
+sheet2,plu_waterbodies_eco,PROTECTED,Natural water bodies,economy,FALSE
+sheet2,plu_others_eco,PROTECTED,Others,economy,FALSE
+sheet2,plu_shrubland_eco,PROTECTED,Shrubland,economy,FALSE
+sheet2,plu_wetlands_eco,PROTECTED,Wetlands,economy,FALSE
+sheet2,ulu_forest_eco,UTILIZED,Forest,economy,FALSE
+sheet2,ulu_grasslands_eco,UTILIZED,Natural grasslands,economy,FALSE
+sheet2,ulu_waterbodies_eco,UTILIZED,Natural water bodies,economy,FALSE
+sheet2,ulu_others_eco,UTILIZED,Others,economy,FALSE
+sheet2,ulu_shrubland_eco,UTILIZED,Shrubland,economy,FALSE
+sheet2,ulu_wetlands_eco,UTILIZED,Wetlands,economy,FALSE
+sheet2,malu_industry_ene,MANAGED CONVENTIONAL,Industry,energy,FALSE
+sheet2,malu_crops_ene,MANAGED CONVENTIONAL,Irrigated crops,energy,FALSE
+sheet2,malu_waterbodies_ene,MANAGED CONVENTIONAL,Managed water bodies,energy,FALSE
+sheet2,malu_others1_ene,MANAGED CONVENTIONAL,Others,energy,FALSE
+sheet2,malu_residential_ene,MANAGED CONVENTIONAL,Residential,energy,FALSE
+sheet2,malu_greenhouses_ene,MANAGED NON_CONVENTIONAL,Greenhouses,energy,FALSE
+sheet2,malu_idomestic_ene,MANAGED NON_CONVENTIONAL,Indoor domestic,energy,FALSE
+sheet2,malu_iiindustry_ene,MANAGED NON_CONVENTIONAL,Indoor industry,energy,FALSE
+sheet2,malu_livestock_ene,MANAGED NON_CONVENTIONAL,Livestock and husbandry,energy,FALSE
+sheet2,malu_others2_ene,MANAGED NON_CONVENTIONAL,Others,energy,FALSE
+sheet2,malu_powerandenergy_ene,MANAGED NON_CONVENTIONAL,Power and energy,energy,FALSE
+sheet2,molu_forest_ene,MODIFIED,Forest plantations,energy,FALSE
+sheet2,molu_others_ene,MODIFIED,Others,energy,FALSE
+sheet2,molu_rainfed_ene,MODIFIED,Rainfed crops,energy,FALSE
+sheet2,molu_settlements_ene,MODIFIED,Settlements,energy,FALSE
+sheet2,plu_forest_ene,PROTECTED,Forest,energy,FALSE
+sheet2,plu_glaciers_ene,PROTECTED,Glaciers,energy,FALSE
+sheet2,plu_grasslands_ene,PROTECTED,Natural grasslands,energy,FALSE
+sheet2,plu_waterbodies_ene,PROTECTED,Natural water bodies,energy,FALSE
+sheet2,plu_others_ene,PROTECTED,Others,energy,FALSE
+sheet2,plu_shrubland_ene,PROTECTED,Shrubland,energy,FALSE
+sheet2,plu_wetlands_ene,PROTECTED,Wetlands,energy,FALSE
+sheet2,ulu_forest_ene,UTILIZED,Forest,energy,FALSE
+sheet2,ulu_grasslands_ene,UTILIZED,Natural grasslands,energy,FALSE
+sheet2,ulu_waterbodies_ene,UTILIZED,Natural water bodies,energy,FALSE
+sheet2,ulu_others_ene,UTILIZED,Others,energy,FALSE
+sheet2,ulu_shrubland_ene,UTILIZED,Shrubland,energy,FALSE
+sheet2,ulu_wetlands_ene,UTILIZED,Wetlands,energy,FALSE
+sheet2,malu_industry_env,MANAGED CONVENTIONAL,Industry,environment,FALSE
+sheet2,malu_crops_env,MANAGED CONVENTIONAL,Irrigated crops,environment,FALSE
+sheet2,malu_waterbodies_env,MANAGED CONVENTIONAL,Managed water bodies,environment,FALSE
+sheet2,malu_others1_env,MANAGED CONVENTIONAL,Others,environment,FALSE
+sheet2,malu_residential_env,MANAGED CONVENTIONAL,Residential,environment,FALSE
+sheet2,malu_greenhouses_env,MANAGED NON_CONVENTIONAL,Greenhouses,environment,FALSE
+sheet2,malu_idomestic_env,MANAGED NON_CONVENTIONAL,Indoor domestic,environment,FALSE
+sheet2,malu_iiindustry_env,MANAGED NON_CONVENTIONAL,Indoor industry,environment,FALSE
+sheet2,malu_livestock_env,MANAGED NON_CONVENTIONAL,Livestock and husbandry,environment,FALSE
+sheet2,malu_others2_env,MANAGED NON_CONVENTIONAL,Others,environment,FALSE
+sheet2,malu_powerandenergy_env,MANAGED NON_CONVENTIONAL,Power and energy,environment,FALSE
+sheet2,molu_forest_env,MODIFIED,Forest plantations,environment,FALSE
+sheet2,molu_others_env,MODIFIED,Others,environment,FALSE
+sheet2,molu_rainfed_env,MODIFIED,Rainfed crops,environment,FALSE
+sheet2,molu_settlements_env,MODIFIED,Settlements,environment,FALSE
+sheet2,plu_forest_env,PROTECTED,Forest,environment,FALSE
+sheet2,plu_glaciers_env,PROTECTED,Glaciers,environment,FALSE
+sheet2,plu_grasslands_env,PROTECTED,Natural grasslands,environment,FALSE
+sheet2,plu_waterbodies_env,PROTECTED,Natural water bodies,environment,FALSE
+sheet2,plu_others_env,PROTECTED,Others,environment,FALSE
+sheet2,plu_shrubland_env,PROTECTED,Shrubland,environment,FALSE
+sheet2,plu_wetlands_env,PROTECTED,Wetlands,environment,FALSE
+sheet2,ulu_forest_env,UTILIZED,Forest,environment,FALSE
+sheet2,ulu_grasslands_env,UTILIZED,Natural grasslands,environment,FALSE
+sheet2,ulu_waterbodies_env,UTILIZED,Natural water bodies,environment,FALSE
+sheet2,ulu_others_env,UTILIZED,Others,environment,FALSE
+sheet2,ulu_shrubland_env,UTILIZED,Shrubland,environment,FALSE
+sheet2,ulu_wetlands_env,UTILIZED,Wetlands,environment,FALSE
+sheet2,malu_industry_i,MANAGED CONVENTIONAL,Industry,interception,FALSE
+sheet2,malu_crops_i,MANAGED CONVENTIONAL,Irrigated crops,interception,FALSE
+sheet2,malu_waterbodies_i,MANAGED CONVENTIONAL,Managed water bodies,interception,FALSE
+sheet2,malu_others1_i,MANAGED CONVENTIONAL,Others,interception,FALSE
+sheet2,malu_residential_i,MANAGED CONVENTIONAL,Residential,interception,FALSE
+sheet2,malu_greenhouses_i,MANAGED NON_CONVENTIONAL,Greenhouses,interception,FALSE
+sheet2,malu_idomestic_i,MANAGED NON_CONVENTIONAL,Indoor domestic,interception,FALSE
+sheet2,malu_iiindustry_i,MANAGED NON_CONVENTIONAL,Indoor industry,interception,FALSE
+sheet2,malu_livestock_i,MANAGED NON_CONVENTIONAL,Livestock and husbandry,interception,FALSE
+sheet2,malu_others2_i,MANAGED NON_CONVENTIONAL,Others,interception,FALSE
+sheet2,malu_powerandenergy_i,MANAGED NON_CONVENTIONAL,Power and energy,interception,FALSE
+sheet2,molu_forest_i,MODIFIED,Forest plantations,interception,FALSE
+sheet2,molu_others_i,MODIFIED,Others,interception,FALSE
+sheet2,molu_rainfed_i,MODIFIED,Rainfed crops,interception,FALSE
+sheet2,molu_settlements_i,MODIFIED,Settlements,interception,FALSE
+sheet2,plu_forest_i,PROTECTED,Forest,interception,FALSE
+sheet2,plu_glaciers_i,PROTECTED,Glaciers,interception,FALSE
+sheet2,plu_grasslands_i,PROTECTED,Natural grasslands,interception,FALSE
+sheet2,plu_waterbodies_i,PROTECTED,Natural water bodies,interception,FALSE
+sheet2,plu_others_i,PROTECTED,Others,interception,FALSE
+sheet2,plu_shrubland_i,PROTECTED,Shrubland,interception,FALSE
+sheet2,plu_wetlands_i,PROTECTED,Wetlands,interception,FALSE
+sheet2,ulu_forest_i,UTILIZED,Forest,interception,FALSE
+sheet2,ulu_grasslands_i,UTILIZED,Natural grasslands,interception,FALSE
+sheet2,ulu_waterbodies_i,UTILIZED,Natural water bodies,interception,FALSE
+sheet2,ulu_others_i,UTILIZED,Others,interception,FALSE
+sheet2,ulu_shrubland_i,UTILIZED,Shrubland,interception,FALSE
+sheet2,ulu_wetlands_i,UTILIZED,Wetlands,interception,FALSE
+sheet2,malu_industry_lei,MANAGED CONVENTIONAL,Industry,leisure,FALSE
+sheet2,malu_crops_lei,MANAGED CONVENTIONAL,Irrigated crops,leisure,FALSE
+sheet2,malu_waterbodies_lei,MANAGED CONVENTIONAL,Managed water bodies,leisure,FALSE
+sheet2,malu_others1_lei,MANAGED CONVENTIONAL,Others,leisure,FALSE
+sheet2,malu_residential_lei,MANAGED CONVENTIONAL,Residential,leisure,FALSE
+sheet2,malu_greenhouses_lei,MANAGED NON_CONVENTIONAL,Greenhouses,leisure,FALSE
+sheet2,malu_idomestic_lei,MANAGED NON_CONVENTIONAL,Indoor domestic,leisure,FALSE
+sheet2,malu_iiindustry_lei,MANAGED NON_CONVENTIONAL,Indoor industry,leisure,FALSE
+sheet2,malu_livestock_lei,MANAGED NON_CONVENTIONAL,Livestock and husbandry,leisure,FALSE
+sheet2,malu_others2_lei,MANAGED NON_CONVENTIONAL,Others,leisure,FALSE
+sheet2,malu_powerandenergy_lei,MANAGED NON_CONVENTIONAL,Power and energy,leisure,FALSE
+sheet2,molu_forest_lei,MODIFIED,Forest plantations,leisure,FALSE
+sheet2,molu_others_lei,MODIFIED,Others,leisure,FALSE
+sheet2,molu_rainfed_lei,MODIFIED,Rainfed crops,leisure,FALSE
+sheet2,molu_settlements_lei,MODIFIED,Settlements,leisure,FALSE
+sheet2,plu_forest_lei,PROTECTED,Forest,leisure,FALSE
+sheet2,plu_glaciers_lei,PROTECTED,Glaciers,leisure,FALSE
+sheet2,plu_grasslands_lei,PROTECTED,Natural grasslands,leisure,FALSE
+sheet2,plu_waterbodies_lei,PROTECTED,Natural water bodies,leisure,FALSE
+sheet2,plu_others_lei,PROTECTED,Others,leisure,FALSE
+sheet2,plu_shrubland_lei,PROTECTED,Shrubland,leisure,FALSE
+sheet2,plu_wetlands_lei,PROTECTED,Wetlands,leisure,FALSE
+sheet2,ulu_forest_lei,UTILIZED,Forest,leisure,FALSE
+sheet2,ulu_grasslands_lei,UTILIZED,Natural grasslands,leisure,FALSE
+sheet2,ulu_waterbodies_lei,UTILIZED,Natural water bodies,leisure,FALSE
+sheet2,ulu_others_lei,UTILIZED,Others,leisure,FALSE
+sheet2,ulu_shrubland_lei,UTILIZED,Shrubland,leisure,FALSE
+sheet2,ulu_wetlands_lei,UTILIZED,Wetlands,leisure,FALSE
+sheet2,malu_industry_n,MANAGED CONVENTIONAL,Industry,non_beneficial,FALSE
+sheet2,malu_crops_n,MANAGED CONVENTIONAL,Irrigated crops,non_beneficial,FALSE
+sheet2,malu_waterbodies_n,MANAGED CONVENTIONAL,Managed water bodies,non_beneficial,FALSE
+sheet2,malu_others1_n,MANAGED CONVENTIONAL,Others,non_beneficial,FALSE
+sheet2,malu_residential_n,MANAGED CONVENTIONAL,Residential,non_beneficial,FALSE
+sheet2,malu_greenhouses_n,MANAGED NON_CONVENTIONAL,Greenhouses,non_beneficial,FALSE
+sheet2,malu_idomestic_n,MANAGED NON_CONVENTIONAL,Indoor domestic,non_beneficial,FALSE
+sheet2,malu_iiindustry_n,MANAGED NON_CONVENTIONAL,Indoor industry,non_beneficial,FALSE
+sheet2,malu_livestock_n,MANAGED NON_CONVENTIONAL,Livestock and husbandry,non_beneficial,FALSE
+sheet2,malu_others2_n,MANAGED NON_CONVENTIONAL,Others,non_beneficial,FALSE
+sheet2,malu_powerandenergy_n,MANAGED NON_CONVENTIONAL,Power and energy,non_beneficial,FALSE
+sheet2,molu_forest_n,MODIFIED,Forest plantations,non_beneficial,FALSE
+sheet2,molu_others_n,MODIFIED,Others,non_beneficial,FALSE
+sheet2,molu_rainfed_n,MODIFIED,Rainfed crops,non_beneficial,FALSE
+sheet2,molu_settlements_n,MODIFIED,Settlements,non_beneficial,FALSE
+sheet2,plu_forest_n,PROTECTED,Forest,non_beneficial,FALSE
+sheet2,plu_glaciers_n,PROTECTED,Glaciers,non_beneficial,FALSE
+sheet2,plu_grasslands_n,PROTECTED,Natural grasslands,non_beneficial,FALSE
+sheet2,plu_waterbodies_n,PROTECTED,Natural water bodies,non_beneficial,FALSE
+sheet2,plu_others_n,PROTECTED,Others,non_beneficial,FALSE
+sheet2,plu_shrubland_n,PROTECTED,Shrubland,non_beneficial,FALSE
+sheet2,plu_wetlands_n,PROTECTED,Wetlands,non_beneficial,FALSE
+sheet2,ulu_forest_n,UTILIZED,Forest,non_beneficial,FALSE
+sheet2,ulu_grasslands_n,UTILIZED,Natural grasslands,non_beneficial,FALSE
+sheet2,ulu_waterbodies_n,UTILIZED,Natural water bodies,non_beneficial,FALSE
+sheet2,ulu_others_n,UTILIZED,Others,non_beneficial,FALSE
+sheet2,ulu_shrubland_n,UTILIZED,Shrubland,non_beneficial,FALSE
+sheet2,ulu_wetlands_n,UTILIZED,Wetlands,non_beneficial,FALSE
+sheet2,malu_industry_s,MANAGED CONVENTIONAL,Industry,soil,FALSE
+sheet2,malu_crops_s,MANAGED CONVENTIONAL,Irrigated crops,soil,FALSE
+sheet2,malu_waterbodies_s,MANAGED CONVENTIONAL,Managed water bodies,soil,FALSE
+sheet2,malu_others1_s,MANAGED CONVENTIONAL,Others,soil,FALSE
+sheet2,malu_residential_s,MANAGED CONVENTIONAL,Residential,soil,FALSE
+sheet2,malu_greenhouses_s,MANAGED NON_CONVENTIONAL,Greenhouses,soil,FALSE
+sheet2,malu_idomestic_s,MANAGED NON_CONVENTIONAL,Indoor domestic,soil,FALSE
+sheet2,malu_iiindustry_s,MANAGED NON_CONVENTIONAL,Indoor industry,soil,FALSE
+sheet2,malu_livestock_s,MANAGED NON_CONVENTIONAL,Livestock and husbandry,soil,FALSE
+sheet2,malu_others2_s,MANAGED NON_CONVENTIONAL,Others,soil,FALSE
+sheet2,malu_powerandenergy_s,MANAGED NON_CONVENTIONAL,Power and energy,soil,FALSE
+sheet2,molu_forest_s,MODIFIED,Forest plantations,soil,FALSE
+sheet2,molu_others_s,MODIFIED,Others,soil,FALSE
+sheet2,molu_rainfed_s,MODIFIED,Rainfed crops,soil,FALSE
+sheet2,molu_settlements_s,MODIFIED,Settlements,soil,FALSE
+sheet2,plu_forest_s,PROTECTED,Forest,soil,FALSE
+sheet2,plu_glaciers_s,PROTECTED,Glaciers,soil,FALSE
+sheet2,plu_grasslands_s,PROTECTED,Natural grasslands,soil,FALSE
+sheet2,plu_waterbodies_s,PROTECTED,Natural water bodies,soil,FALSE
+sheet2,plu_others_s,PROTECTED,Others,soil,FALSE
+sheet2,plu_shrubland_s,PROTECTED,Shrubland,soil,FALSE
+sheet2,plu_wetlands_s,PROTECTED,Wetlands,soil,FALSE
+sheet2,ulu_forest_s,UTILIZED,Forest,soil,FALSE
+sheet2,ulu_grasslands_s,UTILIZED,Natural grasslands,soil,FALSE
+sheet2,ulu_waterbodies_s,UTILIZED,Natural water bodies,soil,FALSE
+sheet2,ulu_others_s,UTILIZED,Others,soil,FALSE
+sheet2,ulu_shrubland_s,UTILIZED,Shrubland,soil,FALSE
+sheet2,ulu_wetlands_s,UTILIZED,Wetlands,soil,FALSE
+sheet2,malu_industry_t,MANAGED CONVENTIONAL,Industry,transpiration,FALSE
+sheet2,malu_crops_t,MANAGED CONVENTIONAL,Irrigated crops,transpiration,FALSE
+sheet2,malu_waterbodies_t,MANAGED CONVENTIONAL,Managed water bodies,transpiration,FALSE
+sheet2,malu_others1_t,MANAGED CONVENTIONAL,Others,transpiration,FALSE
+sheet2,malu_residential_t,MANAGED CONVENTIONAL,Residential,transpiration,FALSE
+sheet2,malu_greenhouses_t,MANAGED NON_CONVENTIONAL,Greenhouses,transpiration,FALSE
+sheet2,malu_idomestic_t,MANAGED NON_CONVENTIONAL,Indoor domestic,transpiration,FALSE
+sheet2,malu_iiindustry_t,MANAGED NON_CONVENTIONAL,Indoor industry,transpiration,FALSE
+sheet2,malu_livestock_t,MANAGED NON_CONVENTIONAL,Livestock and husbandry,transpiration,FALSE
+sheet2,malu_others2_t,MANAGED NON_CONVENTIONAL,Others,transpiration,FALSE
+sheet2,malu_powerandenergy_t,MANAGED NON_CONVENTIONAL,Power and energy,transpiration,FALSE
+sheet2,molu_forest_t,MODIFIED,Forest plantations,transpiration,FALSE
+sheet2,molu_others_t,MODIFIED,Others,transpiration,FALSE
+sheet2,molu_rainfed_t,MODIFIED,Rainfed crops,transpiration,FALSE
+sheet2,molu_settlements_t,MODIFIED,Settlements,transpiration,FALSE
+sheet2,plu_forest_t,PROTECTED,Forest,transpiration,FALSE
+sheet2,plu_glaciers_t,PROTECTED,Glaciers,transpiration,FALSE
+sheet2,plu_grasslands_t,PROTECTED,Natural grasslands,transpiration,FALSE
+sheet2,plu_waterbodies_t,PROTECTED,Natural water bodies,transpiration,FALSE
+sheet2,plu_others_t,PROTECTED,Others,transpiration,FALSE
+sheet2,plu_shrubland_t,PROTECTED,Shrubland,transpiration,FALSE
+sheet2,plu_wetlands_t,PROTECTED,Wetlands,transpiration,FALSE
+sheet2,ulu_forest_t,UTILIZED,Forest,transpiration,FALSE
+sheet2,ulu_grasslands_t,UTILIZED,Natural grasslands,transpiration,FALSE
+sheet2,ulu_waterbodies_t,UTILIZED,Natural water bodies,transpiration,FALSE
+sheet2,ulu_others_t,UTILIZED,Others,transpiration,FALSE
+sheet2,ulu_shrubland_t,UTILIZED,Shrubland,transpiration,FALSE
+sheet2,ulu_wetlands_t,UTILIZED,Wetlands,transpiration,FALSE
+sheet2,malu_industry_w,MANAGED CONVENTIONAL,Industry,water,FALSE
+sheet2,malu_crops_w,MANAGED CONVENTIONAL,Irrigated crops,water,FALSE
+sheet2,malu_waterbodies_w,MANAGED CONVENTIONAL,Managed water bodies,water,FALSE
+sheet2,malu_others1_w,MANAGED CONVENTIONAL,Others,water,FALSE
+sheet2,malu_residential_w,MANAGED CONVENTIONAL,Residential,water,FALSE
+sheet2,malu_greenhouses_w,MANAGED NON_CONVENTIONAL,Greenhouses,water,FALSE
+sheet2,malu_idomestic_w,MANAGED NON_CONVENTIONAL,Indoor domestic,water,FALSE
+sheet2,malu_iiindustry_w,MANAGED NON_CONVENTIONAL,Indoor industry,water,FALSE
+sheet2,malu_livestock_w,MANAGED NON_CONVENTIONAL,Livestock and husbandry,water,FALSE
+sheet2,malu_others2_w,MANAGED NON_CONVENTIONAL,Others,water,FALSE
+sheet2,malu_powerandenergy_w,MANAGED NON_CONVENTIONAL,Power and energy,water,FALSE
+sheet2,molu_forest_w,MODIFIED,Forest plantations,water,FALSE
+sheet2,molu_others_w,MODIFIED,Others,water,FALSE
+sheet2,molu_rainfed_w,MODIFIED,Rainfed crops,water,FALSE
+sheet2,molu_settlements_w,MODIFIED,Settlements,water,FALSE
+sheet2,plu_forest_w,PROTECTED,Forest,water,FALSE
+sheet2,plu_glaciers_w,PROTECTED,Glaciers,water,FALSE
+sheet2,plu_grasslands_w,PROTECTED,Natural grasslands,water,FALSE
+sheet2,plu_waterbodies_w,PROTECTED,Natural water bodies,water,FALSE
+sheet2,plu_others_w,PROTECTED,Others,water,FALSE
+sheet2,plu_shrubland_w,PROTECTED,Shrubland,water,FALSE
+sheet2,plu_wetlands_w,PROTECTED,Wetlands,water,FALSE
+sheet2,ulu_forest_w,UTILIZED,Forest,water,FALSE
+sheet2,ulu_grasslands_w,UTILIZED,Natural grasslands,water,FALSE
+sheet2,ulu_waterbodies_w,UTILIZED,Natural water bodies,water,FALSE
+sheet2,ulu_others_w,UTILIZED,Others,water,FALSE
+sheet2,ulu_shrubland_w,UTILIZED,Shrubland,water,FALSE
+sheet2,ulu_wetlands_w,UTILIZED,Wetlands,water,FALSE
+sheet2,malu_industry_e,MANAGED CONVENTIONAL,Industry,evaporation,FALSE
+sheet2,malu_crops_e,MANAGED CONVENTIONAL,Irrigated crops,evaporation,FALSE
+sheet2,malu_waterbodies_e,MANAGED CONVENTIONAL,Managed water bodies,evaporation,FALSE
+sheet2,malu_others1_e,MANAGED CONVENTIONAL,Others,evaporation,FALSE
+sheet2,malu_residential_e,MANAGED CONVENTIONAL,Residential,evaporation,FALSE
+sheet2,malu_greenhouses_e,MANAGED NON_CONVENTIONAL,Greenhouses,evaporation,FALSE
+sheet2,malu_idomestic_e,MANAGED NON_CONVENTIONAL,Indoor domestic,evaporation,FALSE
+sheet2,malu_iiindustry_e,MANAGED NON_CONVENTIONAL,Indoor industry,evaporation,FALSE
+sheet2,malu_livestock_e,MANAGED NON_CONVENTIONAL,Livestock and husbandry,evaporation,FALSE
+sheet2,malu_others2_e,MANAGED NON_CONVENTIONAL,Others,evaporation,FALSE
+sheet2,malu_powerandenergy_e,MANAGED NON_CONVENTIONAL,Power and energy,evaporation,FALSE
+sheet2,molu_forest_e,MODIFIED,Forest plantations,evaporation,FALSE
+sheet2,molu_others_e,MODIFIED,Others,evaporation,FALSE
+sheet2,molu_rainfed_e,MODIFIED,Rainfed crops,evaporation,FALSE
+sheet2,molu_settlements_e,MODIFIED,Settlements,evaporation,FALSE
+sheet2,plu_forest_e,PROTECTED,Forest,evaporation,FALSE
+sheet2,plu_glaciers_e,PROTECTED,Glaciers,evaporation,FALSE
+sheet2,plu_grasslands_e,PROTECTED,Natural grasslands,evaporation,FALSE
+sheet2,plu_waterbodies_e,PROTECTED,Natural water bodies,evaporation,FALSE
+sheet2,plu_others_e,PROTECTED,Others,evaporation,FALSE
+sheet2,plu_shrubland_e,PROTECTED,Shrubland,evaporation,FALSE
+sheet2,plu_wetlands_e,PROTECTED,Wetlands,evaporation,FALSE
+sheet2,ulu_forest_e,UTILIZED,Forest,evaporation,FALSE
+sheet2,ulu_grasslands_e,UTILIZED,Natural grasslands,evaporation,FALSE
+sheet2,ulu_waterbodies_e,UTILIZED,Natural water bodies,evaporation,FALSE
+sheet2,ulu_others_e,UTILIZED,Others,evaporation,FALSE
+sheet2,ulu_shrubland_e,UTILIZED,Shrubland,evaporation,FALSE
+sheet2,ulu_wetlands_e,UTILIZED,Wetlands,evaporation,FALSE
+sheet2,malu_industry_et,MANAGED CONVENTIONAL,Industry,et,FALSE
+sheet2,malu_crops_et,MANAGED CONVENTIONAL,Irrigated crops,et,FALSE
+sheet2,malu_waterbodies_et,MANAGED CONVENTIONAL,Managed water bodies,et,FALSE
+sheet2,malu_others1_et,MANAGED CONVENTIONAL,Others,et,FALSE
+sheet2,malu_residential_et,MANAGED CONVENTIONAL,Residential,et,FALSE
+sheet2,malu_greenhouses_et,MANAGED NON_CONVENTIONAL,Greenhouses,et,FALSE
+sheet2,malu_idomestic_et,MANAGED NON_CONVENTIONAL,Indoor domestic,et,FALSE
+sheet2,malu_iiindustry_et,MANAGED NON_CONVENTIONAL,Indoor industry,et,FALSE
+sheet2,malu_livestock_et,MANAGED NON_CONVENTIONAL,Livestock and husbandry,et,FALSE
+sheet2,malu_others2_et,MANAGED NON_CONVENTIONAL,Others,et,FALSE
+sheet2,malu_powerandenergy_et,MANAGED NON_CONVENTIONAL,Power and energy,et,FALSE
+sheet2,molu_forest_et,MODIFIED,Forest plantations,et,FALSE
+sheet2,molu_others_et,MODIFIED,Others,et,FALSE
+sheet2,molu_rainfed_et,MODIFIED,Rainfed crops,et,FALSE
+sheet2,molu_settlements_et,MODIFIED,Settlements,et,FALSE
+sheet2,plu_forest_et,PROTECTED,Forest,et,FALSE
+sheet2,plu_glaciers_et,PROTECTED,Glaciers,et,FALSE
+sheet2,plu_grasslands_et,PROTECTED,Natural grasslands,et,FALSE
+sheet2,plu_waterbodies_et,PROTECTED,Natural water bodies,et,FALSE
+sheet2,plu_others_et,PROTECTED,Others,et,FALSE
+sheet2,plu_shrubland_et,PROTECTED,Shrubland,et,FALSE
+sheet2,plu_wetlands_et,PROTECTED,Wetlands,et,FALSE
+sheet2,ulu_forest_et,UTILIZED,Forest,et,FALSE
+sheet2,ulu_grasslands_et,UTILIZED,Natural grasslands,et,FALSE
+sheet2,ulu_waterbodies_et,UTILIZED,Natural water bodies,et,FALSE
+sheet2,ulu_others_et,UTILIZED,Others,et,FALSE
+sheet2,ulu_shrubland_et,UTILIZED,Shrubland,et,FALSE
+sheet2,ulu_wetlands_et,UTILIZED,Wetlands,et,FALSE
+sheet2,malu_industry_b,MANAGED CONVENTIONAL,Industry,beneficial,FALSE
+sheet2,malu_crops_b,MANAGED CONVENTIONAL,Irrigated crops,beneficial,FALSE
+sheet2,malu_waterbodies_b,MANAGED CONVENTIONAL,Managed water bodies,beneficial,FALSE
+sheet2,malu_others1_b,MANAGED CONVENTIONAL,Others,beneficial,FALSE
+sheet2,malu_residential_b,MANAGED CONVENTIONAL,Residential,beneficial,FALSE
+sheet2,malu_greenhouses_b,MANAGED NON_CONVENTIONAL,Greenhouses,beneficial,FALSE
+sheet2,malu_idomestic_b,MANAGED NON_CONVENTIONAL,Indoor domestic,beneficial,FALSE
+sheet2,malu_iiindustry_b,MANAGED NON_CONVENTIONAL,Indoor industry,beneficial,FALSE
+sheet2,malu_livestock_b,MANAGED NON_CONVENTIONAL,Livestock and husbandry,beneficial,FALSE
+sheet2,malu_others2_b,MANAGED NON_CONVENTIONAL,Others,beneficial,FALSE
+sheet2,malu_powerandenergy_b,MANAGED NON_CONVENTIONAL,Power and energy,beneficial,FALSE
+sheet2,molu_forest_b,MODIFIED,Forest plantations,beneficial,FALSE
+sheet2,molu_others_b,MODIFIED,Others,beneficial,FALSE
+sheet2,molu_rainfed_b,MODIFIED,Rainfed crops,beneficial,FALSE
+sheet2,molu_settlements_b,MODIFIED,Settlements,beneficial,FALSE
+sheet2,plu_forest_b,PROTECTED,Forest,beneficial,FALSE
+sheet2,plu_glaciers_b,PROTECTED,Glaciers,beneficial,FALSE
+sheet2,plu_grasslands_b,PROTECTED,Natural grasslands,beneficial,FALSE
+sheet2,plu_waterbodies_b,PROTECTED,Natural water bodies,beneficial,FALSE
+sheet2,plu_others_b,PROTECTED,Others,beneficial,FALSE
+sheet2,plu_shrubland_b,PROTECTED,Shrubland,beneficial,FALSE
+sheet2,plu_wetlands_b,PROTECTED,Wetlands,beneficial,FALSE
+sheet2,ulu_forest_b,UTILIZED,Forest,beneficial,FALSE
+sheet2,ulu_grasslands_b,UTILIZED,Natural grasslands,beneficial,FALSE
+sheet2,ulu_waterbodies_b,UTILIZED,Natural water bodies,beneficial,FALSE
+sheet2,ulu_others_b,UTILIZED,Others,beneficial,FALSE
+sheet2,ulu_shrubland_b,UTILIZED,Shrubland,beneficial,FALSE
+sheet2,ulu_wetlands_b,UTILIZED,Wetlands,beneficial,FALSE
+sheet2,agriculture,,,,TRUE
+sheet2,beneficial,,,,TRUE
+sheet2,economy,,,,TRUE
+sheet2,energy,,,,TRUE
+sheet2,environment,,,,TRUE
+sheet2,et,,,,TRUE
+sheet2,evaporation,,,,TRUE
+sheet2,interception,,,,TRUE
+sheet2,leisure,,,,TRUE
+sheet2,non_beneficial,,,,TRUE
+sheet2,soil,,,,TRUE
+sheet2,transpiration,,,,TRUE
+sheet2,water,,,,TRUE
+sheet2,malu_et,,,,TRUE
+sheet2,malu_t,,,,TRUE
+sheet2,molu_et,,,,TRUE
+sheet2,molu_t,,,,TRUE
+sheet2,plu_et,,,,TRUE
+sheet2,plu_t,,,,TRUE
+sheet2,ulu_et,,,,TRUE
+sheet2,ulu_t,,,,TRUE
+sheet2,i.et,,,,TRUE

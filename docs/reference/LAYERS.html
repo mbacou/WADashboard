@@ -18,7 +18,7 @@ tiles, WMS, GeoJSON, KML, etc.). Only vector tiles are not supported currently."
     
     <a class="navbar-brand me-2" href="../index.html">WADashboard</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.6</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -104,56 +104,58 @@ Atlas, FAO WaPOR, Google Earth Engine, etc.).</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "FAO WaPOR"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $layers</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $layers$`Natural Earth`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $layers$Basemaps</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $layers$Basemaps$`Natural Earth`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "RICCAR:gray_hr_sr_w_3"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $layers$`Blue Marble`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $layers$Basemaps$`Blue Marble`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "NASA:bluemarble_ls_sw_st"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $layers$`Hydrological Basins`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $layers$`Basin Features`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $layers$`Basin Features`$`Hydrological Basins`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "AQUAMAPS:hydrobasins_africa"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $layers$`Major Rivers`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $layers$`Basin Features`$`Major Rivers`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "AQUAMAPS:rivers_africa"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $layers$`Total Population`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $layers$`Basin Features`$`Total Population`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "WPOP:wpop_t"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $layers$`Precipitation (annual) 5km`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "WAPOR_2:l1_pcp_a"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $layers$`Precipitation Anomaly (monthly)`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "NMME:fmpa"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $layers$`Evaporation (dekadal) 250m`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "WAPOR_2:l1_e_d"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $layers$`Evapotranspiration (dekadal) 250m`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "C3S:agera5_et0_d"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $layers$`Actual ET (annual) 100m`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "WAPOR_2:l2_aeti_a"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $layers$`Incremental ET - Niger (monthly) 100m`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "WATER:niger_etincr"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $layers$`Incremental ET - Nile (monthly) 100m`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "WATER:niger_etincr"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $layers$`Drought Intensity (dekadal)`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "ASIS:di_d"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $layers$`Agricultural Stress Index (dekadal)`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "ASIS:asi_d"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $layers$`Land Cover (annual) 100m`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $layers$`Land Cover`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $layers$`Land Cover`$`Land Cover (annual) 100m`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "WAPOR_2:l2_lcc_a"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $layers$`Land Use - Niger (annual) 100m`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $layers$`Land Cover`$`Land Use - Niger (annual) 100m`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "WATER:niger_lus"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $layers$`Land Use - Nile (annual) 100m`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $layers$`Land Cover`$`Land Use - Nile (annual) 100m`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "WATER:nile_lus"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $layers$Hydrology</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $layers$Hydrology$`Precipitation (annual) 5km`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "WAPOR_2:l1_pcp_a"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $layers$Hydrology$`Precipitation Anomaly (monthly)`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "NMME:fmpa"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $layers$Hydrology$`Evaporation (dekadal) 250m`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "WAPOR_2:l1_e_d"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $layers$Hydrology$`Evapotranspiration (dekadal) 250m`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "C3S:agera5_et0_d"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $layers$Hydrology$`Actual ET (annual) 100m`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "WAPOR_2:l2_aeti_a"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $layers$Hydrology$`Drought Intensity (dekadal)`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "ASIS:di_d"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $layers$Hydrology$`Agricultural Stress Index (dekadal)`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "ASIS:asi_d"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"></span>

@@ -19,21 +19,21 @@ Two hydrological basin are provided in the initial release, the **lower Niger Ri
 
 The easiest to get started is to install this package from the development version on GitHub at an R console:
 
-```r
+``` r
 if (!require("remotes")) install.packages("remotes")
 remotes::install_github("mbacou/WADashboard")
 ```
 
 And then preview the dashboard in your browser with:
 
-```r
+``` r
 if (!require("shiny")) install.packages("shiny")
 shiny::shinyAppDir(system.file("app", package="WADashboard"))
 ```
 
 If you choose to clone this repo instead, the application can be previewed at an R console with:
 
-```r
+``` r
 shiny::runApp()
 ```
 
@@ -41,43 +41,45 @@ shiny::runApp()
 
 The repo is structured as a standard R package, in particular:
 
-- `/data-raw`: configuration files
-- `/inst`: client and server scripts and web assets for the Shiny application
-- `/R`: all custom R functions (see [Reference](../reference/))
-- `/docs`: rendered HTML documentation (this website)
+-   `/data-raw`: configuration files
+-   `/inst`: client and server scripts and web assets for the Shiny application
+-   `/R`: all custom R functions (see [Reference](../reference/))
+-   `/docs`: rendered HTML documentation (this website)
 
 The application can be previewed in a browser with `source("app.R")`.
 
-Shell scripts are provided to automate common tasks: 
+Shell scripts are provided to automate common tasks:
 
-- `./build.sh`: rebuild and install the package
-- `./pkgdown.sh`: rebuild HTML package documentation (uses [pkgdown](https://pkgdown.r-lib.org/) framework)
-- `./deploy.sh <tag>`: commit tagged release to Github, rebuild Docker image, and deploy image to AWS ECR (you need [AWS cli](https://aws.amazon.com/cli/) and a valid AWS access key to deploy to AWS cloud at the command line)
-
+-   `./build.sh`: rebuild and install the package
+-   `./pkgdown.sh`: rebuild HTML package documentation (uses [pkgdown](https://pkgdown.r-lib.org/) framework)
+-   `./deploy.sh <tag>`: commit tagged release to Github, rebuild Docker image, and deploy image to AWS ECR (you need [AWS cli](https://aws.amazon.com/cli/) and a valid AWS access key to deploy to AWS cloud at the command line)
 
 # Configuration
 
-1. (optional) Edit local environment variables in file [.Renviron](https://github.com/mbacou/WADashboard/blob/main/.Renviron.deploy) as needed:
-    -  `WA_DATA` pointing to the root location of your WA+ model output (collection of CSV and NetCDF files). Any local or cloud-based storage type may be implemented (incl. Amazon S3).
-    - `WA_ROOT` pointing to Shiny server root location (default to `/srv/shiny-server/WADashboard` but you might want to deploy to a different location).
-    - `WA_LIB` pointing to the location of a local R library (default to Linux shared library `/usr/local/lib/R/site-library`)  
+1.  (optional) Edit local environment variables in file [.Renviron](https://github.com/mbacou/WADashboard/blob/main/.Renviron.deploy) as needed:
 
-2. Edit 2 configuration files:  
-    - [List of river basins](https://github.com/mbacou/WADashboard/blob/main/data-raw/json/ISO3.json)  
-    - [Catalog of contextual geospatial layers](https://github.com/mbacou/WADashboard/blob/main/data-raw/json/LAYERS.json)  
-    
-3. Rebuild the R package and reinstall by executing `./build.sh`.
+    -   `WA_DATA` pointing to the root location of your WA+ model output (collection of CSV and NetCDF files). Any local or cloud-based storage type may be implemented (incl. Amazon S3).
+    -   `WA_ROOT` pointing to Shiny server root location (default to `/srv/shiny-server/WADashboard` but you might want to deploy to a different location).
+    -   `WA_LIB` pointing to the location of a local R library (default to Linux shared library `/usr/local/lib/R/site-library`)
 
-If you append a new river basin, make sure you can successfully ETL its data with `datat_etl("new_basin_code")` before rebuilding the package.
+2.  Edit 2 configuration files:
 
+    -   [List of river basins](https://github.com/mbacou/WADashboard/blob/main/data-raw/json/ISO3.yml)\
+    -   [Catalog of 3rd party geospatial layers](https://github.com/mbacou/WADashboard/blob/main/data-raw/json/LAYERS.yml)
+
+3.  Whenever you change the configuration files, you will need to rebuild the R package and reinstall by executing `./build.sh`.
+
+If you append a new river basin, make sure you can successfully ETL its data with `datat_etl("new_basin_code")` before rebuilding the package (else it will fail to build explicitly).
 
 # Application Deployment
+
+![Delivery Model](fig/Delivery%20Model.svg)
 
 A Docker [image file](https://github.com/mbacou/WADashboard/blob/main/Dockerfile) is provided for deployment to AWS ECS (Fargate). This image includes Shiny Server Community Edition and (for development only) RStudio Server Preview.
 
 You can build and test this image locally with:
 
-```sh
+``` sh
 # replace {pwd} with a chosen password for the default rstudio user
 docker build -t wadashboard .
 docker run --name wadashboard PASSWORD={pwd} -p 80:3838 -p 8787:8787 wadashboard
@@ -85,7 +87,7 @@ docker run --name wadashboard PASSWORD={pwd} -p 80:3838 -p 8787:8787 wadashboard
 
 Once you've established that this container runs locally, it can be deployed to AWS ECS (see [./deploy.sh](https://github.com/mbacou/WADashboard/blob/main/deploy.sh) for an automated deployment script):
 
-```sh
+``` sh
 # Authenticate your local Docker client
 aws ecr get-login-password --region {region} | docker login --username AWS --password-stdin {aws_account_id}.dkr.ecr.{region}.amazonaws.com
 # Tag your image with your Amazon ECR registry
@@ -95,6 +97,3 @@ docker push {aws_account_id}.dkr.ecr.{region}.amazonaws.com/wadashboard
 ```
 
 The dashboard application is served on the host at `http://localhost/WADashboard/`. RStudio IDE is reachable at `http://localhost:8787/` (replace `localhost` with your container's public IP or domain name).
-
-
-

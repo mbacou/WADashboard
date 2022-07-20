@@ -26,13 +26,13 @@ RUN \
   R -e "install.packages(c('remotes', 'gtools', 'TTR', \
   'sf', 'terra', 'data.table', 'bslib', 'r2d3', 'lubridate', 'scales', \
   'leaflet.extras', 'fresh', 'shinybusy', 'shinyWidgets', 'bs4Dash', \
-  'stringr', 'highcharter'), \
+  'stringr', 'highcharter', 'yaml'), \
   repos='https://packagemanager.rstudio.com/all/2022-02-01+Y3JhbiwyOjQ1MjYyMTU7NDU1MjVERTc')"
 
 # Install application R package from Github
 RUN \
   R -e "remotes::install_github('mbacou/${APP}', \
-  dependencies=TRUE, upgrade='default', build_manual=TRUE, build_vignettes=FALSE)"
+  dependencies=NA, upgrade='default', build_manual=FALSE, build_vignettes=FALSE)"
 
 # Remove boilerplate
 RUN rm -rf /srv/shiny-server/
@@ -47,6 +47,8 @@ COPY ./app.R /srv/shiny-server/${APP}/
 COPY ./restart.txt /srv/shiny-server/${APP}/
 RUN chown -R shiny:shiny /srv/shiny-server
 RUN chown -R shiny:shiny /home/shiny
+RUN chmod -R g+rw /srv/shiny-server
+RUN chmod -R g+rw /home/shiny
 
 # Install RStudio (optional, for development only)
 ENV S6_VERSION=v2.1.0.2
@@ -56,10 +58,6 @@ ENV PATH=/usr/lib/rstudio-server/bin:$PATH
 
 RUN /rocker_scripts/install_rstudio.sh
 RUN /rocker_scripts/install_pandoc.sh
-
-# Custom RStudio IDE settings (optional)
-COPY ./.Renviron.deploy /home/rstudio/.Renviron
-RUN chown -R rstudio:rstudio /home/rstudio
 
 # Ensure rstudio user can publish to Shiny server root
 RUN usermod -aG shiny rstudio

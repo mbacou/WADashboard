@@ -2,11 +2,11 @@
 % Please edit documentation in R/bs_themed.R
 \name{bs_themed}
 \alias{bs_themed}
-\title{Custom Bootstrap theme}
+\title{Custom Bootstrap 4 theme}
 \usage{
 bs_themed(
-  base_font = "'national-web-book'",
-  heading_font = "'DM Serif Text'",
+  base_font = "national-web-book",
+  heading_font = "dm-serif-text",
   font_size = 15,
   palette = pal,
   elevation = 0,

@@ -15,18 +15,18 @@ accordionItem(
   status = NULL,
   collapsed = TRUE,
   solidHeader = TRUE,
-  class = NULL,
-  bg = NULL
+  bg = NULL,
+  class = NULL
 )
 
 updateAccordion(id, selected, session = getDefaultReactiveDomain())
 }
 \arguments{
-\item{...}{slot for \link{accordionItem}.}
+\item{...}{slot for \link{accordionItem}}
 
-\item{id}{unique accordion id.}
+\item{id}{unique accordion id}
 
-\item{width}{the width of the accordion.}
+\item{width}{the grid-system width of the accordion}
 
 \item{title}{Optional title.}
 
@@ -62,9 +62,9 @@ updateAccordion(id, selected, session = getDefaultReactiveDomain())
 
 \item{solidHeader}{Should the header be shown with a solid color background?}
 
-\item{class}{additional classes to apply to the parent card element}
-
 \item{bg}{background color}
+
+\item{class}{additional classes to apply to the parent card element}
 
 \item{selected}{Index of the newly selected \link[bs4Dash]{accordionItem}.}
 

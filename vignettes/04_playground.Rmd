@@ -1,0 +1,322 @@
+---
+title: "Visualization Playground"
+author: "BACOU, Melanie"
+date: "`r format(Sys.Date(), '%b. %d, %Y')`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Visualization Playground}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{css, echo=FALSE}
+.pagedtable-wrapper { border: unset; }
+.pagedtable-not-empty .pagedtable-footer { border-top: unset; }
+.pagedtable-header-name { overflow: unset; }
+```
+
+```{r, message=FALSE, echo=FALSE}
+library(rmarkdown)
+library(shiny)
+
+# Load this development package
+devtools::load_all(".")
+
+th <- function(hc, ...) hc %>% 
+  hc_legend(enabled=TRUE, align="right") %>%
+  hc_tooltip(valueSuffix="km³") %>%
+  hc_xAxis(type="datetime", dateTimeLabelFormats=list(month="%Y %b")) %>%
+  hc_rangeSelector(enabled=FALSE) %>%
+  hc_navigator(enabled=FALSE) %>%
+  hc_scrollbar(enabled=FALSE) %>%
+  hc_chart(zoomType="x") %>%
+  hc_themed(...)
+```
+
+```{r}
+# Verify data periodicity
+data <- DATA[iso3=="ken"]
+data[, .N, by=.(sheet, period)]
+```
+
+
+Collection of visuals for WA Dashboard. Variable codes and definitions are in this [shared catalog](https://docs.google.com/spreadsheets/d/13c8t2JgA2QK_YZ6OgI9o0JJcnuq90WOeipzNxS1HPow/edit?usp=sharing).
+
+# Water Availability
+
+## Basin Closure
+
+(1 – (outflow[^s1] / gross inflow[^s1])) * 100
+
+```{r}
+# Yearly
+dt <- data[id %in% c("outflow", "gross_inflow") & period=="year"]
+dt <- dcast(dt, ...~id)[, value := 100 * (1 - (outflow / gross_inflow))]
+
+plot_ts(dt, name="Pct. basin closure", unit="%", 
+  title="Mara Basin Closure")
+```
+
+
+## Availability per Capita
+
+available water[^s1] / population[^ext]
+
+```{r, layout="l-screen"}
+
+# Basin population from config
+tot_pop <- ISO3[["ken"]]$population
+
+# Yearly
+dt <- data[id %in% c("available_water") & period=="year"]
+dt <- dcast(dt, ...~id)[, value := 1E9 * (available_water) / tot_pop]
+
+plot_ts(dt, name="Per Capita  Water Consumption", unit="m³",
+  title="Mara Basin Per Capita Water Consumption")
+```
+
+Intra-annual summary below shows **entire period** statistics and 3 most recent years (can also be displayed as a polar/circular, see end of page).
+
+```{r}
+# Monthly profile
+dt <- data[id %in% c("available_water") & period=="month"]
+dt <- dcast(dt, ...~id)[, value := 1E9 * available_water / tot_pop]
+
+plot_profile(dt, unit="m³",
+  title="Mara Basin Per Capita Water Consumption")
+```
+
+
+## Water Available for Further Use
+
+(utilizable outflow[^s1])
+
+```{r}
+# Yearly
+dt <- data[id %in% c("utilized_flow") & period=="year"]
+dt <- dcast(dt, ...~id)[, value := 1000 * utilized_flow]
+
+plot_ts(dt, name="Utilizable Outflow", unit="MCM",
+  title="Mara Basin Utilizable Outflow")
+```
+
+
+# Water Use
+
+## Agricultural Water Use 
+
+((managed water use[^s2] – non-ag ET[^s2]) / water consumed[^s1])
+
+```{r}
+# Yearly time-series
+dt <- data[id %in% c("molu_et", "malu_et", "consumed_water",
+  "molu_settlements_et", "molu_others_et", "malu_waterbodies_et", "malu_residential_et",
+  "malu_industry_et", "malu_idomestic_et", "malu_iindustry_et", "malu_powerandenergy_et",
+  "malu_others2_et")
+  & period=="year"]
+
+dt <- dcast(dt, year+month+date_end+date_start~id)[, value := 100 * (
+  + molu_et + malu_et
+  - molu_settlements_et - molu_others_et - malu_waterbodies_et - malu_residential_et
+  - malu_industry_et - malu_idomestic_et - malu_iindustry_et - malu_powerandenergy_et
+  - malu_others2_et
+) / consumed_water]
+
+plot_ts(dt, name="Ag. water use", unit="%",
+  title="Agricultural water use")
+```
+
+```{r}
+# Monthly
+dt <- data[id %in% c("molu_et", "malu_et", "consumed_water",
+  "molu_settlements_et", "molu_others_et", "malu_waterbodies_et", "malu_residential_et",
+  "malu_industry_et", "malu_idomestic_et", "malu_iindustry_et", "malu_powerandenergy_et",
+  "malu_others2_et")
+  & period=="month"]
+
+dt <- dcast(dt, year+month+date_end+date_start~id)[, value := 100 * (
+  + molu_et + malu_et
+  - molu_settlements_et - molu_others_et - malu_waterbodies_et - malu_residential_et
+  - malu_industry_et - malu_idomestic_et - malu_iindustry_et - malu_powerandenergy_et
+  - malu_others2_et
+) / consumed_water]
+
+plot_profile(dt, name="Ag. water use", unit="%",
+  title="Agricultural water use")
+```
+
+## Environmental Stress 
+
+(percentage of time (months in the time series) during which environmental flows are not met) – Manohar/Mansoor to advise calculation from CSV WA output).
+
+<span class="bg-warning">We use a low threshold value (e.g. < 0.05 km³). More details to follow.</span>
+
+```{r}
+threshold = 0.05
+
+# Yearly time-series
+dt <- data[id %in% c("reserved_outflow") & period=="month"]
+dt <- dcast(dt, ...~id)[, value := reserved_outflow
+][, .(
+  date_end = max(date_end),
+  date_start = min(date_end),
+  value = 100 * sum(value <= threshold, na.rm=T)/.N
+), by=.(iso3, year)]
+
+plot_ts(dt, name="Insuffient Flow", unit="%",
+  title="Mara Basin - Environmental Stress", 
+  subtitle=sprintf("2003-2017 (%% of months in period below %s km³)", 
+    threshold)
+)
+```
+
+
+# Basin Variability
+
+## Precipitation 
+
+(inter and intra-annual min and max over the time series)
+
+<p class="bg-warning">Add option in dashboard for users to toggle units between volume and height?<p>
+
+```{r}
+# Monthly
+dt <- data[id=="rainfall" & period=="month"]
+dt <- dcast(dt, ...~id)[, value := rainfall]
+
+plot_ts(dt, name="Precipitation", unit="km³", title="Precipitation")
+```
+
+```{r}
+plot_profile(dt, unit="km³", title="Precipitation")
+```
+
+Intra-annual variability can also be shown as a polar chart:
+
+```{r, out.height="500px"}
+plot_profile(dt, unit="km³", polar=T, title="Precipitation")
+```
+
+
+# Other Diagrams
+
+Using a chord diagram to show water allocation between agricultural and non-ag. uses (or other breakdowns).
+
+```{r, out.height="320px"}
+ag <- c("Irrigated crops", "Livestock and husbandry", "Greenhouses", 
+  "Forest plantations", "Rainfed crops")
+
+# (convoluted, include these constructed variables in ETL)
+dt <- data[period=="year" & year==2017 &
+    ((sheet=="sheet2" & id %like% "_et") | (sheet=="sheet1" & id %in% c("outflow")))
+][META, on=.(id), `:=`(
+  from = i.class,
+  to = fcase(i.subclass %in% ag, "agriculture", default = "non-agriculture")
+)][from != ""
+][from=="OUTFLOW", to := "outflow"
+][, from := "inflow"][, .(weight = sum(value, na.rm=T)), by=.(from, to)
+][, `:=`(
+  weight = weight/sum(weight, na.rm=T),
+  color = pal[c("navy", "green", "orange")]
+)]
+
+plot_wheel(dt, rot=180, 
+  colors=pal[c("blue", "navy", "green", "orange")],
+  icons=c(`inflow`="tint", `agriculture`="envira", 
+    `outflow`="water", `non-agriculture`="industry"),
+  title="System Water Uses", subtitle="2017 (% allocation")
+```
+
+Using a Sankey graph to show ET allocation across land use categories (can be used to show a different combination of variables).
+
+```{r, eval=FALSE}
+dt <- data[period=="year" & year==2017 & sheet=="sheet2" & id %like% "_et"
+][META, on=.(id), `:=`(
+  l1 = i.class,
+  l2 = fcase(i.subclass %in% ag, "agriculture", default = "non-agriculture"),
+  l3 = i.subclass
+)][l1 != "", .(weight = sum(value, na.rm=T)), by=.(l1, l2, l3)
+][, `:=`(
+  weight = 100 * weight/sum(weight, na.rm=T)
+)]
+
+dt <- data_to_sankey(dt[, .(l1, l2, l3)])
+
+plot_sankey(dt, 
+  title="Evapotranspiration",
+  subtitle="2017 (% allocation)")
+```
+
+Based on additional graphs found in WA+ basin reports.
+
+```{r}
+# Yearly basin closure
+dt <- data[id %in% c("outflow", "gross_inflow") & period=="year"]
+dt <- dcast(dt, ...~id)
+
+highchart(type="stock") %>%
+  hc_add_series(dt, type="arearange", 
+    hcaes(x=date_end, low=outflow, high=gross_inflow), 
+    name="gross inflow", lineWidth=2, color=pal[[2]]
+  ) %>%
+  hc_add_series(dt, type="line", 
+    hcaes(x=date_end, y=outflow), 
+    name="outflow", lineWidth=2, color=pal[[1]]
+  ) %>%  
+  hc_add_series(dt, type="line", 
+    hcaes(x=date_end, y=predict(lm(gross_inflow~year))), 
+    name="trend", lineWidth=2, color=pal[[6]]
+  ) %>%
+  hc_add_series(dt, type="line", 
+    hcaes(x=date_end, y=predict(lm(outflow~year))), 
+    name="trend", lineWidth=2, color=pal[[6]], showInLegend=F
+  ) %>%    
+  th(
+    title="Mara Basin Closure", 
+    subtitle="Outflow / Gross Inflow (km³)")
+
+```
+
+```{r}
+# Monthly water balance (formula?)
+dt <- data[id %in% 
+    c("external_in", "landsc_et", "land_et", "q_gw_out", "q_sw_out", "delta_s") 
+  & period=="month"]
+dt <- dcast(dt, ...~id)[order(date_end), `:=`(
+  inflow = external_in,
+  outflow = landsc_et + land_et + q_gw_out + q_sw_out
+  #delta_s = cumsum(delta_s)
+)]
+
+# Color zones
+z <- dt[, .(
+  x = date_end,
+  zone = cumsum(inflow > outflow)
+)][, .(x = last(x)), by=zone][, color := unname(pal[c(7, 2)])[1+odd(zone)]]
+z <- lapply(1:nrow(z), function(i)  list(
+  value = z[i, dt_tstp(x)], 
+  color = z[i, color], 
+  fillColor = alpha(z[i, color], .3)
+))
+
+highchart(type="stock") %>%
+  hc_add_series(dt, type="arearange", 
+    hcaes(x=date_end, low=outflow, high=inflow),
+    name="Balance", lineWidth=2, zoneAxis="x", zones=z
+  ) %>%
+  # hc_add_series(dt, type="area",
+  #   hcaes(x=date_end, y=delta_s),
+  #   name="deltaS", lineWidth=2, color=pal[["red"]]
+  # ) %>%
+  th(
+    title="Mara Basin Water Balance", 
+    subtitle="Inflow / Outflow (km³)")
+
+```
+
+<p class="bg-warning">Verify definitions of inflow and outflow above.</p>
+
+[^s1]: Indicator from resource base sheet
+[^ext]: Indicator from external database
+[^s2]: Indicator from ET sheet
+
