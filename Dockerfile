@@ -21,19 +21,6 @@ RUN \
 # Clean up
 RUN apt autoremove -y
 
-# Install R dependencies from Package Manager snapshots as of 2022.02.01
-RUN \
-  R -e "install.packages(c('remotes', 'gtools', 'TTR', \
-  'sf', 'terra', 'data.table', 'bslib', 'r2d3', 'lubridate', 'scales', \
-  'leaflet.extras', 'fresh', 'shinybusy', 'shinyWidgets', 'bs4Dash', \
-  'stringr', 'highcharter', 'yaml'), \
-  repos='https://packagemanager.rstudio.com/all/2022-02-01+Y3JhbiwyOjQ1MjYyMTU7NDU1MjVERTc')"
-
-# Install application R package from Github
-RUN \
-  R -e "remotes::install_github('mbacou/${APP}', \
-  dependencies=NA, upgrade='default', build_manual=FALSE, build_vignettes=FALSE)"
-
 # Remove boilerplate
 RUN rm -rf /srv/shiny-server/
 
@@ -61,6 +48,19 @@ RUN /rocker_scripts/install_pandoc.sh
 
 # Ensure rstudio user can publish to Shiny server root
 RUN usermod -aG shiny rstudio
+
+# Install R deps from Package Manager snapshots as of 2022.02.01
+RUN \
+  R -e "install.packages(c('remotes', 'gtools', 'TTR', \
+  'sf', 'terra', 'data.table', 'bslib', 'r2d3', 'lubridate', 'scales', \
+  'leaflet.extras', 'fresh', 'shinybusy', 'shinyWidgets', 'bs4Dash', \
+  'stringr', 'highcharter', 'yaml'), \
+  repos='https://packagemanager.rstudio.com/all/2022-02-01+Y3JhbiwyOjQ1MjYyMTU7NDU1MjVERTc')"
+
+# Install application R package from Github
+RUN \
+  R -e "remotes::install_github('mbacou/${APP}', \
+  dependencies=NA, upgrade='default', build_manual=FALSE, build_vignettes=FALSE)"
 
 EXPOSE 80
 EXPOSE 8787
